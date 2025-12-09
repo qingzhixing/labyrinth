@@ -10,10 +10,10 @@
 using std::string;
 struct ParsedResult
 {
-	string map_file;
-	int player_id;
-	string move_direction;
-	GameCoreErrorCode error_code = GameCoreErrorCode::SUCCESS;
+	string map_file{};
+	int player_id{};
+	string move_direction{};
+	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
 };
 
 /**

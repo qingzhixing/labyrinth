@@ -46,6 +46,9 @@ void PrintUsage()
 
 ParsedResult ParseArguments(int argc, char *argv[])
 {
+	// 重置 optind 到 1，确保 getopt_long 从 argv[1] 开始解析
+	optind = 1;
+
 	DebugLog(LogLevel::INFO, "Start parsing arguments");
 	DebugLog(LogLevel::DEBUG, "argc: %d", argc);
 	for (int i = 0; i < argc; i++)
@@ -61,10 +64,8 @@ ParsedResult ParseArguments(int argc, char *argv[])
 		{"help", no_argument, nullptr, 'h'},
 		{nullptr, 0, nullptr, 0}};
 
-	ParsedResult result;
-	string player_id_str;
-
-	bool version_flag = false;
+	ParsedResult result{};
+	string player_id_str{};
 
 	// 解析命令行参数
 	int opt;
@@ -74,77 +75,119 @@ ParsedResult ParseArguments(int argc, char *argv[])
 		switch (opt)
 		{
 		case 'm':
+			DebugLog(LogLevel::DEBUG, "map file: %s", optarg);
 			result.map_file = optarg;
 			break;
 		case 'p':
+			DebugLog(LogLevel::DEBUG, "player ID: %s", optarg);
 			player_id_str = optarg;
 			break;
-		case 0:
-			if (long_index == 2)
+		case 'v': // --version
+			DebugLog(LogLevel::DEBUG, "version flag");
+
+			// 判断是否有其他参数
+			if (optind < argc)
 			{
-				result.move_direction = optarg;
-			}
-			else if (long_index == 3)
-			{
-				version_flag = true;
-			}
-			break;
-		case 'h':
-			PrintUsage();
-			result.error_code = GameCoreErrorCode::HELP_REQUESTED;
-		case '?':
-			if (optopt == 'm' || optopt == 'p')
-			{
-				result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
+				DebugLog(LogLevel::ERROR, "excessive parameters when --version: %s", argv[optind]);
+				result.error_code = GameCoreErrorCode::EXCESSIVE_PARAMETERS;
 			}
 			else
 			{
-				result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+				DebugLog(LogLevel::INFO, "Display Version Information");
+				PrintVersion();
+				result.error_code = GameCoreErrorCode::SUCCESS;
 			}
+			return result;
+			break;
+		case 0:
+			if (long_index == 2) // --move
+			{
+				DebugLog(LogLevel::DEBUG, "move direction: %s", optarg);
+				result.move_direction = optarg;
+			}
+			break;
+		case 'h': // --help
+			DebugLog(LogLevel::DEBUG, "Display help message");
+			PrintUsage();
+			result.error_code = GameCoreErrorCode::HELP_REQUESTED;
+			return result;
+
+			break;
+		case '?': // other invalid options
+			if (optopt == 'm' || optopt == 'p')
+			{
+				DebugLog(LogLevel::ERROR, "missing parameter: %c", optopt);
+				result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
+				return result;
+			}
+			else
+			{
+				DebugLog(LogLevel::ERROR, "invalid parameter: [%d]%c", optopt, optopt);
+				result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+				return result;
+			}
+
+			break;
 		default:
+			DebugLog(LogLevel::ERROR, "unknown parameter:[%d]%c", opt, opt);
 			PrintUsage();
 			result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+			return result;
+
+			break;
 		}
 	}
-
-	// 检查必需参数是否提供
-	if (result.map_file.empty() || player_id_str.empty() || result.move_direction.empty())
-	{
-		result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
-	}
-
 	// 检查参数是否合法
 
-	// --version
-	if (version_flag)
+	// Check Missing Parameters
+	bool missing_parameters = false;
+	if (result.map_file.empty())
 	{
-		// 判断是否有其他参数
-		if (optind < argc)
-		{
-			result.error_code = GameCoreErrorCode::EXCESSIVE_PARAMETERS;
-		}
-		PrintVersion();
-		result.error_code = GameCoreErrorCode::SUCCESS;
+		DebugLog(LogLevel::ERROR, "missing map file");
+		missing_parameters = true;
+	}
+	if (player_id_str.empty())
+	{
+		DebugLog(LogLevel::ERROR, "missing player ID");
+		missing_parameters = true;
+	}
+	if (result.move_direction.empty())
+	{
+		DebugLog(LogLevel::ERROR, "missing move direction");
+		missing_parameters = true;
+	}
+	if (missing_parameters)
+	{
+		PrintUsage();
+		result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
+		return result;
 	}
 
 	// --move
 	if (result.move_direction != "up" && result.move_direction != "down" && result.move_direction != "left" && result.move_direction != "right")
 	{
+		DebugLog(LogLevel::ERROR, "invalid move direction: %s", result.move_direction.c_str());
 		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+		return result;
 	}
 
 	// --player
 	try
 	{
+		DebugLog(LogLevel::INFO, "Transforming player ID: %s", player_id_str.c_str());
 		result.player_id = std::stoi(player_id_str);
 	}
 	catch (const std::invalid_argument &e)
 	{
+		DebugLog(LogLevel::ERROR, "player ID is not a number: %s", player_id_str.c_str());
 		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+		return result;
 	}
 	catch (const std::out_of_range &e)
 	{
+		DebugLog(LogLevel::ERROR, "player ID out of range: %s", player_id_str.c_str());
 		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+		return result;
 	}
 
 	return std::move(result);

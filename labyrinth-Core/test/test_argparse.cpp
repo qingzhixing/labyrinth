@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstring>
 
 using std::cout;
 using std::endl;
@@ -15,7 +16,8 @@ static ParsedResult CallParseArguments(vector<string> args)
 	char *argv[argc];
 	for (int i = 0; i < argc; i++)
 	{
-		argv[i] = const_cast<char *>(args[i].c_str());
+		cout << "Copying argv[" << i << "] = " << args[i] << endl;
+		argv[i] = strdup(args[i].c_str());
 	}
 	return ParseArguments(argc, argv);
 }
@@ -39,6 +41,7 @@ UnitTest(TestParseMove)
 	vector<string> directions = {"up", "down", "left", "right"};
 	for (auto &direction : directions)
 	{
+		cout << "\n\n\n-------- direction: " << direction << endl;
 		auto result = CallParseArguments({"labyrinth", "--move", direction});
 		PrintGameCoreErrorMessage(result.error_code);
 		assert(result.error_code == GameCoreErrorCode::MISSING_PARAMETERS);
