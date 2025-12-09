@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdarg>
+#include <debug_flags.h>
 
 using std::cout;
 using std::endl;
@@ -35,6 +36,11 @@ const string GetLogLevelName(LogLevel level)
 
 void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)
 {
+	// Only log when debug logging is enabled.
+	if (!getenv(DBG_LOG_ENABLE))
+	{
+		return;
+	}
 	va_list args;
 	va_start(args, format);
 	char message[1024];

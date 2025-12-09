@@ -8,7 +8,9 @@ import argparse
 def main():
     # 解析命令行参数
     parser = argparse.ArgumentParser(description="运行测试")
-    parser.add_argument("-v", "--verbose", action="store_true", help="启用详细输出模式")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="启用 Debug 日志输出"
+    )
     args = parser.parse_args()
 
     # 构建项目
@@ -18,12 +20,12 @@ def main():
 
     # 设置环境变量
     env = os.environ.copy()
+    env["TK_VERBOSE"] = "1"
     if args.verbose:
-        env["TK_VERBOSE"] = "1"
-        print("启用详细输出模式 (TK_VERBOSE=1)")
+        print("启用 Debug 日志输出 (DBG_LOG_ENABLE=1)")
+        env["DBG_LOG_ENABLE"] = "1"
     else:
-        env["TK_RUN"] = "1"
-        print("启用普通输出模式 (TK_RUN=1)")
+        print("启用普通输出模式 (Undefined DBG_LOG_ENABLE)")
 
     # 运行测试
     print("运行测试...")

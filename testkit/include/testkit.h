@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <debug_flags.h>
 
 /** Maximum number of allowed test cases. */
 #define TK_MAX_TESTS 1024
@@ -38,10 +39,6 @@
 #define TK_OUTPUT_LIMIT (1 << 20)
 
 #define TK_MAX_ARGV_LEN 64
-
-/** Environment variables for enabling TestKit. */
-#define TK_RUN "TK_RUN"
-#define TK_VERBOSE "TK_VERBOSE"
 
 /** System test run result: exit status and combined stdout and stderr. */
 struct tk_result
@@ -243,24 +240,25 @@ struct tk_testcase
  *
  * TestKit will stop this loop after TK_TIME_LIMIT_SEC seconds.
  */
-#define __tk_testcase(name_, body_arg, test, ...)                                                            \
-    /* Declare the test function, e.g., __tk_test_example. */                                                \
-    static void TK_UNIQUE_NAME(name_)(body_arg);                                                             \
-                                                                                                             \
-    /* Define a pre-main constructor to register this test case. */                                          \
-    __attribute__((constructor)) void TK_UNIQUE_NAME(reg##name_)()                                           \
-    {                                                                                                        \
-        void tk_add_test(struct tk_testcase t);                                                              \
-                                                                                                             \
-        /* Call tk_add_test() to register. */                                                                \
-        tk_add_test((struct tk_testcase){                                                                    \
-            .enabled = 1,                                                                                    \
-            .name = #name_,                                                                                  \
-            .loc = __FILE__ ":" TK_TOSTRING(__LINE__),                                                       \
-            .test = TK_UNIQUE_NAME(name_), /* Variadic arguments are like: */ /* .init = ..., .argv = ... */ \
-            __VA_ARGS__});                                                                                   \
-    }                                                                                                        \
-                                                                                                             \
-    /* Define the test function. */                                                                          \
+#define __tk_testcase(name_, body_arg, test, ...)                             \
+    /* Declare the test function, e.g., __tk_test_example. */                 \
+    static void TK_UNIQUE_NAME(name_)(body_arg);                              \
+                                                                              \
+    /* Define a pre-main constructor to register this test case. */           \
+    __attribute__((constructor)) void TK_UNIQUE_NAME(reg##name_)()            \
+    {                                                                         \
+        void tk_add_test(struct tk_testcase t);                               \
+                                                                              \
+        /* Call tk_add_test() to register. */                                 \
+        tk_add_test((struct tk_testcase){                                     \
+            .enabled = 1,                                                     \
+            .name = #name_,                                                   \
+            .loc = __FILE__ ":" TK_TOSTRING(__LINE__),                        \
+            .test = TK_UNIQUE_NAME(name_),                                    \
+            /* Variadic arguments are like: */ /* .init = ..., .argv = ... */ \
+            __VA_ARGS__});                                                    \
+    }                                                                         \
+                                                                              \
+    /* Define the test function. */                                           \
     static void TK_UNIQUE_NAME(name_)(body_arg)
 // Followed by the test case body { ... }
