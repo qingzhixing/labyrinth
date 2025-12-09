@@ -1,0 +1,6 @@
+# compile files
+build/
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "labyrinth-Core"
+		},
+		{
+			"path": "labyrinth-UI"
+		}
+	],
+	"settings": {}
+}
