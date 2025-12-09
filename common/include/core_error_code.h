@@ -38,27 +38,19 @@ private:
 	Value value_;
 };
 
-static const std::string GameCoreErrorMessages[] = {
-	"Success",
-	"Map file not found",
-	"Invalid map format",
-	"Map too large",
-	"Invalid player ID",
-	"Invalid move direction",
-	"Missing parameters",
-	"Excessive parameters",
-	"Invalid parameters",
-	"Move failed",
-	"Help requested",
-	"Default error code",
-};
-
 /**
  * @brief Get the Game Core Error Message object
  *
  * @param error_code
- * @return std::string	Error message corresponding to the error code
+ * @return const string &	Error message corresponding to the error code
  */
-std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code);
+const std::string &GetGameCoreErrorMessage(GameCoreErrorCode error_code);
+
+/**
+ * @brief Print the Game Core Error Message object
+ *
+ * @param error_code
+ */
+void PrintGameCoreErrorMessage(GameCoreErrorCode error_code);
 
 #endif // GAME_CORE_ERROR_CODE_H

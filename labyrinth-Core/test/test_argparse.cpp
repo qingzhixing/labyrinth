@@ -1,7 +1,11 @@
 #include <testkit.h>
 #include <argparse.h>
+#include <iostream>
 #include <string>
 #include <vector>
+
+using std::cout;
+using std::endl;
 using std::string;
 using std::vector;
 
@@ -19,12 +23,14 @@ static ParsedResult CallParseArguments(vector<string> args)
 UnitTest(TestParseVersion_Valid)
 {
 	auto result = CallParseArguments({"labyrinth", "--version"});
+	PrintGameCoreErrorMessage(result.error_code);
 	assert(result.error_code == GameCoreErrorCode::SUCCESS);
 }
 
 UnitTest(TestParseVersion_Invalid)
 {
 	auto result = CallParseArguments({"labyrinth", "--version", "-m", "map.txt"});
+	PrintGameCoreErrorMessage(result.error_code);
 	assert(result.error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 }
 
@@ -34,7 +40,9 @@ UnitTest(TestParseMove)
 	for (auto &direction : directions)
 	{
 		auto result = CallParseArguments({"labyrinth", "--move", direction});
+		PrintGameCoreErrorMessage(result.error_code);
 		assert(result.error_code == GameCoreErrorCode::MISSING_PARAMETERS);
+		cout << "result.move_direction: " << result.move_direction << endl;
 		assert(result.move_direction == direction);
 	}
 }
@@ -42,5 +50,6 @@ UnitTest(TestParseMove)
 UnitTest(TestParseHelp)
 {
 	auto result = CallParseArguments({"labyrinth", "--help"});
+	PrintGameCoreErrorMessage(result.error_code);
 	assert(result.error_code == GameCoreErrorCode::HELP_REQUESTED);
 }
