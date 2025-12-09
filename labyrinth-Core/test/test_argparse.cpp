@@ -16,13 +16,16 @@ static ParsedResult CallParseArguments(vector<string> args)
 	return ParseArguments(argc, argv);
 }
 
-UnitTest(TestParseVersion)
+UnitTest(TestParseVersion_Valid)
 {
 	auto result = CallParseArguments({"labyrinth", "--version"});
 	assert(result.error_code == GameCoreErrorCode::SUCCESS);
+}
 
-	auto result2 = CallParseArguments({"labyrinth", "--version", "-m", "map.txt"});
-	assert(result2.error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+UnitTest(TestParseVersion_Invalid)
+{
+	auto result = CallParseArguments({"labyrinth", "--version", "-m", "map.txt"});
+	assert(result.error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 }
 
 UnitTest(TestParseMove)
@@ -31,7 +34,7 @@ UnitTest(TestParseMove)
 	for (auto &direction : directions)
 	{
 		auto result = CallParseArguments({"labyrinth", "--move", direction});
-		assert(result.error_code == GameCoreErrorCode::SUCCESS);
+		assert(result.error_code == GameCoreErrorCode::MISSING_PARAMETERS);
 		assert(result.move_direction == direction);
 	}
 }

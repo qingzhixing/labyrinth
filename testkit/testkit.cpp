@@ -233,6 +233,9 @@ static void run_all_testcases(void)
     {
         struct tk_testcase *t = &tests[i];
 
+        // 在运行测试前显示测试名称
+        printf("Running test: %s (%s)\n", t->name, t->loc);
+
         char *buf = (char *)mmap(NULL,
                                  TK_OUTPUT_LIMIT,
                                  PROT_READ | PROT_WRITE,
