@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-	std::cout << "labyrinth-Core" << std::endl;
+	std::cout << "labyrinth-UI" << std::endl;
 	return 0;
 }
