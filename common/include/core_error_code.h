@@ -1,22 +1,36 @@
 #include <string>
 
-enum GameCoreErrorCode
+class GameCoreErrorCode
 {
-	SUCCESS = 0,
-	MAP_NOT_FOUND,
-	INVALID_MAP_FORMAT,
-	MAP_TOO_LARGE,
-	INVALID_PLAYER_ID,
-	INVALID_MOVE_DIRECTION,
-	MISSING_PARAMETERS,
-	EXCESSIVE_PARAMETERS,
-	INVALID_PARAMETERS,
-	MOVE_FAILED,
+public:
+	enum Value : int
+	{
+		SUCCESS = 0,
+		MAP_NOT_FOUND,
+		INVALID_MAP_FORMAT,
+		MAP_TOO_LARGE,
+		INVALID_PLAYER_ID,
+		INVALID_MOVE_DIRECTION,
+		MISSING_PARAMETERS,
+		EXCESSIVE_PARAMETERS,
+		INVALID_PARAMETERS,
+		MOVE_FAILED,
+		GAME_CORE_ERROR_CODE_MAX,
+	};
 
-	GAME_CORE_ERROR_CODE_MAX,
+	constexpr GameCoreErrorCode(Value value) : value_(value) {}
+
+	operator int() const
+	{
+		return static_cast<int>(value_);
+	}
+	Value value() const { return value_; }
+
+private:
+	Value value_;
 };
 
-static const std::string GameCoreErrorMessages[GAME_CORE_ERROR_CODE_MAX] = {
+static const std::string GameCoreErrorMessages[] = {
 	"Success",
 	"Map file not found",
 	"Invalid map format",
@@ -31,9 +45,10 @@ static const std::string GameCoreErrorMessages[GAME_CORE_ERROR_CODE_MAX] = {
 
 std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code)
 {
-	if (error_code < 0 || error_code >= GAME_CORE_ERROR_CODE_MAX)
+	int code = error_code; // 隐式转换
+	if (code < 0 || code >= GameCoreErrorCode::GAME_CORE_ERROR_CODE_MAX)
 	{
 		return "Unknown error";
 	}
-	return GameCoreErrorMessages[error_code];
+	return GameCoreErrorMessages[code];
 }

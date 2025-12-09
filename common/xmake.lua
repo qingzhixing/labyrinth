@@ -3,7 +3,7 @@ target("common")
 	set_kind("static")
 
 	-- Add the source files
-	add_files("./src/*.cpp")
+	-- add_files("./src/*.cpp")
 	
 	-- Add the include directories
 	add_includedirs("./include",{public = true})

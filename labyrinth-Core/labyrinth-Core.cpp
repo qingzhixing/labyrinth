@@ -3,28 +3,34 @@
 #include <getopt.h>
 #include <string>
 #include <core_info.h>
+#include <core_error_code.h>
 
 using std::cout;
 using std::endl;
 using std::string;
 
+/**
+ * @brief Print the version information of the program.
+ *
+ */
 void PrintVersion()
 {
+	cout << GAME_NAME_ASCII_ART << endl;
 	cout << GAME_NAME << " " << GAME_VERSION << endl;
 	cout << GAME_DESCRIPTION << endl;
 	cout << "Author: " << AUTHOR << " (" << AUTHOR_EMAIL << ")" << endl;
 }
 
-/*
+/**
  * @brief Print the usage message of the program.
  *
- * labyrinth [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [--version]
+ * labyrinth [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [-v|--version]
  */
 void PrintUsage()
 {
 	cout << "Usage: "
 		 << PROGRAM_NAME
-		 << " [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [--version]"
+		 << " [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [-v|--version]"
 		 << endl;
 
 	cout << "Options:" << endl;
@@ -34,7 +40,7 @@ void PrintUsage()
 
 	cout << "      --move DIRECTION (up, down, left, right)    Specify the direction to move" << endl;
 
-	cout << "      --version    Show the version information" << endl;
+	cout << "  -v, --version    Show the version information" << endl;
 
 	cout << "  -h, --help    Show this help message" << endl;
 
@@ -43,13 +49,13 @@ void PrintUsage()
 		 << "  2. '--move' must be used with '-p'" << endl;
 }
 
-int main(int argc, char *argv[])
+GameCoreErrorCode ParseArguments(int argc, char *argv[])
 {
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
 		{"player", required_argument, nullptr, 'p'},
 		{"move", required_argument, nullptr, 0},
-		{"version", no_argument, nullptr, 0},
+		{"version", no_argument, nullptr, 'v'},
 		{"help", no_argument, nullptr, 'h'},
 		{nullptr, 0, nullptr, 0}};
 
@@ -57,6 +63,9 @@ int main(int argc, char *argv[])
 	string player_id;
 	string move_direction;
 
+	bool version_flag = false;
+
+	// 解析命令行参数
 	int opt;
 	int long_index = 0;
 	while ((opt = getopt_long(argc, argv, "m:p:", long_options, &long_index)) != -1)
@@ -64,52 +73,69 @@ int main(int argc, char *argv[])
 		switch (opt)
 		{
 		case 'm':
-			cout << "Map file: " << optarg << endl;
+			map_file = optarg;
 			break;
 		case 'p':
-			cout << "Player ID: " << optarg << endl;
+			player_id = optarg;
 			break;
 		case 0:
 			if (long_index == 2)
 			{
-				cout << "Move direction: " << optarg << endl;
+				move_direction = optarg;
 			}
 			else if (long_index == 3)
 			{
-				PrintVersion();
+				version_flag = true;
 			}
 			break;
 		case 'h':
 			PrintUsage();
-			return 0;
+			exit(GameCoreErrorCode::SUCCESS);
 		case '?':
 			if (optopt == 'm' || optopt == 'p')
 			{
-				fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-			}
-			else if (isprint(optopt))
-			{
-				fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+				exit(GameCoreErrorCode::MISSING_PARAMETERS);
 			}
 			else
 			{
-				fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+				exit(GameCoreErrorCode::INVALID_PARAMETERS);
 			}
-			return 1;
 		default:
 			PrintUsage();
-			return 1;
+			exit(GameCoreErrorCode::INVALID_PARAMETERS);
 		}
 	}
 
 	// 检查必需参数是否提供
-	if (map_file.empty() ^ player_id.empty())
+	if (map_file.empty() || player_id.empty() || move_direction.empty())
 	{
-		fprintf(stderr, "Map file and player ID are required.\n");
-		return 1;
+		exit(GameCoreErrorCode::MISSING_PARAMETERS);
 	}
 
-	return 0;
+	// 检查参数是否合法
+
+	// --version
+	if (version_flag)
+	{
+		// 判断是否有其他参数
+		if (optind < argc)
+		{
+			exit(GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+		}
+		PrintVersion();
+		exit(GameCoreErrorCode::SUCCESS);
+	}
+
+	if (move_direction != "up" && move_direction != "down" && move_direction != "left" && move_direction != "right")
+	{
+		exit(GameCoreErrorCode::INVALID_PARAMETERS);
+	}
+
+	return GameCoreErrorCode::SUCCESS;
+}
+
+int main(int argc, char *argv[])
+{
 }
 
 UnitTest(TestPrintVersion)
