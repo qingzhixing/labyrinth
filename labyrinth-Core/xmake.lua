@@ -1,5 +1,5 @@
 target("labyrinth-Core")
 	set_kind("binary")
 	add_deps("testkit", "common")
-	add_files("./*.cpp")
-	add_includedirs(".", {public = true})
+	add_files("./src/*.cpp")
+	add_includedirs("./include", {public = true})

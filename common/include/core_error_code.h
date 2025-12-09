@@ -15,6 +15,10 @@ public:
 		EXCESSIVE_PARAMETERS,
 		INVALID_PARAMETERS,
 		MOVE_FAILED,
+		HELP_REQUESTED,
+
+		DEFAULT_ERROR_CODE,
+
 		GAME_CORE_ERROR_CODE_MAX,
 	};
 
@@ -41,6 +45,8 @@ static const std::string GameCoreErrorMessages[] = {
 	"Excessive parameters",
 	"Invalid parameters",
 	"Move failed",
+	"Help requested",
+	"Default error code",
 };
 
 std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code)

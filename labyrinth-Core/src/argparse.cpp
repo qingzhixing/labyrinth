@@ -1,3 +1,4 @@
+#include <argparse.h>
 #include <iostream>
 #include <testkit.h>
 #include <getopt.h>
@@ -9,10 +10,6 @@ using std::cout;
 using std::endl;
 using std::string;
 
-/**
- * @brief Print the version information of the program.
- *
- */
 void PrintVersion()
 {
 	cout << GAME_NAME_ASCII_ART << endl;
@@ -21,11 +18,6 @@ void PrintVersion()
 	cout << "Author: " << AUTHOR << " (" << AUTHOR_EMAIL << ")" << endl;
 }
 
-/**
- * @brief Print the usage message of the program.
- *
- * labyrinth [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [-v|--version]
- */
 void PrintUsage()
 {
 	cout << "Usage: "
@@ -49,7 +41,7 @@ void PrintUsage()
 		 << "  2. '--move' must be used with '-p'" << endl;
 }
 
-GameCoreErrorCode ParseArguments(int argc, char *argv[])
+ParsedResult ParseArguments(int argc, char *argv[])
 {
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
@@ -59,9 +51,8 @@ GameCoreErrorCode ParseArguments(int argc, char *argv[])
 		{"help", no_argument, nullptr, 'h'},
 		{nullptr, 0, nullptr, 0}};
 
-	string map_file;
-	string player_id;
-	string move_direction;
+	ParsedResult result;
+	string player_id_str;
 
 	bool version_flag = false;
 
@@ -73,15 +64,15 @@ GameCoreErrorCode ParseArguments(int argc, char *argv[])
 		switch (opt)
 		{
 		case 'm':
-			map_file = optarg;
+			result.map_file = optarg;
 			break;
 		case 'p':
-			player_id = optarg;
+			player_id_str = optarg;
 			break;
 		case 0:
 			if (long_index == 2)
 			{
-				move_direction = optarg;
+				result.move_direction = optarg;
 			}
 			else if (long_index == 3)
 			{
@@ -90,26 +81,26 @@ GameCoreErrorCode ParseArguments(int argc, char *argv[])
 			break;
 		case 'h':
 			PrintUsage();
-			exit(GameCoreErrorCode::SUCCESS);
+			result.error_code = GameCoreErrorCode::HELP_REQUESTED;
 		case '?':
 			if (optopt == 'm' || optopt == 'p')
 			{
-				exit(GameCoreErrorCode::MISSING_PARAMETERS);
+				result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
 			}
 			else
 			{
-				exit(GameCoreErrorCode::INVALID_PARAMETERS);
+				result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 			}
 		default:
 			PrintUsage();
-			exit(GameCoreErrorCode::INVALID_PARAMETERS);
+			result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 		}
 	}
 
 	// 检查必需参数是否提供
-	if (map_file.empty() || player_id.empty() || move_direction.empty())
+	if (result.map_file.empty() || player_id_str.empty() || result.move_direction.empty())
 	{
-		exit(GameCoreErrorCode::MISSING_PARAMETERS);
+		result.error_code = GameCoreErrorCode::MISSING_PARAMETERS;
 	}
 
 	// 检查参数是否合法
@@ -120,30 +111,43 @@ GameCoreErrorCode ParseArguments(int argc, char *argv[])
 		// 判断是否有其他参数
 		if (optind < argc)
 		{
-			exit(GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+			result.error_code = GameCoreErrorCode::EXCESSIVE_PARAMETERS;
 		}
 		PrintVersion();
-		exit(GameCoreErrorCode::SUCCESS);
+		result.error_code = GameCoreErrorCode::SUCCESS;
 	}
 
-	if (move_direction != "up" && move_direction != "down" && move_direction != "left" && move_direction != "right")
+	// --move
+	if (result.move_direction != "up" && result.move_direction != "down" && result.move_direction != "left" && result.move_direction != "right")
 	{
-		exit(GameCoreErrorCode::INVALID_PARAMETERS);
+		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 	}
 
-	return GameCoreErrorCode::SUCCESS;
+	// --player
+	try
+	{
+		result.player_id = std::stoi(player_id_str);
+	}
+	catch (const std::invalid_argument &e)
+	{
+		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+	}
+	catch (const std::out_of_range &e)
+	{
+		result.error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+	}
+
+	return std::move(result);
 }
 
-int main(int argc, char *argv[])
+UnitTest(TestParseVersion)
 {
+	auto result = ParseArguments(1, (char *[]){"labyrinth", "--version"});
+	assert(result.error_code == GameCoreErrorCode::SUCCESS);
 }
 
-UnitTest(TestPrintVersion)
+UnitTest(TestParseHelp)
 {
-	PrintVersion();
-}
-
-UnitTest(TestPrintUsage)
-{
-	PrintUsage();
+	auto result = ParseArguments(1, (char *[]){"labyrinth", "--help"});
+	assert(result.error_code == GameCoreErrorCode::HELP_REQUESTED);
 }
