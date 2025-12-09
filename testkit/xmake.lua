@@ -1,5 +1,5 @@
 target("testkit")
     set_kind("static")
     set_languages("c++17")
-    add_files("*.cpp")
-    add_includedirs(".", {public = true})
+    add_files("./src/*.cpp")
+    add_includedirs("./include", {public = true})

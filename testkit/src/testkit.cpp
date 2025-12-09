@@ -225,7 +225,7 @@ static void run_all_testcases(void)
     fflush(stderr);
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
-    printf("\nTestKit\n");
+    printf("\n[Starting TestKit...]\n");
 
     int passed = 0, ntests = 0;
 
