@@ -42,9 +42,9 @@ private:
  * @brief Get the Game Core Error Message object
  *
  * @param error_code
- * @return const string &	Error message corresponding to the error code
+ * @return const string: Error message corresponding to the error code
  */
-const std::string &GetGameCoreErrorMessage(GameCoreErrorCode error_code);
+const std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code);
 
 /**
  * @brief Print the Game Core Error Message object

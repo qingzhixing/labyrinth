@@ -9,7 +9,7 @@ using std::endl;
 using std::string;
 using std::vector;
 
-const string &GetLogLevelName(LogLevel level)
+const string GetLogLevelName(LogLevel level)
 {
 	static const std::vector<string> levelNames{
 		"DEBUG",

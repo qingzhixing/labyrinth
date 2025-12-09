@@ -8,7 +8,7 @@ using std::endl;
 using std::string;
 using std::vector;
 
-const std::string &GetGameCoreErrorMessage(GameCoreErrorCode error_code)
+const std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code)
 {
 	static const vector<string> ErrorCodeMessages{
 		"Success",
@@ -24,13 +24,14 @@ const std::string &GetGameCoreErrorMessage(GameCoreErrorCode error_code)
 		"Help requested",
 		"Default error code",
 	};
+	;
 
 	int code = error_code;
 	int error_code_count = GameCoreErrorCode::GAME_CORE_ERROR_CODE_COUNT;
 
 	if (code < 0 || code >= error_code_count)
 	{
-		return "Unknown error";
+		return "Invalid error code: " + std::to_string(code);
 	}
 	return ErrorCodeMessages.at(code);
 }
