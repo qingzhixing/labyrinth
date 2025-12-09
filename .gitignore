@@ -10,3 +10,6 @@ CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
 **/Makefile
+
+# XMake Files
+.xmake/
