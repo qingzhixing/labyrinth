@@ -1,4 +1,4 @@
 target("testkit")
     set_kind("static")
-    add_files("*.c")
+    add_files("*.cpp")
     add_includedirs(".", {public = true})

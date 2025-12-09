@@ -90,8 +90,8 @@ static int run_testcase(struct tk_testcase *t, char *buf)
     if (t->stest)
     {
         // Run system test: call main() manually
-        int main(int, const char **, const char **);
-        extern const char **environ;
+        int main(int, const char **, char **);
+        extern char **environ;
 
         pid_t child_pid = fork();
         if (child_pid == 0)
@@ -113,11 +113,12 @@ static int run_testcase(struct tk_testcase *t, char *buf)
                 kill(getpid(), WTERMSIG(status));
             }
 
-            // Runt the bottom-half (test code).
-            t->stest(&(struct tk_result){
+            // 修复：不能直接取复合字面量的地址，需要先创建变量
+            struct tk_result test_result = {
                 .exit_status = r,
                 .output = buf,
-            });
+            };
+            t->stest(&test_result);
         }
     }
     else
