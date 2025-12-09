@@ -4,6 +4,7 @@
 #include <string>
 #include <core_info.h>
 #include <core_error_code.h>
+#include <debug_log.h>
 #include <vector>
 #include <memory>
 #include <cstring>
@@ -45,6 +46,13 @@ void PrintUsage()
 
 ParsedResult ParseArguments(int argc, char *argv[])
 {
+	DebugLog(LogLevel::INFO, "Start parsing arguments");
+	DebugLog(LogLevel::DEBUG, "argc: %d", argc);
+	for (int i = 0; i < argc; i++)
+	{
+		DebugLog(LogLevel::DEBUG, "argv[%d]: %s", i, argv[i]);
+	}
+
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
 		{"player", required_argument, nullptr, 'p'},

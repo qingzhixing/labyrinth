@@ -23,7 +23,7 @@ public:
 
 		DEFAULT_ERROR_CODE,
 
-		GAME_CORE_ERROR_CODE_MAX,
+		GAME_CORE_ERROR_CODE_COUNT,
 	};
 
 	constexpr GameCoreErrorCode(Value value) : value_(value) {}
