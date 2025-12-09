@@ -1,5 +1,5 @@
 target("labyrinth-UI")
 	set_kind("binary")
-	add_deps("testkit")
+	add_deps("testkit", "common")
 	add_files("./*.cpp")
-	add_includedirs(".",{public = true})
+	add_includedirs(".", {public = true})

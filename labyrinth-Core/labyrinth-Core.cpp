@@ -2,22 +2,28 @@
 #include <testkit.h>
 #include <getopt.h>
 #include <string>
+#include <core_info.h>
 
 using std::cout;
 using std::endl;
 using std::string;
 
+void PrintVersion()
+{
+	cout << GAME_NAME << " " << GAME_VERSION << endl;
+	cout << GAME_DESCRIPTION << endl;
+	cout << "Author: " << AUTHOR << " (" << AUTHOR_EMAIL << ")" << endl;
+}
+
 /*
  * @brief Print the usage message of the program.
  *
- * @param programName The name of the program.
- *
  * labyrinth [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [--version]
  */
-void PrintUsage(const string &programName)
+void PrintUsage()
 {
 	cout << "Usage: "
-		 << programName
+		 << PROGRAM_NAME
 		 << " [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [--version]"
 		 << endl;
 
@@ -27,10 +33,22 @@ void PrintUsage(const string &programName)
 	cout << "      --move DIRECTION    Specify the direction to move" << endl;
 	cout << "      --version    Show the version information" << endl;
 	cout << "  -h, --help    Show this help message" << endl;
+	cout << "Tips: '-p' '-m' can exchange their positions" << endl;
 }
 
 int main(int argc, char *argv[])
 {
-	PrintUsage("labyrinth-Core");
 	return 0;
+}
+
+UnitTest(TestPrintVersion)
+{
+	cout << "TestPrintVersion:" << endl;
+	PrintVersion();
+}
+
+UnitTest(TestPrintUsage)
+{
+	cout << "TestPrintUsage:" << endl;
+	PrintUsage();
 }
