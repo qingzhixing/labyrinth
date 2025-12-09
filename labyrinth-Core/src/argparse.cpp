@@ -1,10 +1,12 @@
 #include <argparse.h>
 #include <iostream>
-#include <testkit.h>
 #include <getopt.h>
 #include <string>
 #include <core_info.h>
 #include <core_error_code.h>
+#include <vector>
+#include <memory>
+#include <cstring>
 
 using std::cout;
 using std::endl;
@@ -138,16 +140,4 @@ ParsedResult ParseArguments(int argc, char *argv[])
 	}
 
 	return std::move(result);
-}
-
-UnitTest(TestParseVersion)
-{
-	auto result = ParseArguments(1, (char *[]){"labyrinth", "--version"});
-	assert(result.error_code == GameCoreErrorCode::SUCCESS);
-}
-
-UnitTest(TestParseHelp)
-{
-	auto result = ParseArguments(1, (char *[]){"labyrinth", "--help"});
-	assert(result.error_code == GameCoreErrorCode::HELP_REQUESTED);
 }

@@ -1,3 +1,7 @@
+#pragma once
+#ifndef GAME_CORE_ERROR_CODE_H
+#define GAME_CORE_ERROR_CODE_H
+
 #include <string>
 
 class GameCoreErrorCode
@@ -49,12 +53,12 @@ static const std::string GameCoreErrorMessages[] = {
 	"Default error code",
 };
 
-std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code)
-{
-	int code = error_code; // 隐式转换
-	if (code < 0 || code >= GameCoreErrorCode::GAME_CORE_ERROR_CODE_MAX)
-	{
-		return "Unknown error";
-	}
-	return GameCoreErrorMessages[code];
-}
+/**
+ * @brief Get the Game Core Error Message object
+ *
+ * @param error_code
+ * @return std::string	Error message corresponding to the error code
+ */
+std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code);
+
+#endif // GAME_CORE_ERROR_CODE_H
