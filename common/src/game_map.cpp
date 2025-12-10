@@ -10,6 +10,8 @@ using std::pair;
 
 static pair<MapData, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 {
+	MapData map_data;
+	return make_pair(map_data, GameCoreErrorCode::SUCCESS);
 }
 
 pair<GameMap, GameCoreErrorCode>
