@@ -36,11 +36,11 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 		{
 		case 'm':
 			DebugLog(LogLevel::DEBUG, "map file: %s", optarg);
-			result.map_file = optarg;
+			result.mapFile = optarg;
 			break;
 		case 'p':
 			DebugLog(LogLevel::DEBUG, "player ID: %s", optarg);
-			result.player_id = optarg;
+			result.playerID = optarg;
 			break;
 		case 'v': // --version
 			DebugLog(LogLevel::DEBUG, "version flag");

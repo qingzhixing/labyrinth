@@ -31,17 +31,17 @@ std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string 
 /**
  * @brief Validate the player ID.
  *
- * @param player_id The player ID string.
+ * @param playerID The player ID string.
  * @return [int, GameCoreErrorCode] The validated player ID with error code.
  */
-std::pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id);
+std::pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID);
 
 /**
  * @brief Validate the map file.
  *
- * @param map_file The map file string.
+ * @param mapFile The map file string.
  * @return [GameMap, GameCoreErrorCode] The validated map file with error code.
  */
-std::pair<GameMap, GameCoreErrorCode> ValidateMapFile(const std::string &map_file);
+std::pair<GameMap, GameCoreErrorCode> ValidateMapFile(const std::string &mapFile);
 
 #endif // ARG_VALIDATE_H

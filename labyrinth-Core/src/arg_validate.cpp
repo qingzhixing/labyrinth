@@ -11,7 +11,7 @@ using std::string;
 GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult)
 {
 	bool missing_parameters = false;
-	if (parsedResult.map_file.empty())
+	if (parsedResult.mapFile.empty())
 	{
 		missing_parameters = true;
 	}
@@ -19,7 +19,7 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult)
 	{
 		missing_parameters = true;
 	}
-	if (parsedResult.player_id.empty())
+	if (parsedResult.playerID.empty())
 	{
 		missing_parameters = true;
 	}
@@ -57,21 +57,21 @@ pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move
 	return std::make_pair(direction, GameCoreErrorCode::SUCCESS);
 }
 
-pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
+pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID)
 {
 	int player_id_int = 114514;
 	try
 	{
-		player_id_int = std::stoi(player_id);
+		player_id_int = std::stoi(playerID);
 	}
 	catch (const std::invalid_argument &e)
 	{
-		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", player_id.c_str());
+		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", playerID.c_str());
 		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 	catch (const std::out_of_range &e)
 	{
-		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", player_id.c_str());
+		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", playerID.c_str());
 		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 
@@ -83,34 +83,9 @@ pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
 	return make_pair(player_id_int, GameCoreErrorCode::SUCCESS);
 }
 
-pair<GameMap, GameCoreErrorCode> ValidateMapFile(const std::string &map_file)
+pair<GameMap, GameCoreErrorCode> ValidateMapFile(const std::string &mapFile)
 {
-	GameMap game_map;
-
-	// Check The Map File Exists
-	if (std::filesystem::exists(map_file) == false)
-	{
-		DebugLog(LogLevel::ERROR, "Map file not found: %s", map_file.c_str());
-		return make_pair(std::move(game_map), GameCoreErrorCode::MAP_FILE_NOT_FOUND);
-	}
-
-	// Check The Map File Is Not A Directory
-	if (std::filesystem::is_directory(map_file))
-	{
-		DebugLog(LogLevel::ERROR, "Map file is a directory: %s", map_file.c_str());
-		return make_pair(std::move(game_map), GameCoreErrorCode::MAP_FILE_IS_DIRECTORY);
-	}
-
-	auto game_map_stream = std::ofstream(map_file);
-	if (game_map_stream.is_open() == false)
-	{
-		DebugLog(LogLevel::ERROR, "Failed to open map file: %s", map_file.c_str());
-		return make_pair(std::move(game_map), GameCoreErrorCode::MAP_FILE_NOT_FOUND);
-	}
-
-	// TODO:继续解析 Map 文件内容
-
-	return make_pair(std::move(game_map), GameCoreErrorCode::SUCCESS);
+	return GameMap::ParseMapFile(mapFile);
 }
 
 ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsedResult)
@@ -135,14 +110,14 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 	}
 
 	// --player
-	std::tie(validated_context.player_id, error_code) = ValidatePlayerID(parsedResult.player_id);
+	std::tie(validated_context.playerID, error_code) = ValidatePlayerID(parsedResult.playerID);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = ValidateMapFile(parsedResult.map_file);
+	std::tie(validated_context.game_map, error_code) = ValidateMapFile(parsedResult.mapFile);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

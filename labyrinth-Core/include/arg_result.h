@@ -10,8 +10,8 @@
 
 struct ParsedResult
 {
-	std::string map_file{};
-	std::string player_id{};
+	std::string mapFile{};
+	std::string playerID{};
 	std::string move_direction{};
 };
 
@@ -29,7 +29,7 @@ enum class Direction
 struct ValidatedGameContext
 {
 	GameMap game_map;						  // map_file的文件描述符
-	int player_id;							  // 转换为整数的player_id
+	int playerID;							  // 转换为整数的player_id
 	Direction direction = Direction::INVALID; // 移动方向的枚举
 };
 

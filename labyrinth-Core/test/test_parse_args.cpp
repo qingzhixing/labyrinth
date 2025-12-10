@@ -96,7 +96,7 @@ UnitTest(TestParsePlayerID_Long_Invalid)
 		DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
 		assert(error_code == GameCoreErrorCode::SUCCESS);
-		assert(parsed_result.player_id == std::to_string(i));
+		assert(parsed_result.playerID == std::to_string(i));
 	}
 }
 
@@ -109,6 +109,6 @@ UnitTest(TestParsePlayerID_Short_Invalid)
 		DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
 		assert(error_code == GameCoreErrorCode::SUCCESS);
-		assert(parsed_result.player_id == std::to_string(i));
+		assert(parsed_result.playerID == std::to_string(i));
 	}
 }
