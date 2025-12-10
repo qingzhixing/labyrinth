@@ -2,7 +2,7 @@
 #ifndef ARGPARSE_H
 #define ARGPARSE_H
 
-#include <parsed_result.h>
+#include <arg_result.h>
 
 /**
  * @brief Print the version information of the program.

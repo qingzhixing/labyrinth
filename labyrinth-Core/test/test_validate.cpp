@@ -37,10 +37,11 @@ UnitTest(TestValidateMoveDirection_Valid)
 {
 	std::string move_direction = "up";
 
-	GameCoreErrorCode error_code = ValidateMoveDirection(move_direction);
+	auto [direction, error_code] = ValidateMoveDirection(move_direction);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
+	assert(direction == Direction::UP);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 
@@ -48,10 +49,11 @@ UnitTest(TestValidateMoveDirection_Invalid)
 {
 	std::string move_direction = "invalid";
 
-	GameCoreErrorCode error_code = ValidateMoveDirection(move_direction);
+	auto [direction, error_code] = ValidateMoveDirection(move_direction);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
+	assert(direction == Direction::INVALID);
 	assert(error_code == GameCoreErrorCode::INVALID_MOVE_DIRECTION);
 }
 
@@ -59,10 +61,9 @@ UnitTest(TestValidatePlayerID_Valid)
 {
 	std::string player_id = "1";
 
-	GameCoreErrorCode error_code = ValidatePlayerID(player_id);
-
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
-
+	assert(player_id_int == 1);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 
@@ -70,7 +71,7 @@ UnitTest(TestValidatePlayerID_Invalid)
 {
 	std::string player_id = "invalid";
 
-	GameCoreErrorCode error_code = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -81,10 +82,8 @@ UnitTest(TestValidatePlayerID_OutOfGameRange)
 {
 	std::string player_id = "10";
 
-	GameCoreErrorCode error_code = ValidatePlayerID(player_id);
-
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
-
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
 }
 
@@ -92,7 +91,7 @@ UnitTest(TestValidatePlayerID_OutOfIntRange)
 {
 	std::string player_id = "99999999999999999999999999";
 
-	GameCoreErrorCode error_code = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -104,16 +103,15 @@ UnitTest(TestValidateMapFile_Valid)
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
 	// Create a valid map file
-	std::ofstream map_file_stream(map_file);
-	map_file_stream.close();
+	std::ofstream game_map_stream(map_file);
+	game_map_stream.close();
 
-	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+	auto [game_map, error_code] = ValidateMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
-
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 
@@ -121,7 +119,7 @@ UnitTest(TestValidateMapFile_Invalid_NotFound)
 {
 	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
 
-	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+	auto [game_map, error_code] = ValidateMapFile(map_file);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -135,7 +133,8 @@ UnitTest(TestValidateMapFile_Invalid_IsDirectory)
 	// Create a directory
 	std::filesystem::create_directory(map_file);
 
-	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+	// Validate the map file
+	auto [game_map, error_code] = ValidateMapFile(map_file);
 
 	// Remove the directory
 	std::filesystem::remove(map_file);

@@ -4,20 +4,22 @@
 
 int main(int argc, char *argv[])
 {
-	auto [parsed_result, error_code] = ParseArguments(argc, argv);
-	if (error_code == GameCoreErrorCode::DEFAULT_ERROR_CODE ||
-		(error_code != GameCoreErrorCode::SUCCESS &&
-		 error_code != GameCoreErrorCode::HELP_REQUESTED))
+	// Parse the arguments
+	auto [parsed_result, parse_error_code] = ParseArguments(argc, argv);
+	if (parse_error_code == GameCoreErrorCode::DEFAULT_ERROR_CODE ||
+		(parse_error_code != GameCoreErrorCode::SUCCESS &&
+		 parse_error_code != GameCoreErrorCode::HELP_REQUESTED))
 	{
-		DebugLog(LogLevel::ERROR, error_code.toMessage());
-		return error_code.toInt();
+		DebugLog(LogLevel::ERROR, parse_error_code.toMessage());
+		return parse_error_code.toInt();
 	}
 
-	error_code = ValidateParsedResult(parsed_result);
-	if (error_code != GameCoreErrorCode::SUCCESS)
+	// Validate the parsed result
+	auto [validated_context, validate_error_code] = ValidateParsedResult(parsed_result);
+	if (validate_error_code != GameCoreErrorCode::SUCCESS)
 	{
-		DebugLog(LogLevel::ERROR, error_code.toMessage());
-		return error_code.toInt();
+		DebugLog(LogLevel::ERROR, validate_error_code.toMessage());
+		return validate_error_code.toInt();
 	}
 
 	return 0;
