@@ -6,9 +6,17 @@ int main(int argc, char *argv[])
 {
 	// Parse the arguments
 	auto [parsed_result, parse_error_code] = ParseArguments(argc, argv);
-	if (parse_error_code == GameCoreErrorCode::DEFAULT_ERROR_CODE ||
-		(parse_error_code != GameCoreErrorCode::SUCCESS &&
-		 parse_error_code != GameCoreErrorCode::HELP_REQUESTED))
+
+	// 如果是帮助或版本请求，直接退出
+	if (
+		parse_error_code == GameCoreErrorCode::HELP_REQUESTED ||
+		parse_error_code == GameCoreErrorCode::VERSION_REQUESTED)
+	{
+		return 0;
+	}
+
+	// Check for parsing errors
+	if (parse_error_code != GameCoreErrorCode::SUCCESS)
 	{
 		DebugLog(LogLevel::ERROR, parse_error_code.toMessage());
 		return parse_error_code.toInt();

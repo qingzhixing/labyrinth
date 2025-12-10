@@ -83,11 +83,6 @@ pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID)
 	return make_pair(player_id_int, GameCoreErrorCode::SUCCESS);
 }
 
-pair<GameMap, GameCoreErrorCode> ValidateMapFile(const std::string &mapFile)
-{
-	return GameMap::ParseMapFile(mapFile);
-}
-
 ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsedResult)
 {
 	// 检查参数是否合法
@@ -117,7 +112,7 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = ValidateMapFile(parsedResult.mapFile);
+	std::tie(validated_context.game_map, error_code) = GameMap::ParseMapFile(parsedResult.mapFile);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

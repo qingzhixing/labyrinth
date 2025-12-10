@@ -36,6 +36,8 @@ std::string GameCoreErrorCode::toString() const
 		return "Move failed [移动失败]";
 	case HELP_REQUESTED:
 		return "Help requested [请求帮助]";
+	case VERSION_REQUESTED:
+		return "Version requested [请求版本]";
 	case DEFAULT_ERROR_CODE:
 		return "Default error code, This Should Not Happen [默认错误码,通常情况下不应该会返回！！！]";
 	default:

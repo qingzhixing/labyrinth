@@ -29,7 +29,8 @@ def main():
 
     # 运行测试
     print("运行测试...")
-    subprocess.run(["./build/labyrinth-Core"], env=env)
+    subprocess.run(["./build/common-test"], env=env)
+    subprocess.run(["./build/labyrinth-Core", "-v"], env=env)
     subprocess.run(["./build/labyrinth-UI"], env=env)
 
 
