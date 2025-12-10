@@ -14,10 +14,12 @@ std::string GameCoreErrorCode::toString() const
 	{
 	case SUCCESS:
 		return "Success [成功]";
-	case MAP_NOT_FOUND:
+	case MAP_FILE_NOT_FOUND:
 		return "Map file not found [地图文件未找到]";
 	case INVALID_MAP_FORMAT:
 		return "Invalid map format [地图格式无效]";
+	case MAP_FILE_IS_DIRECTORY:
+		return "Map is a directory [地图文件是一个目录]";
 	case MAP_TOO_LARGE:
 		return "Map too large [地图过大]";
 	case INVALID_PLAYER_ID:

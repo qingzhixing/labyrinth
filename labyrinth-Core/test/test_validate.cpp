@@ -2,6 +2,8 @@
 #include <arg_validate.h>
 #include <core_error_code.h>
 #include <debug_log.h>
+#include <fstream>
+#include <filesystem>
 
 UnitTest(TestCheckMissingParameters_AllPresent)
 {
@@ -16,6 +18,7 @@ UnitTest(TestCheckMissingParameters_AllPresent)
 
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
+
 UnitTest(TestCheckMissingParameters_MissingSome)
 {
 	ParsedResult parsed_result;
@@ -40,6 +43,7 @@ UnitTest(TestValidateMoveDirection_Valid)
 
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
+
 UnitTest(TestValidateMoveDirection_Invalid)
 {
 	std::string move_direction = "invalid";
@@ -61,6 +65,7 @@ UnitTest(TestValidatePlayerID_Valid)
 
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
+
 UnitTest(TestValidatePlayerID_Invalid)
 {
 	std::string player_id = "invalid";
@@ -71,7 +76,8 @@ UnitTest(TestValidatePlayerID_Invalid)
 
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
 }
-UnitTest(TestValidatePlayerID_OutOfRange)
+
+UnitTest(TestValidatePlayerID_OutOfGameRange)
 {
 	std::string player_id = "10";
 
@@ -81,6 +87,7 @@ UnitTest(TestValidatePlayerID_OutOfRange)
 
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
 }
+
 UnitTest(TestValidatePlayerID_OutOfIntRange)
 {
 	std::string player_id = "99999999999999999999999999";
@@ -90,4 +97,50 @@ UnitTest(TestValidatePlayerID_OutOfIntRange)
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
+}
+
+UnitTest(TestValidateMapFile_Valid)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream map_file_stream(map_file);
+	map_file_stream.close();
+
+	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+
+	assert(error_code == GameCoreErrorCode::SUCCESS);
+}
+
+UnitTest(TestValidateMapFile_Invalid_NotFound)
+{
+	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
+
+	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+
+	assert(error_code == GameCoreErrorCode::MAP_FILE_NOT_FOUND);
+}
+
+UnitTest(TestValidateMapFile_Invalid_IsDirectory)
+{
+	std::string map_file = "test_directory_" + std::to_string(rand());
+
+	// Create a directory
+	std::filesystem::create_directory(map_file);
+
+	GameCoreErrorCode error_code = ValidateMapFile(map_file);
+
+	// Remove the directory
+	std::filesystem::remove(map_file);
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+
+	assert(error_code == GameCoreErrorCode::MAP_FILE_IS_DIRECTORY);
 }

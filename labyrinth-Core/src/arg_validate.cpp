@@ -1,6 +1,8 @@
 #include <arg_validate.h>
 #include <debug_log.h>
 #include <stdexcept>
+#include <unistd.h>
+#include <filesystem>
 
 GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult)
 {
@@ -60,6 +62,19 @@ GameCoreErrorCode ValidatePlayerID(const std::string &player_id)
 
 GameCoreErrorCode ValidateMapFile(const std::string &map_file)
 {
+	// Check The Map File Exists
+	if (std::filesystem::exists(map_file) == false)
+	{
+		DebugLog(LogLevel::ERROR, "Map file not found: %s", map_file.c_str());
+		return GameCoreErrorCode::MAP_FILE_NOT_FOUND;
+	}
+	// Check The Map File Is Not A Directory
+	if (std::filesystem::is_directory(map_file))
+	{
+		DebugLog(LogLevel::ERROR, "Map file is a directory: %s", map_file.c_str());
+		return GameCoreErrorCode::MAP_FILE_IS_DIRECTORY;
+	}
+
 	return GameCoreErrorCode::SUCCESS;
 }
 
