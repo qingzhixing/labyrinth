@@ -28,31 +28,24 @@ public:
 
 	constexpr GameCoreErrorCode(Value value) : value_(value) {}
 
-	operator int() const
+	int toInt() const
 	{
 		return static_cast<int>(value_);
 	}
 	Value value() const { return value_; }
 
+	// 内置字符串转换功能
+	std::string toString() const;
+	std::string toMessage() const;
+	const char *toCString() const;
+
+	operator GameCoreErrorCode::Value() const
+	{
+		return value_;
+	}
+
 private:
 	Value value_;
 };
-
-/**
- * @brief Get the Game Core Error Message object
- *
- * @param error_code
- * @return const string: Error message corresponding to the error code
- */
-const std::string GameCoreErrorCodeStr(GameCoreErrorCode error_code);
-
-/**
- * @brief the Game Core Error Message object
- *
- * @param error_code
- *
- * @return std::string: Error message corresponding to the error code
- */
-std::string GetGameCoreErrorMessage(GameCoreErrorCode error_code);
 
 #endif // GAME_CORE_ERROR_CODE_H

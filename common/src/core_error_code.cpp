@@ -8,38 +8,48 @@ using std::endl;
 using std::string;
 using std::vector;
 
-const std::string GameCoreErrorCodeStr(GameCoreErrorCode error_code)
+std::string GameCoreErrorCode::toString() const
 {
-	static const vector<string> ErrorCodeMessages{
-		"Success [成功]",
-		"Map file not found [地图文件未找到]",
-		"Invalid map format [地图格式无效]",
-		"Map too large [地图过大]",
-		"Invalid player ID [玩家ID无效]",
-		"Invalid move direction [移动方向无效]",
-		"Missing parameters [缺失参数]",
-		"Excessive parameters [多余参数]",
-		"Invalid parameters [无效参数]",
-		"Move failed [移动失败]",
-		"Help requested [请求帮助]",
-		"Default error code, This Should Not Happen [默认错误码,通常情况下不应该会返回！！！]",
-	};
-	;
-
-	int code = error_code;
-	int error_code_count = GameCoreErrorCode::GAME_CORE_ERROR_CODE_COUNT;
-
-	if (code < 0 || code >= error_code_count)
+	switch (value_)
 	{
-		return "Invalid error code: " + std::to_string(code);
+	case SUCCESS:
+		return "Success [成功]";
+	case MAP_NOT_FOUND:
+		return "Map file not found [地图文件未找到]";
+	case INVALID_MAP_FORMAT:
+		return "Invalid map format [地图格式无效]";
+	case MAP_TOO_LARGE:
+		return "Map too large [地图过大]";
+	case INVALID_PLAYER_ID:
+		return "Invalid player ID [玩家ID无效]";
+	case INVALID_MOVE_DIRECTION:
+		return "Invalid move direction [移动方向无效]";
+	case MISSING_PARAMETERS:
+		return "Missing parameters [缺失参数]";
+	case EXCESSIVE_PARAMETERS:
+		return "Excessive parameters [多余参数]";
+	case INVALID_PARAMETERS:
+		return "Invalid parameters [无效参数]";
+	case MOVE_FAILED:
+		return "Move failed [移动失败]";
+	case HELP_REQUESTED:
+		return "Help requested [请求帮助]";
+	case DEFAULT_ERROR_CODE:
+		return "Default error code, This Should Not Happen [默认错误码,通常情况下不应该会返回！！！]";
+	default:
+		return "Invalid error code: " + std::to_string(toInt());
 	}
-	return ErrorCodeMessages.at(code);
 }
 
-string GetGameCoreErrorMessage(GameCoreErrorCode error_code)
+std::string GameCoreErrorCode::toMessage() const
 {
 	return "GameCoreErrorCode: " +
-		   std::to_string(error_code) +
+		   std::to_string(toInt()) +
 		   ", Message: " +
-		   GameCoreErrorCodeStr(error_code);
+		   toString();
+}
+
+const char *GameCoreErrorCode::toCString() const
+{
+	return toString().c_str();
 }

@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 		(error_code != GameCoreErrorCode::SUCCESS &&
 		 error_code != GameCoreErrorCode::HELP_REQUESTED))
 	{
-		DebugLog(LogLevel::ERROR, GetGameCoreErrorMessage(error_code));
-		return error_code;
+		DebugLog(LogLevel::ERROR, error_code.toMessage());
+		return error_code.toInt();
 	}
 	return 0;
 }
