@@ -4,36 +4,58 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <debug_log.h>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
 
-static ParsedResult CallParseArguments(vector<string> args)
+static ParsedResultWithErrorCode CallParseArguments(vector<string> args)
 {
 	int argc = args.size();
 	char *argv[argc];
 	for (int i = 0; i < argc; i++)
 	{
-		cout << "Copying argv[" << i << "] = " << args[i] << endl;
+		DebugLog(LogLevel::DEBUG, "Copying argv[%d] = %s", i, args[i].c_str());
 		argv[i] = strdup(args[i].c_str());
 	}
 	return ParseArguments(argc, argv);
 }
 
-UnitTest(TestParseVersion_Valid)
+UnitTest(TestParseVersion_Long_Valid)
 {
-	auto result = CallParseArguments({"labyrinth", "--version"});
-	PrintGameCoreErrorMessage(result.error_code);
-	assert(result.error_code == GameCoreErrorCode::SUCCESS);
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--version"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 
-UnitTest(TestParseVersion_Invalid)
+UnitTest(TestParseVersion_Long_Invalid)
 {
-	auto result = CallParseArguments({"labyrinth", "--version", "-m", "map.txt"});
-	PrintGameCoreErrorMessage(result.error_code);
-	assert(result.error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--version", "-m", "map.txt"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+}
+UnitTest(TestParseVersion_Short_Valid)
+{
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-v"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::SUCCESS);
+}
+
+UnitTest(TestParseVersion_Short_Invalid)
+{
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-v", "-p", "1"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 }
 
 UnitTest(TestParseMove)
@@ -41,18 +63,55 @@ UnitTest(TestParseMove)
 	vector<string> directions = {"up", "down", "left", "right"};
 	for (auto &direction : directions)
 	{
-		cout << "\n\n\n-------- direction: " << direction << endl;
-		auto result = CallParseArguments({"labyrinth", "--move", direction});
-		PrintGameCoreErrorMessage(result.error_code);
-		assert(result.error_code == GameCoreErrorCode::MISSING_PARAMETERS);
-		cout << "result.move_direction: " << result.move_direction << endl;
-		assert(result.move_direction == direction);
+		auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--move", direction});
+
+		DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+		assert(error_code == GameCoreErrorCode::SUCCESS);
+		assert(parsed_result.move_direction == direction);
 	}
 }
 
-UnitTest(TestParseHelp)
+UnitTest(TestParseHelp_Long)
 {
-	auto result = CallParseArguments({"labyrinth", "--help"});
-	PrintGameCoreErrorMessage(result.error_code);
-	assert(result.error_code == GameCoreErrorCode::HELP_REQUESTED);
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--help"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::HELP_REQUESTED);
+}
+
+UnitTest(TestParseHelp_Short)
+{
+	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-h"});
+
+	DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+	assert(error_code == GameCoreErrorCode::HELP_REQUESTED);
+}
+
+UnitTest(TestPlayerID_Long_Invalid)
+{
+	for (int i = -1; i <= 10; i++)
+	{
+		auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--player", std::to_string(i)});
+
+		DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+		assert(error_code == GameCoreErrorCode::SUCCESS);
+		assert(parsed_result.player_id == std::to_string(i));
+	}
+}
+
+UnitTest(TestPlayerID_Short_Invalid)
+{
+	for (int i = -1; i <= 10; i++)
+	{
+		auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-p", std::to_string(i)});
+
+		DebugLog(LogLevel::DEBUG, GetGameCoreErrorMessage(error_code));
+
+		assert(error_code == GameCoreErrorCode::SUCCESS);
+		assert(parsed_result.player_id == std::to_string(i));
+	}
 }

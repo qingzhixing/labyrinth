@@ -182,7 +182,7 @@ static bool check_results(struct tk_testcase *t, int status)
     {
         // Killed/stopped by a signal.
         printf("- [%s] %s (%s)", pcol("FAIL", 31), t->name, t->loc);
-        const char *msg = pcol("unknown error", 31);
+        const char *msg = pcol("❎ unknown error", 31);
 
         if (WIFSIGNALED(status))
         {
@@ -190,13 +190,13 @@ static bool check_results(struct tk_testcase *t, int status)
             switch (sig)
             {
             case SIGALRM:
-                msg = pcol("Timeout", 33);
+                msg = pcol("⏲️ Timeout", 33);
                 break;
             case SIGABRT:
-                msg = pcol("Assertion fail", 35);
+                msg = pcol("❗ Assertion fail", 35);
                 break;
             case SIGSEGV:
-                msg = pcol("Segmentation fault", 36);
+                msg = pcol("☄️ Segmentation fault", 36);
                 break;
             default:
                 msg = pcol(strsignal(sig), 31);
@@ -225,7 +225,7 @@ static void run_all_testcases(void)
     fflush(stderr);
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
-    printf("\n[Starting TestKit...]\n");
+    printf("\n[🤔 Starting TestKit...]\n");
 
     int passed = 0, ntests = 0;
 
@@ -234,7 +234,7 @@ static void run_all_testcases(void)
         struct tk_testcase *t = &tests[i];
 
         // 在运行测试前显示测试名称
-        printf("Running test: %s (%s)\n", t->name, t->loc);
+        printf("\n\n 🌟 Running test: %s\n", t->name);
 
         char *buf = (char *)mmap(NULL,
                                  TK_OUTPUT_LIMIT,
@@ -276,7 +276,7 @@ static void run_all_testcases(void)
         munmap(buf, TK_OUTPUT_LIMIT);
     }
 
-    printf("- %d/%d test cases passed.\n", passed, ntests);
+    printf("🌠 - %d/%d test cases passed.\n", passed, ntests);
 }
 
 static int worker_pid;

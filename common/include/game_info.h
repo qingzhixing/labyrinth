@@ -17,4 +17,6 @@ inline const std::string GAME_NAME_ASCII_ART = R"(
 `----'`-'  `-'`----'  `--'  `-' `-'`-'`-' `-'  `-'  `-' `-'
 )";
 
+inline const int MAX_PLAYER_COUNT = 9;
+
 #endif // GAME_INFO_H
