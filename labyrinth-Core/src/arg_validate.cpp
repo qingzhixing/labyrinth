@@ -7,17 +7,14 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult)
 	bool missing_parameters = false;
 	if (parsedResult.map_file.empty())
 	{
-		DebugLog(LogLevel::ERROR, "missing map file");
 		missing_parameters = true;
 	}
 	if (parsedResult.move_direction.empty())
 	{
-		DebugLog(LogLevel::ERROR, "missing move direction");
 		missing_parameters = true;
 	}
 	if (parsedResult.player_id.empty())
 	{
-		DebugLog(LogLevel::ERROR, "missing player ID");
 		missing_parameters = true;
 	}
 	if (missing_parameters)
@@ -31,7 +28,6 @@ GameCoreErrorCode ValidateMoveDirection(const std::string &move_direction)
 {
 	if (move_direction != "up" && move_direction != "down" && move_direction != "left" && move_direction != "right")
 	{
-		DebugLog(LogLevel::ERROR, "invalid move direction: %s", move_direction.c_str());
 		return GameCoreErrorCode::INVALID_MOVE_DIRECTION;
 	}
 	return GameCoreErrorCode::SUCCESS;

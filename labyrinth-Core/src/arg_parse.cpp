@@ -16,13 +16,6 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 	// 重置 optind 到 1，确保 getopt_long 从 argv[1] 开始解析
 	optind = 1;
 
-	DebugLog(LogLevel::INFO, "Start parsing arguments");
-	DebugLog(LogLevel::DEBUG, "argc: %d", argc);
-	for (int i = 0; i < argc; i++)
-	{
-		DebugLog(LogLevel::DEBUG, "argv[%d]: %s", i, argv[i]);
-	}
-
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
 		{"player", required_argument, nullptr, 'p'},
@@ -60,7 +53,6 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 			}
 			else
 			{
-				DebugLog(LogLevel::INFO, "Display Version Information");
 				PrintVersion();
 				error_code = GameCoreErrorCode::SUCCESS;
 			}
@@ -69,12 +61,10 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 		case 0:
 			if (long_index == 2) // --move
 			{
-				DebugLog(LogLevel::DEBUG, "move direction: %s", optarg);
 				result.move_direction = optarg;
 			}
 			break;
 		case 'h': // --help
-			DebugLog(LogLevel::DEBUG, "Display help message");
 			PrintUsage();
 			error_code = GameCoreErrorCode::HELP_REQUESTED;
 			return std::make_pair(result, error_code);
@@ -83,18 +73,15 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 		case '?': // other invalid options
 			if (optopt == 'm' || optopt == 'p')
 			{
-				DebugLog(LogLevel::ERROR, "missing parameter: %c", optopt);
 				error_code = GameCoreErrorCode::MISSING_PARAMETERS;
 			}
 			else
 			{
-				DebugLog(LogLevel::ERROR, "invalid parameter: [%d]%c", optopt, optopt);
 				error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 			}
 			return std::make_pair(result, error_code);
 			break;
 		default:
-			DebugLog(LogLevel::ERROR, "unknown parameter:[%d]%c", opt, opt);
 			error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 			return std::make_pair(result, error_code);
 
