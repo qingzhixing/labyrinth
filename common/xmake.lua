@@ -14,5 +14,6 @@ target("common")
 target("common-test")
 	set_kind("binary")
 	set_languages("c++17")
+	add_deps("debug_utils")
 	add_deps("common", "testkit")  -- 测试目标依赖common和testkit
 	add_files("./test/*.cpp")      -- 添加测试文件
