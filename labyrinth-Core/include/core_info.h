@@ -7,4 +7,7 @@
 
 inline const std::string PROGRAM_NAME = "labyrinth-Core";
 
+void PrintUsage();
+void PrintVersion();
+
 #endif // GAME_CORE_INFO_H

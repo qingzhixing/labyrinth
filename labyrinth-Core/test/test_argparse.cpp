@@ -1,13 +1,10 @@
 #include <testkit.h>
-#include <argparse.h>
-#include <iostream>
+#include <arg_parse.h>
 #include <string>
 #include <vector>
 #include <cstring>
 #include <debug_log.h>
 
-using std::cout;
-using std::endl;
 using std::string;
 using std::vector;
 
@@ -90,7 +87,7 @@ UnitTest(TestParseHelp_Short)
 	assert(error_code == GameCoreErrorCode::HELP_REQUESTED);
 }
 
-UnitTest(TestPlayerID_Long_Invalid)
+UnitTest(TestParsePlayerID_Long_Invalid)
 {
 	for (int i = -1; i <= 10; i++)
 	{
@@ -103,7 +100,7 @@ UnitTest(TestPlayerID_Long_Invalid)
 	}
 }
 
-UnitTest(TestPlayerID_Short_Invalid)
+UnitTest(TestParsePlayerID_Short_Invalid)
 {
 	for (int i = -1; i <= 10; i++)
 	{

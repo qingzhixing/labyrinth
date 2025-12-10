@@ -2,19 +2,7 @@
 #ifndef ARGPARSE_H
 #define ARGPARSE_H
 
-#include <getopt.h>
-#include <string>
-#include <core_info.h>
-#include <core_error_code.h>
-
-struct ParsedResult
-{
-	std::string map_file{};
-	std::string player_id{};
-	std::string move_direction{};
-};
-
-typedef std::pair<ParsedResult, GameCoreErrorCode> ParsedResultWithErrorCode;
+#include <parsed_result.h>
 
 /**
  * @brief Print the version information of the program.
@@ -40,13 +28,5 @@ void PrintUsage();
  * The error code is describing only the result of the parsing.
  */
 ParsedResultWithErrorCode ParseArguments(int argc, char *argv[]);
-
-/**
- * @brief Validate the parsed result.
- *
- * @param parsedResult The parsed result.
- * @return GameCoreErrorCode The error code of the validation.
- */
-GameCoreErrorCode ValidateParsedResult(const ParsedResult &parsedResult);
 
 #endif // ARGPARSE_H
