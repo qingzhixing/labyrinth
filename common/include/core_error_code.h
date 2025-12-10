@@ -7,7 +7,7 @@
 class GameCoreErrorCode
 {
 public:
-	enum Value : int
+	enum ErrorCodeValue : int
 	{
 		SUCCESS = 0,
 		MAP_FILE_NOT_FOUND,
@@ -28,26 +28,25 @@ public:
 		GAME_CORE_ERROR_CODE_COUNT,
 	};
 
-	constexpr GameCoreErrorCode(Value value) : value_(value) {}
+	constexpr GameCoreErrorCode(ErrorCodeValue value) : value(value) {}
 
 	int toInt() const
 	{
-		return static_cast<int>(value_);
+		return static_cast<int>(value);
 	}
-	Value value() const { return value_; }
+	ErrorCodeValue GetValue() const { return value; }
 
 	// 内置字符串转换功能
 	std::string toString() const;
 	std::string toMessage() const;
-	const char *toCString() const;
 
-	operator GameCoreErrorCode::Value() const
+	operator GameCoreErrorCode::ErrorCodeValue() const
 	{
-		return value_;
+		return value;
 	}
 
 private:
-	Value value_;
+	ErrorCodeValue value;
 };
 
 #endif // GAME_CORE_ERROR_CODE_H

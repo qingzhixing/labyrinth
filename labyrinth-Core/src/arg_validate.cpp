@@ -8,18 +8,18 @@ using std::make_pair;
 using std::pair;
 using std::string;
 
-GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult)
+GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result)
 {
 	bool missing_parameters = false;
-	if (parsedResult.mapFile.empty())
+	if (parsed_result.map_file.empty())
 	{
 		missing_parameters = true;
 	}
-	if (parsedResult.move_direction.empty())
+	if (parsed_result.move_direction.empty())
 	{
 		missing_parameters = true;
 	}
-	if (parsedResult.playerID.empty())
+	if (parsed_result.player_id.empty())
 	{
 		missing_parameters = true;
 	}
@@ -57,21 +57,21 @@ pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move
 	return std::make_pair(direction, GameCoreErrorCode::SUCCESS);
 }
 
-pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID)
+pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
 {
 	int player_id_int = 114514;
 	try
 	{
-		player_id_int = std::stoi(playerID);
+		player_id_int = std::stoi(player_id);
 	}
 	catch (const std::invalid_argument &e)
 	{
-		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", playerID.c_str());
+		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", player_id.c_str());
 		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 	catch (const std::out_of_range &e)
 	{
-		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", playerID.c_str());
+		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", player_id.c_str());
 		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 
@@ -83,7 +83,7 @@ pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID)
 	return make_pair(player_id_int, GameCoreErrorCode::SUCCESS);
 }
 
-ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsedResult)
+ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsed_result)
 {
 	// 检查参数是否合法
 
@@ -91,28 +91,28 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 	ValidatedGameContext validated_context{};
 
 	// 检查缺失参数
-	error_code = CheckMissingParameters(parsedResult);
+	error_code = CheckMissingParameters(parsed_result);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);
 	}
 
 	// --move
-	std::tie(validated_context.direction, error_code) = ValidateMoveDirection(parsedResult.move_direction);
+	std::tie(validated_context.direction, error_code) = ValidateMoveDirection(parsed_result.move_direction);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);
 	}
 
 	// --player
-	std::tie(validated_context.playerID, error_code) = ValidatePlayerID(parsedResult.playerID);
+	std::tie(validated_context.player_id, error_code) = ValidatePlayerID(parsed_result.player_id);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = GameMap::ParseMapFile(parsedResult.mapFile);
+	std::tie(validated_context.game_map, error_code) = GameMap::ParseMapFile(parsed_result.map_file);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

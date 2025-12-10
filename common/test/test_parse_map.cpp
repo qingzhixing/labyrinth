@@ -6,16 +6,16 @@
 
 UnitTest(TestParseMapFile_Valid)
 {
-	std::string mapFile = "map_for_test" + std::to_string(rand()) + ".txt";
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
 	// Create a valid map file
-	std::ofstream game_map_stream(mapFile);
+	std::ofstream game_map_stream(map_file);
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMap::ParseMapFile(mapFile);
+	auto [game_map, error_code] = GameMap::ParseMapFile(map_file);
 
 	// Delete the map file
-	std::remove(mapFile.c_str());
+	std::remove(map_file.c_str());
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 	assert(error_code == GameCoreErrorCode::SUCCESS);
@@ -23,9 +23,9 @@ UnitTest(TestParseMapFile_Valid)
 
 UnitTest(TestParseMapFile_Invalid_NotFound)
 {
-	std::string mapFile = "non_existent_" + std::to_string(rand()) + "_map.txt";
+	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
 
-	auto [game_map, error_code] = GameMap::ParseMapFile(mapFile);
+	auto [game_map, error_code] = GameMap::ParseMapFile(map_file);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -34,16 +34,16 @@ UnitTest(TestParseMapFile_Invalid_NotFound)
 
 UnitTest(TesParseMapFile_Invalid_IsDirectory)
 {
-	std::string mapFile = "test_directory_" + std::to_string(rand());
+	std::string map_file = "test_directory_" + std::to_string(rand());
 
 	// Create a directory
-	std::filesystem::create_directory(mapFile);
+	std::filesystem::create_directory(map_file);
 
 	// Validate the map file
-	auto [game_map, error_code] = GameMap::ParseMapFile(mapFile);
+	auto [game_map, error_code] = GameMap::ParseMapFile(map_file);
 
 	// Remove the directory
-	std::filesystem::remove(mapFile);
+	std::filesystem::remove(map_file);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 

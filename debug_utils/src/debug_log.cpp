@@ -12,7 +12,7 @@ using std::vector;
 
 std::string LogLevel::toString() const
 {
-	switch (value_)
+	switch (value)
 	{
 	case DEBUG:
 		return "DEBUG";
@@ -35,11 +35,6 @@ std::string LogLevel::toMessage() const
 		   std::to_string(toInt()) +
 		   ", Name: " +
 		   toString();
-}
-
-const char *LogLevel::toCString() const
-{
-	return toString().c_str();
 }
 
 void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)

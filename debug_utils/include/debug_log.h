@@ -8,7 +8,7 @@
 class LogLevel
 {
 public:
-	enum Value : int
+	enum LogLevelValue : int
 	{
 		DEBUG = 0,
 		INFO,
@@ -17,26 +17,25 @@ public:
 		LOG_LEVEL_COUNT,
 	};
 
-	constexpr LogLevel(Value value) : value_(value) {}
+	constexpr LogLevel(LogLevelValue value) : value(value) {}
 
 	int toInt() const
 	{
-		return static_cast<int>(value_);
+		return static_cast<int>(value);
 	}
-	Value value() const { return value_; }
+	LogLevelValue GetValue() const { return value; }
 
 	// 内置字符串转换功能
 	std::string toString() const;
 	std::string toMessage() const;
-	const char *toCString() const;
 
-	operator LogLevel::Value() const
+	operator LogLevel::LogLevelValue() const
 	{
-		return value_;
+		return value;
 	}
 
 private:
-	Value value_;
+	LogLevelValue value;
 };
 
 void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...);

@@ -6,20 +6,22 @@
 #include <string>
 #include <core_error_code.h>
 
+typedef std::vector<std::vector<char>> MapData;
+
 class GameMap
 {
 public:
 	int lines, columns;
-	std::vector<std::vector<char>> map_data;
+	MapData map_data;
 
 public:
 	/**
 	 * @brief 解析地图文件，构造GameMap对象并返回错误码
 	 *
-	 * @param filePath
+	 * @param file_path
 	 * @return std::pair<GameMap, GameCoreErrorCode> returns constructed GameMap and error code
 	 */
-	static std::pair<GameMap, GameCoreErrorCode> ParseMapFile(const std::string &filePath);
+	static std::pair<GameMap, GameCoreErrorCode> ParseMapFile(const std::string &file_path);
 };
 
 #endif // GAME_MAP_H

@@ -8,9 +8,9 @@
 UnitTest(TestCheckMissingParameters_AllPresent)
 {
 	ParsedResult parsed_result;
-	parsed_result.mapFile = "map.txt";
+	parsed_result.map_file = "map.txt";
 	parsed_result.move_direction = "up";
-	parsed_result.playerID = "1";
+	parsed_result.player_id = "1";
 
 	GameCoreErrorCode error_code = CheckMissingParameters(parsed_result);
 
@@ -22,9 +22,9 @@ UnitTest(TestCheckMissingParameters_AllPresent)
 UnitTest(TestCheckMissingParameters_MissingSome)
 {
 	ParsedResult parsed_result;
-	parsed_result.mapFile = "map.txt";
+	parsed_result.map_file = "map.txt";
 	parsed_result.move_direction = "";
-	parsed_result.playerID = "";
+	parsed_result.player_id = "";
 
 	GameCoreErrorCode error_code = CheckMissingParameters(parsed_result);
 
@@ -59,9 +59,9 @@ UnitTest(TestValidateMoveDirection_Invalid)
 
 UnitTest(TestValidatePlayerID_Valid)
 {
-	std::string playerID = "1";
+	std::string player_id = "1";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(playerID);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 	assert(player_id_int == 1);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
@@ -69,9 +69,9 @@ UnitTest(TestValidatePlayerID_Valid)
 
 UnitTest(TestValidatePlayerID_Invalid)
 {
-	std::string playerID = "invalid";
+	std::string player_id = "invalid";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(playerID);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -80,18 +80,18 @@ UnitTest(TestValidatePlayerID_Invalid)
 
 UnitTest(TestValidatePlayerID_OutOfGameRange)
 {
-	std::string playerID = "10";
+	std::string player_id = "10";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(playerID);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
 }
 
 UnitTest(TestValidatePlayerID_OutOfIntRange)
 {
-	std::string playerID = "99999999999999999999999999";
+	std::string player_id = "99999999999999999999999999";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(playerID);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 

@@ -7,18 +7,18 @@
 /**
  * @brief Validate the parsed result.
  *
- * @param parsedResult The parsed result.
+ * @param parsed_result The parsed result.
  * @return ValidatedGameContextWithErrorCode The validated game context with error code.
  */
-ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsedResult);
+ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsed_result);
 
 /**
  * @brief Check for missing parameters in the parsed result.
  *
- * @param parsedResult The parsed result.
+ * @param parsed_result The parsed result.
  * @return GameCoreErrorCode The error code if parameters are missing, otherwise SUCCESS.
  */
-GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsedResult);
+GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result);
 
 /**
  * @brief Validate the move direction.
@@ -31,9 +31,9 @@ std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string 
 /**
  * @brief Validate the player ID.
  *
- * @param playerID The player ID string.
+ * @param player_id The player ID string.
  * @return [int, GameCoreErrorCode] The validated player ID with error code.
  */
-std::pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &playerID);
+std::pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id);
 
 #endif // ARG_VALIDATE_H

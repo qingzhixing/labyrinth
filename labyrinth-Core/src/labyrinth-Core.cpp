@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 		parse_error_code == GameCoreErrorCode::HELP_REQUESTED ||
 		parse_error_code == GameCoreErrorCode::VERSION_REQUESTED)
 	{
-		return 0;
+		return GameCoreErrorCode::SUCCESS;
 	}
 
 	// Check for parsing errors

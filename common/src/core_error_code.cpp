@@ -10,7 +10,7 @@ using std::vector;
 
 std::string GameCoreErrorCode::toString() const
 {
-	switch (value_)
+	switch (value)
 	{
 	case SUCCESS:
 		return "Success [成功]";
@@ -51,9 +51,4 @@ std::string GameCoreErrorCode::toMessage() const
 		   std::to_string(toInt()) +
 		   ", Message: " +
 		   toString();
-}
-
-const char *GameCoreErrorCode::toCString() const
-{
-	return toString().c_str();
 }
