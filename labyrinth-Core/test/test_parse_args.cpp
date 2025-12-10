@@ -14,7 +14,6 @@ static ParsedResultWithErrorCode CallParseArguments(vector<string> args)
 	char *argv[argc];
 	for (int i = 0; i < argc; i++)
 	{
-		DebugLog(LogLevel::DEBUG, "Copying argv[%d] = %s", i, args[i].c_str());
 		argv[i] = strdup(args[i].c_str());
 	}
 	return ParseArguments(argc, argv);

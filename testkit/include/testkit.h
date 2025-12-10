@@ -29,7 +29,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <debug_flags.h>
 
 /** Maximum number of allowed test cases. */
 #define TK_MAX_TESTS 1024
@@ -39,6 +38,10 @@
 #define TK_OUTPUT_LIMIT (1 << 20)
 
 #define TK_MAX_ARGV_LEN 64
+
+/** Environment variables for enabling TestKit. */
+#define TK_RUN "TK_RUN"
+#define TK_VERBOSE "TK_VERBOSE"
 
 /** System test run result: exit status and combined stdout and stderr. */
 struct tk_result

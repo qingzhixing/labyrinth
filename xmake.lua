@@ -26,6 +26,7 @@ end
 set_languages("c++17")
 
 -- Libs
+includes("debug_utils")
 includes("testkit")
 includes("common")
 

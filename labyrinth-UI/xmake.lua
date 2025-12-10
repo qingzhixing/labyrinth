@@ -1,6 +1,6 @@
 target("labyrinth-UI")
 	set_kind("binary")
 	set_languages("c++17")
-	add_deps("testkit", "common")
+	add_deps("testkit", "common","debug_utils")
 	add_files("./*.cpp")
 	add_includedirs(".", {public = true})
