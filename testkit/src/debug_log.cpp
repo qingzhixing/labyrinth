@@ -10,28 +10,36 @@ using std::endl;
 using std::string;
 using std::vector;
 
-const string GetLogLevelName(LogLevel level)
+std::string LogLevel::toString() const
 {
-	static const std::vector<string> levelNames{
-		"DEBUG",
-		"INFO",
-		"WARNING",
-		"ERROR",
-		"LOG_LEVEL_COUNT",
-	};
-
-	int level_int = static_cast<int>(level);
-	int log_level_count = static_cast<int>(LogLevel::LOG_LEVEL_COUNT);
-
-	if (level_int >= 0 &&
-		level_int < log_level_count)
+	switch (value_)
 	{
-		return levelNames.at(level_int);
+	case DEBUG:
+		return "DEBUG";
+	case INFO:
+		return "INFO";
+	case WARNING:
+		return "WARNING";
+	case ERROR:
+		return "ERROR";
+	case LOG_LEVEL_COUNT:
+		return "LOG_LEVEL_COUNT";
+	default:
+		return "Invalid Log Level: " + std::to_string(toInt());
 	}
-	else
-	{
-		return "Invalid Log Level: " + std::to_string(static_cast<int>(level));
-	}
+}
+
+std::string LogLevel::toMessage() const
+{
+	return "LogLevel: " +
+		   std::to_string(toInt()) +
+		   ", Name: " +
+		   toString();
+}
+
+const char *LogLevel::toCString() const
+{
+	return toString().c_str();
 }
 
 void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)
@@ -48,7 +56,7 @@ void DebugLog_(LogLevel level, const std::string &file, int line, const std::str
 	va_end(args);
 
 	cout << "[" << file << ":" << line << "] "
-		 << GetLogLevelName(level)
+		 << level.toString()
 		 << ": "
 		 << message << endl;
 }
