@@ -28,12 +28,4 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result);
  */
 std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move_direction);
 
-/**
- * @brief Validate the player ID.
- *
- * @param player_id The player ID string.
- * @return [int, GameCoreErrorCode] The validated player ID with error code.
- */
-std::pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id);
-
 #endif // ARG_VALIDATE_H

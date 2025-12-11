@@ -26,8 +26,6 @@ std::string GameCoreErrorCode::toString() const
 		return "Map inconsistent line [地图行不一致]";
 	case MAP_NO_DESTINATION:
 		return "Map no destination '@' found [地图无终点]";
-	case INVALID_PLAYER_ID:
-		return "Invalid player ID [玩家ID无效]";
 	case INVALID_MOVE_DIRECTION:
 		return "Invalid move direction [移动方向无效]";
 	case MISSING_PARAMETERS:

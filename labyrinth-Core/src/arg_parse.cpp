@@ -17,7 +17,6 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
-		{"player", required_argument, nullptr, 'p'},
 		{"move", required_argument, nullptr, 0},
 		{"version", no_argument, nullptr, 'v'},
 		{"help", no_argument, nullptr, 'h'},
@@ -29,17 +28,13 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 	// 解析命令行参数
 	int opt;
 	int long_index = 0;
-	while ((opt = getopt_long(argc, argv, "m:p:vh", long_options, &long_index)) != -1)
+	while ((opt = getopt_long(argc, argv, "m:vh", long_options, &long_index)) != -1)
 	{
 		switch (opt)
 		{
 		case 'm':
 			DebugLog(LogLevel::DEBUG, "map file: %s", optarg);
 			result.map_file = optarg;
-			break;
-		case 'p':
-			DebugLog(LogLevel::DEBUG, "player ID: %s", optarg);
-			result.player_id = optarg;
 			break;
 		case 'v': // --version
 			DebugLog(LogLevel::DEBUG, "version flag");
@@ -58,7 +53,7 @@ ParsedResultWithErrorCode ParseArguments(int argc, char *argv[])
 			return std::make_pair(result, error_code);
 			break;
 		case 0:
-			if (long_index == 2) // --move
+			if (long_index == 1) // --move
 			{
 				result.move_direction = optarg;
 			}

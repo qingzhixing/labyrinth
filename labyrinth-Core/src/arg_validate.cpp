@@ -53,38 +53,6 @@ pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move
 	return std::make_pair(direction, GameCoreErrorCode::SUCCESS);
 }
 
-pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
-{
-	int player_id_int = NO_PLAYER_ID;
-	if (player_id.empty())
-	{
-		DebugLog(LogLevel::INFO, "Player ID is empty");
-		// 没有ID我们需要在代码中自动放置, Player ID为0
-		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::SUCCESS);
-	}
-	try
-	{
-		player_id_int = std::stoi(player_id);
-	}
-	catch (const std::invalid_argument &e)
-	{
-		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", player_id.c_str());
-		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::INVALID_PLAYER_ID);
-	}
-	catch (const std::out_of_range &e)
-	{
-		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", player_id.c_str());
-		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::INVALID_PLAYER_ID);
-	}
-
-	if (player_id_int != 0)
-	{
-		DebugLog(LogLevel::ERROR, "Player ID must be 0: %d", player_id_int);
-		return make_pair(player_id_int, GameCoreErrorCode::INVALID_PLAYER_ID);
-	}
-	return make_pair(player_id_int, GameCoreErrorCode::SUCCESS);
-}
-
 ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsed_result)
 {
 	// 检查参数是否合法
@@ -101,13 +69,6 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 
 	// --move
 	std::tie(validated_context.direction, error_code) = ValidateMoveDirection(parsed_result.move_direction);
-	if (error_code != GameCoreErrorCode::SUCCESS)
-	{
-		return make_pair(validated_context, error_code);
-	}
-
-	// --player
-	std::tie(validated_context.player_id, error_code) = ValidatePlayerID(parsed_result.player_id);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

@@ -15,7 +15,7 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 	int columns = 0;
 	int line_index = 0;
 
-	GameMap game_map;
+	GameMapExtend game_map;
 
 	// Read The Map Data and Get Size
 	string current_line_str;
@@ -56,7 +56,7 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 					game_map.destination = {line_index - 1, static_cast<int>(map_line.size() - 1)};
 				}
 				// 记录player坐标
-				else if (cell_type == MapCellType::PLAYER_0)
+				else if (cell_type == MapCellType::PLAYER)
 				{
 					game_map.player_coordinate = {line_index - 1, static_cast<int>(map_line.size() - 1)};
 				}
@@ -83,6 +83,15 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 		DebugLog(LogLevel::ERROR, "Invalid map format: no destination '@' found");
 		return make_pair(move(game_map), GameCoreErrorCode::MAP_NO_DESTINATION);
 	}
+
+	// 检查地图连通性
+	if (!game_map.CheckMapConnectivity())
+	{
+		DebugLog(LogLevel::ERROR, "Invalid map format: map is not fully connected");
+		return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
+	}
+
+	game_map.PlacePlayer();
 
 	return make_pair(move(game_map), GameCoreErrorCode::SUCCESS);
 }
@@ -121,4 +130,15 @@ pair<GameMapExtend, GameCoreErrorCode> GameMapExtend::ParseMapFile(const std::st
 	}
 
 	return make_pair(move(game_map), GameCoreErrorCode::SUCCESS);
+}
+
+bool GameMapExtend::CheckMapConnectivity() const
+{
+	// TODO:Unimplemented
+	return true;
+}
+
+void GameMapExtend::PlacePlayer()
+{
+	// TODO:Unimplemented
 }

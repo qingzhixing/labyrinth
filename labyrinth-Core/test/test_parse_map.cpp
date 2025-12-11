@@ -46,7 +46,7 @@ UnitTest(TestParseMapFile_Valid)
 	assert(game_map.map_data[1][1] == MapCellType::SPACE);
 	assert(game_map.map_data[2][0] == MapCellType::WALL);
 	assert(game_map.map_data[2][1] == MapCellType::SPACE);
-	assert(game_map.map_data[3][0] == MapCellType::PLAYER_0);
+	assert(game_map.map_data[3][0] == MapCellType::PLAYER);
 	assert(game_map.map_data[3][1] == MapCellType::SPACE);
 	assert(game_map.map_data[4][0] == MapCellType::SPACE);
 	assert(game_map.map_data[4][1] == MapCellType::SPACE);

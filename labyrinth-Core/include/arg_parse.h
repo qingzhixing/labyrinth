@@ -13,7 +13,7 @@ void PrintVersion();
 /**
  * @brief Print the usage message of the program.
  *
- * labyrinth [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [-v|--version]
+ * labyrinth [-m|--map FILE] [--move DIRECTION] [-v|--version]
  */
 void PrintUsage();
 

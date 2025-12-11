@@ -16,13 +16,11 @@ void PrintUsage()
 {
 	cout << "Usage: "
 		 << PROGRAM_NAME
-		 << " [-m|--map FILE] [-p|--player ID] [--move DIRECTION] [-v|--version]"
+		 << " [-m|--map FILE] [--move DIRECTION] [-v|--version]"
 		 << endl;
 
 	cout << "Options:" << endl;
 	cout << "  -m, --map FILE    Specify the map file to use" << endl;
-
-	cout << "  -p, --player ID    Specify the player ID to use" << endl;
 
 	cout << "      --move DIRECTION (up, down, left, right)    Specify the direction to move" << endl;
 
@@ -31,6 +29,5 @@ void PrintUsage()
 	cout << "  -h, --help    Show this help message" << endl;
 
 	cout << "Tips:" << endl
-		 << "  1. '-p' '-m' can exchange their positions" << endl
-		 << "  2. '-p' '--move' '-m' must be used together" << endl;
+		 << "  1. '--move' '-m' must be used together" << endl;
 }

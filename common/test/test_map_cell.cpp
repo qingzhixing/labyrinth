@@ -8,5 +8,5 @@ UnitTest(TestGetMapCellType_Valid)
 	assert(GetMapCellType('?') == MapCellType::INVALID);
 	assert(GetMapCellType('X') == MapCellType::INVALID);
 	assert(GetMapCellType('@') == MapCellType::DESTINATION);
-	assert(GetMapCellType('0') == MapCellType::PLAYER_0);
+	assert(GetMapCellType('0') == MapCellType::PLAYER);
 }

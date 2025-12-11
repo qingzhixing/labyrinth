@@ -7,7 +7,7 @@ enum class MapCellType : char
 	SPACE = '.',
 	WALL = '#',
 	DESTINATION = '@',
-	PLAYER_0 = '0',
+	PLAYER = '0',
 	INVALID = '?'
 };
 

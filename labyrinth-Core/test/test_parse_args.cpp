@@ -85,29 +85,3 @@ UnitTest(TestParseHelp_Short)
 
 	assert(error_code == GameCoreErrorCode::HELP_REQUESTED);
 }
-
-UnitTest(TestParsePlayerID_Long_Invalid)
-{
-	for (int i = -1; i <= 10; i++)
-	{
-		auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "--player", std::to_string(i)});
-
-		DebugLog(LogLevel::DEBUG, error_code.toMessage());
-
-		assert(error_code == GameCoreErrorCode::SUCCESS);
-		assert(parsed_result.player_id == std::to_string(i));
-	}
-}
-
-UnitTest(TestParsePlayerID_Short_Invalid)
-{
-	for (int i = -1; i <= 10; i++)
-	{
-		auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-p", std::to_string(i)});
-
-		DebugLog(LogLevel::DEBUG, error_code.toMessage());
-
-		assert(error_code == GameCoreErrorCode::SUCCESS);
-		assert(parsed_result.player_id == std::to_string(i));
-	}
-}
