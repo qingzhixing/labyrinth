@@ -14,6 +14,11 @@ public:
 		return line == other.line && column == other.column;
 	}
 
+	bool operator!=(const Coordinate &other) const
+	{
+		return !(this->operator==(other));
+	}
+
 	bool IsValid() const
 	{
 		return line >= 0 && column >= 0;

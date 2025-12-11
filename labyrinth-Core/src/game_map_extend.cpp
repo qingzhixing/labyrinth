@@ -47,24 +47,39 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 		for (auto &ch : current_line_str)
 		{
 			auto cell_type = GetMapCellType(ch);
-			if (cell_type != MapCellType::INVALID)
+			if (cell_type == MapCellType::INVALID)
 			{
-				map_line.push_back(cell_type);
-				// 记录destination坐标
-				if (cell_type == MapCellType::DESTINATION)
+				DebugLog(LogLevel::ERROR, "Invalid map format: unknown cell type '%c' at line %d", ch, line_index);
+				return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
+			}
+			map_line.push_back(cell_type);
+
+			bool set_player = (cell_type == MapCellType::PLAYER || cell_type == MapCellType::PLAYER_AT_DESTINATION);
+			bool set_destination = (cell_type == MapCellType::DESTINATION || cell_type == MapCellType::PLAYER_AT_DESTINATION);
+
+			// 记录destination坐标
+			if (set_destination)
+			{
+				DebugLog(LogLevel::DEBUG, "Destination coordinate: %d, %d", line_index - 1, static_cast<int>(map_line.size() - 1));
+				if (game_map.destination.IsValid())
 				{
-					game_map.destination = {line_index - 1, static_cast<int>(map_line.size() - 1)};
+					DebugLog(LogLevel::ERROR, "Invalid map format: multiple destinations '@'/'W' found");
+					return make_pair(move(game_map), GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
 				}
-				// 记录player坐标
-				else if (cell_type == MapCellType::PLAYER)
-				{
-					game_map.player_coordinate = {line_index - 1, static_cast<int>(map_line.size() - 1)};
-				}
-				continue;
+				game_map.destination = Coordinate(line_index - 1, static_cast<int>(map_line.size() - 1));
 			}
 
-			DebugLog(LogLevel::ERROR, "Invalid map format: unknown cell type '%c' at line %d", ch, line_index);
-			return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
+			// 记录player坐标
+			if (set_player)
+			{
+				DebugLog(LogLevel::DEBUG, "Player coordinate: %d, %d", line_index - 1, static_cast<int>(map_line.size() - 1));
+				if (game_map.player_coordinate.IsValid())
+				{
+					DebugLog(LogLevel::ERROR, "Invalid map format: multiple players '0'/'W' found");
+					return make_pair(move(game_map), GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
+				}
+				game_map.player_coordinate = Coordinate(line_index - 1, static_cast<int>(map_line.size() - 1));
+			}
 		}
 		game_map.map_data.push_back(map_line);
 	}

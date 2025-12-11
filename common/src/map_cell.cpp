@@ -12,6 +12,8 @@ MapCellType GetMapCellType(char ch)
 		return MapCellType::DESTINATION;
 	case '0':
 		return MapCellType::PLAYER;
+	case 'W':
+		return MapCellType::PLAYER_AT_DESTINATION;
 	default:
 		return MapCellType::INVALID;
 	}

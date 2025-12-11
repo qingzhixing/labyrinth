@@ -61,6 +61,102 @@ UnitTest(TestParseMapFile_Valid)
 	assert(game_map.destination == Coordinate(8, 1));
 }
 
+UnitTest(TestParseMapFile_Valid_PlayerAtDestination)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream game_map_stream(map_file);
+	game_map_stream << ".." << endl
+					<< ".W" << endl;
+	game_map_stream.close();
+
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(error_code == GameCoreErrorCode::SUCCESS);
+	assert(game_map.player_coordinate == game_map.destination);
+}
+
+UnitTest(TestParseMapFile_Invalid_MultiplePlayer)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream game_map_stream(map_file);
+	game_map_stream << "0." << endl
+					<< ".0" << endl;
+	game_map_stream.close();
+
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
+}
+
+UnitTest(TestParseMapFile_Invalid_MultiplePlayer_PlayerAtDestination)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream game_map_stream(map_file);
+	game_map_stream << "0." << endl
+					<< ".W" << endl;
+	game_map_stream.close();
+
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
+}
+
+UnitTest(TestParseMapFile_Invalid_MultipleDestination_PlayerAtDestination)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream game_map_stream(map_file);
+	game_map_stream << ".@" << endl
+					<< ".W" << endl;
+	game_map_stream.close();
+
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
+}
+
+UnitTest(TestParseMapFile_Invalid_MultipleDestination)
+{
+	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
+
+	// Create a valid map file
+	std::ofstream game_map_stream(map_file);
+	game_map_stream << ".@" << endl
+					<< ".@" << endl;
+	game_map_stream.close();
+
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+
+	// Delete the map file
+	std::remove(map_file.c_str());
+
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
+}
+
 UnitTest(TestParseMapFile_Invalid_MapFormat_EmptyFile)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
@@ -114,12 +210,12 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_UnknownCellType)
 	game_map_stream << ".." << endl
 					<< ".." << endl
 					<< "#." << endl
-					<< "0 " << endl
-					<< "23" << endl
-					<< "45" << endl
-					<< "67" << endl
-					<< "8)" << endl
-					<< "#." << endl;
+					<< "0." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< "#}" << endl;
 	game_map_stream.close();
 
 	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);

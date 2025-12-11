@@ -8,6 +8,7 @@ enum class MapCellType : char
 	WALL = '#',
 	DESTINATION = '@',
 	PLAYER = '0',
+	PLAYER_AT_DESTINATION = 'W',
 	INVALID = '?'
 };
 
