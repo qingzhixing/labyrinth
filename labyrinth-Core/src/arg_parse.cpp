@@ -2,7 +2,7 @@
 #include <getopt.h>
 #include <string>
 #include <core_info.h>
-#include <core_error_code.h>
+#include <types/core_error_code.h>
 #include <debug_log.h>
 #include <vector>
 #include <memory>

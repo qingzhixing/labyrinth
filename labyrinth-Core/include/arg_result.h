@@ -3,7 +3,8 @@
 #define ARG_RESULT_H
 #include <string>
 #include <core_info.h>
-#include <core_error_code.h>
+#include <types/core_error_code.h>
+#include <types/direction.h>
 #include <fstream>
 #include <string>
 #include <game_map.h>
@@ -16,15 +17,6 @@ struct ParsedResult
 };
 
 typedef std::pair<ParsedResult, GameCoreErrorCode> ParsedResultWithErrorCode;
-
-enum class Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	INVALID
-};
 
 inline int NO_PLAYER_ID = -1;
 

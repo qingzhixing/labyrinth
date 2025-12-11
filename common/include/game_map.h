@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <core_error_code.h>
+#include <types/core_error_code.h>
 #include <game_info.h>
 
 enum class MapCellType : char
