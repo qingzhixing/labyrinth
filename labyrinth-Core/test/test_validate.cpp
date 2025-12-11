@@ -59,11 +59,11 @@ UnitTest(TestValidateMoveDirection_Invalid)
 
 UnitTest(TestValidatePlayerID_Valid)
 {
-	std::string player_id_str = "1";
+	std::string player_id_str = "0";
 
 	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
-	assert(player_id_int == 1);
+	assert(player_id_int == 0);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 

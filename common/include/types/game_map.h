@@ -17,6 +17,7 @@ class GameMap
 public:
 	MapSize size;
 	MapData map_data;
-	Coordinate player_coordinates[MAX_PLAYER_COUNT + 1];
+	Coordinate player_coordinate = INVALID_COORDINATE;
+	Coordinate destination = INVALID_COORDINATE;
 };
 #endif // GAME_MAP_H

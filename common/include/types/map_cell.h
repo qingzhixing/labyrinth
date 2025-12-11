@@ -6,6 +6,8 @@ enum class MapCellType : char
 {
 	SPACE = '.',
 	WALL = '#',
+	DESTINATION = '@',
+	PLAYER_0 = '0',
 	INVALID = '?'
 };
 

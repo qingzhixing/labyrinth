@@ -77,9 +77,9 @@ pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
 		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 
-	if (player_id_int < 0 || player_id_int > MAX_PLAYER_COUNT)
+	if (player_id_int != 0)
 	{
-		DebugLog(LogLevel::ERROR, "Player ID must be greater than 0 and less than %d: %d", MAX_PLAYER_COUNT, player_id_int);
+		DebugLog(LogLevel::ERROR, "Player ID must be 0: %d", player_id_int);
 		return make_pair(player_id_int, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 	return make_pair(player_id_int, GameCoreErrorCode::SUCCESS);

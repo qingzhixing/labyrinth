@@ -15,12 +15,12 @@ UnitTest(TestParseMapFile_Valid)
 	game_map_stream << ".." << endl
 					<< ".." << endl
 					<< "#." << endl
-					<< "01" << endl
-					<< "23" << endl
-					<< "45" << endl
-					<< "67" << endl
-					<< "89" << endl
-					<< "#." << endl;
+					<< "0." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< "#@" << endl;
 	game_map_stream.close();
 
 	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
@@ -32,17 +32,8 @@ UnitTest(TestParseMapFile_Valid)
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 
 	// Check for player coordinates
-	auto &player_coords = game_map.player_coordinates;
-	assert(player_coords[0] == Coordinate(3, 0));
-	assert(player_coords[1] == Coordinate(3, 1));
-	assert(player_coords[2] == Coordinate(4, 0));
-	assert(player_coords[3] == Coordinate(4, 1));
-	assert(player_coords[4] == Coordinate(5, 0));
-	assert(player_coords[5] == Coordinate(5, 1));
-	assert(player_coords[6] == Coordinate(6, 0));
-	assert(player_coords[7] == Coordinate(6, 1));
-	assert(player_coords[8] == Coordinate(7, 0));
-	assert(player_coords[9] == Coordinate(7, 1));
+	auto &player_coords = game_map.player_coordinate;
+	assert(player_coords == Coordinate(3, 0));
 
 	// Check map size
 	assert(game_map.size == MapSize(9, 2));
@@ -55,7 +46,7 @@ UnitTest(TestParseMapFile_Valid)
 	assert(game_map.map_data[1][1] == MapCellType::SPACE);
 	assert(game_map.map_data[2][0] == MapCellType::WALL);
 	assert(game_map.map_data[2][1] == MapCellType::SPACE);
-	assert(game_map.map_data[3][0] == MapCellType::SPACE);
+	assert(game_map.map_data[3][0] == MapCellType::PLAYER_0);
 	assert(game_map.map_data[3][1] == MapCellType::SPACE);
 	assert(game_map.map_data[4][0] == MapCellType::SPACE);
 	assert(game_map.map_data[4][1] == MapCellType::SPACE);
@@ -66,7 +57,8 @@ UnitTest(TestParseMapFile_Valid)
 	assert(game_map.map_data[7][0] == MapCellType::SPACE);
 	assert(game_map.map_data[7][1] == MapCellType::SPACE);
 	assert(game_map.map_data[8][0] == MapCellType::WALL);
-	assert(game_map.map_data[8][1] == MapCellType::SPACE);
+	assert(game_map.map_data[8][1] == MapCellType::DESTINATION);
+	assert(game_map.destination == Coordinate(8, 1));
 }
 
 UnitTest(TestParseMapFile_Invalid_MapFormat_EmptyFile)
@@ -95,11 +87,12 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_InvalidLineLength)
 	game_map_stream << ".." << endl
 					<< ".." << endl
 					<< "#............." << endl
-					<< "01" << endl
-					<< "23" << endl
-					<< "45" << endl
-					<< "67" << endl
-					<< "89" << endl
+					<< "0." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
+					<< ".." << endl
 					<< "#." << endl;
 	game_map_stream.close();
 
@@ -109,7 +102,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_InvalidLineLength)
 	std::remove(map_file.c_str());
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
-	assert(error_code == GameCoreErrorCode::INVALID_MAP_FORMAT);
+	assert(error_code == GameCoreErrorCode::MAP_INCONSISTENT_LINE);
 }
 
 UnitTest(TestParseMapFile_Invalid_MapFormat_UnknownCellType)

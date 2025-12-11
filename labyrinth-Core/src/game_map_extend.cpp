@@ -35,7 +35,7 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 		else if (columns != current_line_str.length())
 		{
 			DebugLog(LogLevel::ERROR, "Invalid map format: inconsistent line lengths");
-			return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
+			return make_pair(move(game_map), GameCoreErrorCode::MAP_INCONSISTENT_LINE);
 		}
 		else if (line_index > MAX_MAP_SIZE.columns)
 		{
@@ -50,15 +50,16 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 			if (cell_type != MapCellType::INVALID)
 			{
 				map_line.push_back(cell_type);
-				continue;
-			}
-
-			// 判断是否为player
-			if (ch >= '0' && ch <= '9')
-			{
-				map_line.push_back(MapCellType::SPACE);
-				Coordinate coord = {line_index - 1, static_cast<int>(map_line.size() - 1)};
-				game_map.player_coordinates[ch - '0'] = coord;
+				// 记录destination坐标
+				if (cell_type == MapCellType::DESTINATION)
+				{
+					game_map.destination = {line_index - 1, static_cast<int>(map_line.size() - 1)};
+				}
+				// 记录player坐标
+				else if (cell_type == MapCellType::PLAYER_0)
+				{
+					game_map.player_coordinate = {line_index - 1, static_cast<int>(map_line.size() - 1)};
+				}
 				continue;
 			}
 
@@ -74,6 +75,13 @@ static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 	{
 		DebugLog(LogLevel::ERROR, "Invalid map format: empty map file");
 		return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
+	}
+
+	// 检查是否有destination
+	if (game_map.destination == INVALID_COORDINATE)
+	{
+		DebugLog(LogLevel::ERROR, "Invalid map format: no destination '@' found");
+		return make_pair(move(game_map), GameCoreErrorCode::MAP_NO_DESTINATION);
 	}
 
 	return make_pair(move(game_map), GameCoreErrorCode::SUCCESS);

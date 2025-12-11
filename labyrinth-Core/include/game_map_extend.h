@@ -10,7 +10,7 @@ class GameMapExtend : public GameMap
 public:
 	GameMapExtend() : GameMap() {}
 	GameMapExtend(const GameMap &other) : GameMap(other) {}
-	GameCoreErrorCode MovePlayer(int player_id, Direction direction);
+	GameCoreErrorCode MovePlayer(Direction direction);
 
 	/**
 	 * @brief 解析地图文件，构造GameMap对象并返回错误码
