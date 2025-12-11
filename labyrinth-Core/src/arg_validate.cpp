@@ -114,7 +114,7 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = ParseMapFile(parsed_result.map_file);
+	std::tie(validated_context.game_map, error_code) = GameMapExtend::ParseMapFile(parsed_result.map_file);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

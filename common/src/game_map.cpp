@@ -12,18 +12,6 @@ using std::pair;
 using std::string;
 using std::tuple;
 
-MapCellType GetMapCellType(char ch)
-{
-	switch (ch)
-	{
-	case '#':
-		return MapCellType::WALL;
-	case '.':
-		return MapCellType::SPACE;
-	default:
-		return MapCellType::INVALID;
-	}
-}
 
 static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 {

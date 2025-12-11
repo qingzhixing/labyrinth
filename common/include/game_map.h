@@ -14,6 +14,19 @@ enum class MapCellType : char
 	INVALID = '?'
 };
 
+inline MapCellType GetMapCellType(char ch)
+{
+	switch (ch)
+	{
+	case '#':
+		return MapCellType::WALL;
+	case '.':
+		return MapCellType::SPACE;
+	default:
+		return MapCellType::INVALID;
+	}
+}
+
 struct MapSize
 {
 	int lines, columns;
@@ -27,7 +40,7 @@ struct MapSize
 struct Coordinate
 {
 	int line, column;
-	Coordinate(int line = 0, int column = 0) : line(line), column(column) {}
+	Coordinate(int line = -1, int column = -1) : line(line), column(column) {}
 	bool operator==(const Coordinate &other) const
 	{
 		return line == other.line && column == other.column;

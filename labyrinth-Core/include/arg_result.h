@@ -7,7 +7,7 @@
 #include <types/direction.h>
 #include <fstream>
 #include <string>
-#include <game_map.h>
+#include <game_map_extend.h>
 
 struct ParsedResult
 {
@@ -22,7 +22,7 @@ inline int NO_PLAYER_ID = -1;
 
 struct ValidatedGameContext
 {
-	GameMap game_map;						  // map_file的文件描述符
+	GameMapExtend game_map;					  // map_file的文件描述符
 	int player_id = NO_PLAYER_ID;			  // 转换为整数的player_id
 	Direction direction = Direction::INVALID; // 移动方向的枚举
 };
