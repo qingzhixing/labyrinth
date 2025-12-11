@@ -1,10 +1,5 @@
-#include <game_map.h>
+#include <types/map_cell.h>
 #include <testkit.h>
-#include <fstream>
-#include <filesystem>
-#include <debug_log.h>
-
-using std::endl;
 
 UnitTest(TestGetMapCellType_Valid)
 {

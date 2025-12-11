@@ -2,7 +2,7 @@
 #ifndef GAME_MAP_EXTEND_H
 #define GAME_MAP_EXTEND_H
 
-#include <game_map.h>
+#include <types/game_map.h>
 #include <types/direction.h>
 
 class GameMapExtend : public GameMap

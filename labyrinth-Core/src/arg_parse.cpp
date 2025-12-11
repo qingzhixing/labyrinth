@@ -7,7 +7,6 @@
 #include <vector>
 #include <memory>
 #include <cstring>
-#include <core_info.h>
 
 using std::string;
 
