@@ -26,10 +26,12 @@ enum class Direction
 	INVALID
 };
 
+inline int NO_PLAYER_ID = -1;
+
 struct ValidatedGameContext
 {
 	GameMap game_map;						  // map_file的文件描述符
-	int player_id;							  // 转换为整数的player_id
+	int player_id = NO_PLAYER_ID;			  // 转换为整数的player_id
 	Direction direction = Direction::INVALID; // 移动方向的枚举
 };
 

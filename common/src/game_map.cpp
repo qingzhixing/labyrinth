@@ -20,38 +20,17 @@ MapCellType GetMapCellType(char ch)
 		return MapCellType::WALL;
 	case '.':
 		return MapCellType::SPACE;
-	case '0':
-		return MapCellType::PLAYER_0;
-	case '1':
-		return MapCellType::PLAYER_1;
-	case '2':
-		return MapCellType::PLAYER_2;
-	case '3':
-		return MapCellType::PLAYER_3;
-	case '4':
-		return MapCellType::PLAYER_4;
-	case '5':
-		return MapCellType::PLAYER_5;
-	case '6':
-		return MapCellType::PLAYER_6;
-	case '7':
-		return MapCellType::PLAYER_7;
-	case '8':
-		return MapCellType::PLAYER_8;
-	case '9':
-		return MapCellType::PLAYER_9;
 	default:
 		return MapCellType::INVALID;
 	}
 }
 
-static tuple<MapData, MapSize, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
+static pair<GameMap, GameCoreErrorCode> ReadMapData(std::ifstream &map_stream)
 {
 	int columns = 0;
 	int line_index = 0;
 
-	MapData map_data;
-	MapSize map_size;
+	GameMap game_map;
 
 	// Read The Map Data and Get Size
 	string current_line_str;
@@ -61,7 +40,7 @@ static tuple<MapData, MapSize, GameCoreErrorCode> ReadMapData(std::ifstream &map
 		if (line_index > MAX_MAP_SIZE.lines)
 		{
 			DebugLog(LogLevel::ERROR, "Map too large: exceeds maximum lines %d", MAX_MAP_SIZE.lines);
-			return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::MAP_TOO_LARGE);
+			return make_pair(move(game_map), GameCoreErrorCode::MAP_TOO_LARGE);
 		}
 
 		if (columns == 0)
@@ -71,37 +50,48 @@ static tuple<MapData, MapSize, GameCoreErrorCode> ReadMapData(std::ifstream &map
 		else if (columns != current_line_str.length())
 		{
 			DebugLog(LogLevel::ERROR, "Invalid map format: inconsistent line lengths");
-			return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::INVALID_MAP_FORMAT);
+			return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
 		}
 		else if (line_index > MAX_MAP_SIZE.columns)
 		{
 			DebugLog(LogLevel::ERROR, "Map too large: exceeds maximum columns %d", MAX_MAP_SIZE.columns);
-			return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::MAP_TOO_LARGE);
+			return make_pair(move(game_map), GameCoreErrorCode::MAP_TOO_LARGE);
 		}
 
 		MapLine map_line;
 		for (auto &ch : current_line_str)
 		{
 			auto cell_type = GetMapCellType(ch);
-			if (cell_type == MapCellType::INVALID)
+			if (cell_type != MapCellType::INVALID)
 			{
-				DebugLog(LogLevel::ERROR, "Invalid map format: unknown cell type '%c' at line %d", ch, line_index);
-				return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::INVALID_MAP_FORMAT);
+				map_line.push_back(cell_type);
+				continue;
 			}
-			map_line.push_back(cell_type);
+
+			// 判断是否为player
+			if (ch >= '0' && ch <= '9')
+			{
+				map_line.push_back(MapCellType::SPACE);
+				Coordinate coord = {line_index - 1, static_cast<int>(map_line.size() - 1)};
+				game_map.player_coordinates[ch - '0'] = coord;
+				continue;
+			}
+
+			DebugLog(LogLevel::ERROR, "Invalid map format: unknown cell type '%c' at line %d", ch, line_index);
+			return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
 		}
-		map_data.push_back(map_line);
+		game_map.map_data.push_back(map_line);
 	}
-	map_size.lines = line_index;
-	map_size.columns = columns;
+	game_map.size.lines = line_index;
+	game_map.size.columns = columns;
 
 	if (line_index == 0)
 	{
 		DebugLog(LogLevel::ERROR, "Invalid map format: empty map file");
-		return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::INVALID_MAP_FORMAT);
+		return make_pair(move(game_map), GameCoreErrorCode::INVALID_MAP_FORMAT);
 	}
 
-	return make_tuple(move(map_data), move(map_size), GameCoreErrorCode::SUCCESS);
+	return make_pair(move(game_map), GameCoreErrorCode::SUCCESS);
 }
 
 pair<GameMap, GameCoreErrorCode> ParseMapFile(const std::string &map_file_path)
@@ -129,14 +119,13 @@ pair<GameMap, GameCoreErrorCode> ParseMapFile(const std::string &map_file_path)
 		return make_pair(move(game_map), GameCoreErrorCode::MAP_FILE_NOT_FOUND);
 	}
 
-	auto [map_data, map_size, read_error_code] = ReadMapData(game_map_stream);
-	if (read_error_code != GameCoreErrorCode::SUCCESS)
+	GameCoreErrorCode read_map_error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	std::tie(game_map, read_map_error_code) = ReadMapData(game_map_stream);
+	if (read_map_error_code != GameCoreErrorCode::SUCCESS)
 	{
-		DebugLog(LogLevel::ERROR, read_error_code.toMessage());
-		return make_pair(std::move(game_map), read_error_code);
+		DebugLog(LogLevel::ERROR, read_map_error_code.toMessage());
+		return make_pair(std::move(game_map), read_map_error_code);
 	}
-	game_map.map_data = map_data;
-	game_map.size = map_size;
 
 	return make_pair(move(game_map), GameCoreErrorCode::SUCCESS);
 }

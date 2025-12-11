@@ -59,19 +59,29 @@ UnitTest(TestValidateMoveDirection_Invalid)
 
 UnitTest(TestValidatePlayerID_Valid)
 {
-	std::string player_id = "1";
+	std::string player_id_str = "1";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 	assert(player_id_int == 1);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 }
 
+UnitTest(TestValidatePlayerID_Invalid_Empty)
+{
+	std::string player_id_str = "";
+
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
+	DebugLog(LogLevel::DEBUG, error_code.toMessage());
+	assert(player_id_int == NO_PLAYER_ID);
+	assert(error_code == GameCoreErrorCode::SUCCESS);
+}
+
 UnitTest(TestValidatePlayerID_Invalid)
 {
-	std::string player_id = "invalid";
+	std::string player_id_str = "invalid";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -80,18 +90,18 @@ UnitTest(TestValidatePlayerID_Invalid)
 
 UnitTest(TestValidatePlayerID_OutOfGameRange)
 {
-	std::string player_id = "10";
+	std::string player_id_str = "10";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 	assert(error_code == GameCoreErrorCode::INVALID_PLAYER_ID);
 }
 
 UnitTest(TestValidatePlayerID_OutOfIntRange)
 {
-	std::string player_id = "99999999999999999999999999";
+	std::string player_id_str = "99999999999999999999999999";
 
-	auto [player_id_int, error_code] = ValidatePlayerID(player_id);
+	auto [player_id_int, error_code] = ValidatePlayerID(player_id_str);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 

@@ -19,10 +19,6 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result)
 	{
 		missing_parameters = true;
 	}
-	if (parsed_result.player_id.empty())
-	{
-		missing_parameters = true;
-	}
 	if (missing_parameters)
 	{
 		return GameCoreErrorCode::MISSING_PARAMETERS;
@@ -59,7 +55,13 @@ pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move
 
 pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
 {
-	int player_id_int = 114514;
+	int player_id_int = NO_PLAYER_ID;
+	if (player_id.empty())
+	{
+		DebugLog(LogLevel::INFO, "Player ID is empty");
+		// 没有ID我们需要在代码中自动放置, Player ID为0
+		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::SUCCESS);
+	}
 	try
 	{
 		player_id_int = std::stoi(player_id);
@@ -67,12 +69,12 @@ pair<int, GameCoreErrorCode> ValidatePlayerID(const std::string &player_id)
 	catch (const std::invalid_argument &e)
 	{
 		DebugLog(LogLevel::ERROR, "Player ID must be a number: %s", player_id.c_str());
-		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
+		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 	catch (const std::out_of_range &e)
 	{
 		DebugLog(LogLevel::ERROR, "Player ID out of int range: %s", player_id.c_str());
-		return make_pair(-1, GameCoreErrorCode::INVALID_PLAYER_ID);
+		return make_pair(NO_PLAYER_ID, GameCoreErrorCode::INVALID_PLAYER_ID);
 	}
 
 	if (player_id_int < 0 || player_id_int > MAX_PLAYER_COUNT)
