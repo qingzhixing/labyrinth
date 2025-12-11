@@ -225,7 +225,37 @@ static void run_all_testcases(void)
     fflush(stderr);
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
-    printf("\n[🤔 Starting TestKit...]\n");
+
+    // 使用 program_invocation_short_name 获取当前程序的名字
+    extern char *program_invocation_short_name;
+    if (program_invocation_short_name != NULL)
+    {
+        printf("\n[🍎 Starting TestKit for %s...]\n", program_invocation_short_name);
+    }
+    else
+    {
+        // 备用方案：尝试从 /proc/self/exe 读取
+        char exe_path[1024];
+        ssize_t len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
+        if (len != -1)
+        {
+            exe_path[len] = '\0';
+            char *filename = strrchr(exe_path, '/');
+            if (filename != NULL)
+            {
+                filename++; // 跳过斜杠
+                printf("\n[🍎 Starting TestKit for %s]\n", filename);
+            }
+            else
+            {
+                printf("\n[🍎 Starting TestKit for %s...]\n", exe_path);
+            }
+        }
+        else
+        {
+            printf("\n[🤔 Starting TestKit...]\n");
+        }
+    }
 
     int passed = 0, ntests = 0;
 
