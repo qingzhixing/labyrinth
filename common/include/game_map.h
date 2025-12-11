@@ -14,18 +14,7 @@ enum class MapCellType : char
 	INVALID = '?'
 };
 
-inline MapCellType GetMapCellType(char ch)
-{
-	switch (ch)
-	{
-	case '#':
-		return MapCellType::WALL;
-	case '.':
-		return MapCellType::SPACE;
-	default:
-		return MapCellType::INVALID;
-	}
-}
+MapCellType GetMapCellType(char ch);
 
 struct MapSize
 {
@@ -36,6 +25,7 @@ struct MapSize
 		return lines == other.lines && columns == other.columns;
 	}
 };
+inline const MapSize MAX_MAP_SIZE = {100, 100};
 
 struct Coordinate
 {
@@ -46,8 +36,6 @@ struct Coordinate
 		return line == other.line && column == other.column;
 	}
 };
-
-inline const MapSize MAX_MAP_SIZE = {100, 100};
 
 MapCellType GetMapCellType(char ch);
 
@@ -61,13 +49,4 @@ public:
 	MapData map_data;
 	Coordinate player_coordinates[MAX_PLAYER_COUNT + 1];
 };
-
-/**
- * @brief 解析地图文件，构造GameMap对象并返回错误码
- *
- * @param file_path
- * @return std::pair<GameMap, GameCoreErrorCode> returns constructed GameMap and error code
- */
-std::pair<GameMap, GameCoreErrorCode> ParseMapFile(const std::string &file_path);
-
 #endif // GAME_MAP_H

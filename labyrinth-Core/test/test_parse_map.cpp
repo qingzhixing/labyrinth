@@ -184,7 +184,7 @@ UnitTest(TestParseMapFile_Invalid_NotFound)
 {
 	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
 
-	auto [game_map, error_code] = ParseMapFile(map_file);
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -199,7 +199,7 @@ UnitTest(TesParseMapFile_Invalid_IsDirectory)
 	std::filesystem::create_directory(map_file);
 
 	// Validate the map file
-	auto [game_map, error_code] = ParseMapFile(map_file);
+	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
 
 	// Remove the directory
 	std::filesystem::remove(map_file);
