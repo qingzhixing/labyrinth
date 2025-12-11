@@ -17,11 +17,21 @@ enum class MapCellType : char
 struct MapSize
 {
 	int lines, columns;
+	MapSize(int lines = 0, int columns = 0) : lines(lines), columns(columns) {}
+	bool operator==(const MapSize &other) const
+	{
+		return lines == other.lines && columns == other.columns;
+	}
 };
 
 struct Coordinate
 {
 	int line, column;
+	Coordinate(int line = 0, int column = 0) : line(line), column(column) {}
+	bool operator==(const Coordinate &other) const
+	{
+		return line == other.line && column == other.column;
+	}
 };
 
 inline const MapSize MAX_MAP_SIZE = {100, 100};
