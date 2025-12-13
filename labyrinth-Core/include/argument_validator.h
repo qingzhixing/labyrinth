@@ -1,8 +1,10 @@
 #pragma once
-#ifndef ARG_VALIDATE_H
-#define ARG_VALIDATE_H
+#ifndef ARGUMENT_VALIDATOR_H
+#define ARGUMENT_VALIDATOR_H
 
-#include <arg_result.h>
+#include <argument_result.h>
+#include <types/core_error_code.h>
+#include <types/direction.h>
 
 /**
  * @brief Validate the parsed result.

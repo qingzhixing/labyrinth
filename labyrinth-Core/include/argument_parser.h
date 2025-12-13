@@ -1,8 +1,8 @@
 #pragma once
-#ifndef ARGPARSE_H
-#define ARGPARSE_H
+#ifndef ARGUMENT_PARSER_H
+#define ARGUMENT_PARSER_H
 
-#include <arg_result.h>
+#include <argument_result.h>
 
 /**
  * @brief Argument parser class for parsing command line arguments.

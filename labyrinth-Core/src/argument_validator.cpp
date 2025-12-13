@@ -1,5 +1,7 @@
-#include <arg_validate.h>
+#include <argument_validator.h>
+#include <types/direction.h>
 #include <debug_log.h>
+#include <string>
 #include <stdexcept>
 #include <unistd.h>
 #include <filesystem>

@@ -1,6 +1,9 @@
-#include <arg_parse.h>
+#include <argument_parser.h>
+#include <core_info.h>
+#include <argument_validator.h>
+#include <types/core_error_code.h>
 #include <debug_log.h>
-#include <arg_validate.h>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
