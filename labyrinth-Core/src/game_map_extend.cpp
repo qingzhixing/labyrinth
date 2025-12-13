@@ -7,7 +7,7 @@
 #include <queue>
 
 #include <map_validator.h>
-#include <coordinate_recorder.h>
+#include <map_coordinate_recorder.h>
 #include <map_line_processor.h>
 #include <map_builder.h>
 

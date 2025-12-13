@@ -3,7 +3,7 @@
 #define MAP_LINE_PROCESSOR_H
 
 #include <map_validator.h>
-#include <coordinate_recorder.h>
+#include <map_coordinate_recorder.h>
 #include <types/game_map.h>
 
 /**
@@ -16,7 +16,7 @@ public:
 	ProcessLine(
 		const std::string &line_str,
 		int line_index,
-		CoordinateRecorder &recorder)
+		MapCoordinateRecorder &recorder)
 	{
 		MapLine map_line;
 

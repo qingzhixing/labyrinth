@@ -10,7 +10,7 @@
 /**
  * @brief 坐标记录器 - 负责记录玩家和目的地的坐标
  */
-class CoordinateRecorder
+class MapCoordinateRecorder
 {
 private:
 	Coordinate player_coordinate = INVALID_COORDINATE;

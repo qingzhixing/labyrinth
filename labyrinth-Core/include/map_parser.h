@@ -23,7 +23,7 @@ public:
 	ReadMapData(std::ifstream &map_stream)
 	{
 		std::vector<MapLine> map_data;
-		CoordinateRecorder recorder;
+		MapCoordinateRecorder recorder;
 		int line_index = 0;
 		int expected_columns = 0;
 
