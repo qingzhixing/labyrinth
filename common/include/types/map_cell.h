@@ -12,28 +12,8 @@ enum class MapCellType : char
 	INVALID = '?'
 };
 
-inline MapCellType GetMapCellType(char ch)
-{
-	switch (ch)
-	{
-	case '#':
-		return MapCellType::WALL;
-	case '.':
-		return MapCellType::SPACE;
-	case '@':
-		return MapCellType::DESTINATION;
-	case '0':
-		return MapCellType::PLAYER;
-	case 'W':
-		return MapCellType::PLAYER_AT_DESTINATION;
-	default:
-		return MapCellType::INVALID;
-	}
-}
-
-inline char GetMapCellChar(MapCellType type)
-{
-	return static_cast<char>(type);
-}
+// 函数声明
+MapCellType GetMapCellType(char ch);
+char GetMapCellChar(MapCellType type);
 
 #endif // MAP_CELL_H
