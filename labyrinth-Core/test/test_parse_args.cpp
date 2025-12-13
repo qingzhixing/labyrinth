@@ -16,7 +16,10 @@ static ParsedResultWithErrorCode CallParseArguments(vector<string> args)
 	{
 		argv[i] = strdup(args[i].c_str());
 	}
-	return ParseArguments(argc, argv);
+
+	// Create argument parser instance
+	ArgumentParser parser;
+	return parser.ParseArguments(argc, argv);
 }
 
 UnitTest(TestParseVersion_Long_Valid)
@@ -36,6 +39,7 @@ UnitTest(TestParseVersion_Long_Invalid)
 
 	assert(error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 }
+
 UnitTest(TestParseVersion_Short_Valid)
 {
 	auto [parsed_result, error_code] = CallParseArguments({"labyrinth", "-v"});

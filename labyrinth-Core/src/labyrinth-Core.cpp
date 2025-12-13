@@ -4,8 +4,11 @@
 
 int main(int argc, char *argv[])
 {
+	// Create argument parser instance
+	ArgumentParser parser;
+
 	// Parse the arguments
-	auto [parsed_result, parse_error_code] = ParseArguments(argc, argv);
+	auto [parsed_result, parse_error_code] = parser.ParseArguments(argc, argv);
 
 	// 如果是帮助或版本请求，直接退出
 	if (
