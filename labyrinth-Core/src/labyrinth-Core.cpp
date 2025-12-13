@@ -11,11 +11,11 @@ int main(int argc, char *argv[])
 	ArgumentParser parser;
 
 	// Parse the arguments
-	auto [parsed_result, parse_error_code] = parser.ParseArguments(argc, argv);
+	auto [parsed_result, parse_error_code] =
+		parser.ParseArguments(argc, argv);
 
 	// 如果是帮助或版本请求，直接退出
-	if (
-		parse_error_code == GameCoreErrorCode::HELP_REQUESTED ||
+	if (parse_error_code == GameCoreErrorCode::HELP_REQUESTED ||
 		parse_error_code == GameCoreErrorCode::VERSION_REQUESTED)
 	{
 		return GameCoreErrorCode::SUCCESS;

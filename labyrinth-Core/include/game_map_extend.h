@@ -11,6 +11,15 @@ public:
 	GameMapExtend() : GameMap() {}
 	GameMapExtend(const GameMap &other) : GameMap(other) {}
 
+	GameMapExtend &operator=(const GameMapExtend &other)
+	{
+		if (this != &other)
+		{
+			GameMap::operator=(other);
+		}
+		return *this;
+	}
+
 	GameCoreErrorCode MovePlayer(Direction direction);
 
 	/**

@@ -7,7 +7,7 @@
 
 using std::endl;
 
-UnitTest(TestParseMapFile_Valid)
+UnitTest(TestMapParser_Valid)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -62,7 +62,7 @@ UnitTest(TestParseMapFile_Valid)
 	assert(game_map.destination == Coordinate(8, 1));
 }
 
-UnitTest(TestParseMapFile_Valid_PlayerAtDestination)
+UnitTest(TestMapParser_Valid_PlayerAtDestination)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -82,7 +82,7 @@ UnitTest(TestParseMapFile_Valid_PlayerAtDestination)
 	assert(game_map.player_coordinate == game_map.destination);
 }
 
-UnitTest(TestParseMapFile_Invalid_MultiplePlayer)
+UnitTest(TestMapParser_Invalid_MultiplePlayer)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -101,7 +101,7 @@ UnitTest(TestParseMapFile_Invalid_MultiplePlayer)
 	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
 }
 
-UnitTest(TestParseMapFile_Invalid_MultiplePlayer_PlayerAtDestination)
+UnitTest(TestMapParser_Invalid_MultiplePlayer_PlayerAtDestination)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -120,7 +120,7 @@ UnitTest(TestParseMapFile_Invalid_MultiplePlayer_PlayerAtDestination)
 	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
 }
 
-UnitTest(TestParseMapFile_Invalid_MultipleDestination_PlayerAtDestination)
+UnitTest(TestMapParser_Invalid_MultipleDestination_PlayerAtDestination)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -139,7 +139,7 @@ UnitTest(TestParseMapFile_Invalid_MultipleDestination_PlayerAtDestination)
 	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
 }
 
-UnitTest(TestParseMapFile_Invalid_MultipleDestination)
+UnitTest(TestMapParser_Invalid_MultipleDestination)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -158,7 +158,7 @@ UnitTest(TestParseMapFile_Invalid_MultipleDestination)
 	assert(error_code == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
 }
 
-UnitTest(TestParseMapFile_Invalid_MapFormat_EmptyFile)
+UnitTest(TestMapParser_Invalid_MapFormat_EmptyFile)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -175,7 +175,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_EmptyFile)
 	assert(error_code == GameCoreErrorCode::INVALID_MAP_FORMAT);
 }
 
-UnitTest(TestParseMapFile_Invalid_MapFormat_InvalidLineLength)
+UnitTest(TestMapParser_Invalid_MapFormat_InvalidLineLength)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -202,7 +202,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_InvalidLineLength)
 	assert(error_code == GameCoreErrorCode::MAP_INCONSISTENT_LINE);
 }
 
-UnitTest(TestParseMapFile_Invalid_MapFormat_UnknownCellType)
+UnitTest(TestMapParser_Invalid_MapFormat_UnknownCellType)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -228,7 +228,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_UnknownCellType)
 	assert(error_code == GameCoreErrorCode::INVALID_MAP_FORMAT);
 }
 
-UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchLines)
+UnitTest(TestMapParser_Invalid_MapSize_TooMuchLines)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -249,7 +249,7 @@ UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchLines)
 	assert(error_code == GameCoreErrorCode::MAP_TOO_LARGE);
 }
 
-UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchColumns)
+UnitTest(TestMapParser_Invalid_MapSize_TooMuchColumns)
 {
 	std::string map_file = "map_for_test" + std::to_string(rand()) + ".txt";
 
@@ -270,7 +270,7 @@ UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchColumns)
 	assert(error_code == GameCoreErrorCode::MAP_TOO_LARGE);
 }
 
-UnitTest(TestParseMapFile_Invalid_NotFound)
+UnitTest(TestMapParser_Invalid_NotFound)
 {
 	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
 
@@ -281,7 +281,7 @@ UnitTest(TestParseMapFile_Invalid_NotFound)
 	assert(error_code == GameCoreErrorCode::MAP_FILE_NOT_FOUND);
 }
 
-UnitTest(TesParseMapFile_Invalid_IsDirectory)
+UnitTest(TestMapParser_Invalid_IsDirectory)
 {
 	std::string map_file = "test_directory_" + std::to_string(rand());
 
