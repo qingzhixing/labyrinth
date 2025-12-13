@@ -31,4 +31,9 @@ inline MapCellType GetMapCellType(char ch)
 	}
 }
 
+inline char GetMapCellChar(MapCellType type)
+{
+	return static_cast<char>(type);
+}
+
 #endif // MAP_CELL_H

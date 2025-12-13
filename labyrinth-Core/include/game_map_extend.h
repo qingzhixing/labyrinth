@@ -32,8 +32,10 @@ public:
 	/**
 	 * @brief 在地图上放置玩家(如果玩家坐标在地图上并没有指出)
 	 *
+	 * @return true 玩家被成功放置
+	 * @return false 玩家未被放置(玩家坐标在地图上已经指出)
 	 */
-	void PlacePlayerIfNeeded();
+	bool PlacePlayerIfNeeded();
 };
 
 #endif // GAME_MAP_EXTEND_H

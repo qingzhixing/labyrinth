@@ -15,8 +15,8 @@ typedef std::vector<MapLine> MapData;
 class GameMap
 {
 public:
-	MapSize size;
-	MapData map_data;
+	MapSize size{};
+	MapData map_data{};
 	Coordinate player_coordinate = INVALID_COORDINATE;
 	Coordinate destination = INVALID_COORDINATE;
 };

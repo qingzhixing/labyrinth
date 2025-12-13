@@ -37,10 +37,15 @@ std::string LogLevel::toMessage() const
 		   toString();
 }
 
-void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)
+bool IsDebugLogNotEnabled()
 {
 	// Only log when debug logging is enabled.
-	if (!getenv(DBG_LOG_ENABLE))
+	return getenv(DBG_LOG_ENABLE) == nullptr;
+}
+
+void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)
+{
+	if (IsDebugLogNotEnabled())
 	{
 		return;
 	}
