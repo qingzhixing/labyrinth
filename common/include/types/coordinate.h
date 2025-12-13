@@ -5,38 +5,19 @@
 class Coordinate
 {
 public:
-	Coordinate() : line(0), column(0) {}
-	Coordinate(const Coordinate &other) : line(other.line), column(other.column) {}
-	Coordinate(int line, int column) : line(line), column(column) {}
+	Coordinate();
+	Coordinate(const Coordinate &other);
+	Coordinate(int line, int column);
 
 public:
 	int line, column;
 
 public:
-	bool operator==(const Coordinate &other) const
-	{
-		return line == other.line && column == other.column;
-	}
-
-	bool operator!=(const Coordinate &other) const
-	{
-		return !(this->operator==(other));
-	}
-
-	Coordinate operator+(const Coordinate &other) const
-	{
-		return Coordinate(line + other.line, column + other.column);
-	}
-
-	Coordinate operator-(const Coordinate &other) const
-	{
-		return Coordinate(line - other.line, column - other.column);
-	}
-
-	bool IsValid() const
-	{
-		return line >= 0 && column >= 0;
-	}
+	bool operator==(const Coordinate &other) const;
+	bool operator!=(const Coordinate &other) const;
+	Coordinate operator+(const Coordinate &other) const;
+	Coordinate operator-(const Coordinate &other) const;
+	bool IsValid() const;
 };
 
 inline const Coordinate INVALID_COORDINATE = Coordinate(-1, -1);
