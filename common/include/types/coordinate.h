@@ -19,6 +19,16 @@ public:
 		return !(this->operator==(other));
 	}
 
+	Coordinate operator+(const Coordinate &other) const
+	{
+		return Coordinate(line + other.line, column + other.column);
+	}
+
+	Coordinate operator-(const Coordinate &other) const
+	{
+		return Coordinate(line - other.line, column - other.column);
+	}
+
 	bool IsValid() const
 	{
 		return line >= 0 && column >= 0;

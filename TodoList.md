@@ -1,1 +1,0 @@
-参照MapExtend的Validator,去重构一下ArgValidate

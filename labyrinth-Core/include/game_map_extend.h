@@ -10,6 +10,7 @@ class GameMapExtend : public GameMap
 public:
 	GameMapExtend() : GameMap() {}
 	GameMapExtend(const GameMap &other) : GameMap(other) {}
+
 	GameCoreErrorCode MovePlayer(Direction direction);
 
 	/**
@@ -29,10 +30,17 @@ public:
 	bool CheckMapConnectivity() const;
 
 	/**
+	 * @brief 查找地图上第一个左上空格子的坐标
+	 *
+	 * @return Coordinate 第一个左上空格子的坐标
+	 */
+	Coordinate FindFirstLeftUpSpace() const;
+
+	/**
 	 * @brief 在地图上放置玩家(如果玩家坐标在地图上并没有指出)
 	 *
 	 */
-	void PlacePlayer();
+	void PlacePlayerIfNeeded();
 };
 
 #endif // GAME_MAP_EXTEND_H
