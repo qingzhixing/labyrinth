@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <unistd.h>
 #include <filesystem>
+#include <map_parser.h>
 
 using std::make_pair;
 using std::pair;
@@ -75,7 +76,7 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = GameMapExtend::ParseMapFile(parsed_result.map_file);
+	std::tie(validated_context.game_map, error_code) = MapParser::ParseMapFile(parsed_result.map_file);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
 		return make_pair(validated_context, error_code);

@@ -6,6 +6,7 @@
 #include <types/coordinate.h>
 #include <types/map_size.h>
 #include <debug_log.h>
+#include <queue>
 
 /**
  * @brief 地图验证器 - 负责地图格式和内容的验证
@@ -84,6 +85,62 @@ public:
 				"Invalid map format: no destination '@' found");
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * @brief 检查地图连通性,保证每个非墙体的格子都能到达
+	 *
+	 * @return true 如果地图是连通的
+	 * @return false 如果地图不是连通的
+	 */
+	static bool ValidateMapConnectivity(GameMapExtend &game_map)
+	{
+		// TODO: Untested
+		bool checked[game_map.size.lines][game_map.size.columns] = {};
+		std::queue<Coordinate> bfs_queue;
+		// 从左上角开始BFS
+		bfs_queue.push(game_map.GetFirstLeftUpSpace());
+		checked[bfs_queue.front().line][bfs_queue.front().column] = true;
+		while (!bfs_queue.empty())
+		{
+			auto current = bfs_queue.front();
+			bfs_queue.pop();
+
+			// 检查四个方向
+			for (Direction dir : {Direction::UP, Direction::DOWN,
+								  Direction::LEFT, Direction::RIGHT})
+			{
+				Coordinate next = current + DirectionToCoordinate(dir);
+				// Invalid Coordinate
+				if (next.line < 0 || next.line >= game_map.size.lines ||
+					next.column < 0 || next.column >= game_map.size.columns)
+				{
+					continue;
+				}
+				// Unmatched
+				if (game_map.map_data[next.line][next.column] != MapCellType::WALL &&
+					!checked[next.line][next.column])
+				{
+					bfs_queue.push(next);
+					checked[next.line][next.column] = true;
+				}
+			}
+		}
+
+		// 遍历查看每个SPACE是否连通
+		for (int line = 0; line < game_map.size.lines; line++)
+		{
+			for (int column = 0; column < game_map.size.columns; column++)
+			{
+				if (game_map.map_data[line][column] == MapCellType::SPACE &&
+					!checked[line][column])
+				{
+					return false;
+				}
+			}
+		}
+
 		return true;
 	}
 };

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <debug_log.h>
+#include <map_parser.h>
 
 using std::endl;
 
@@ -23,7 +24,7 @@ UnitTest(TestParseMapFile_Valid)
 					<< "#@" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -71,7 +72,7 @@ UnitTest(TestParseMapFile_Valid_PlayerAtDestination)
 					<< ".W" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -91,7 +92,7 @@ UnitTest(TestParseMapFile_Invalid_MultiplePlayer)
 					<< ".0" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -110,7 +111,7 @@ UnitTest(TestParseMapFile_Invalid_MultiplePlayer_PlayerAtDestination)
 					<< ".W" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -129,7 +130,7 @@ UnitTest(TestParseMapFile_Invalid_MultipleDestination_PlayerAtDestination)
 					<< ".W" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -148,7 +149,7 @@ UnitTest(TestParseMapFile_Invalid_MultipleDestination)
 					<< ".@" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -165,7 +166,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_EmptyFile)
 	std::ofstream game_map_stream(map_file);
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -192,7 +193,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_InvalidLineLength)
 					<< "#." << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -218,7 +219,7 @@ UnitTest(TestParseMapFile_Invalid_MapFormat_UnknownCellType)
 					<< "#}" << endl;
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -239,7 +240,7 @@ UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchLines)
 	}
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -260,7 +261,7 @@ UnitTest(TestParseMapFile_Invalid_MapSize_TooMuchColumns)
 	}
 	game_map_stream.close();
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Delete the map file
 	std::remove(map_file.c_str());
@@ -273,7 +274,7 @@ UnitTest(TestParseMapFile_Invalid_NotFound)
 {
 	std::string map_file = "non_existent_" + std::to_string(rand()) + "_map.txt";
 
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	DebugLog(LogLevel::DEBUG, error_code.toMessage());
 
@@ -288,7 +289,7 @@ UnitTest(TesParseMapFile_Invalid_IsDirectory)
 	std::filesystem::create_directory(map_file);
 
 	// Validate the map file
-	auto [game_map, error_code] = GameMapExtend::ParseMapFile(map_file);
+	auto [game_map, error_code] = MapParser::ParseMapFile(map_file);
 
 	// Remove the directory
 	std::filesystem::remove(map_file);

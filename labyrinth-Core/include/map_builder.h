@@ -45,7 +45,7 @@ public:
 		}
 
 		// 检查地图连通性
-		if (!game_map.CheckMapConnectivity())
+		if (!MapValidator::ValidateMapConnectivity(game_map))
 		{
 			DebugLog(
 				LogLevel::ERROR,
