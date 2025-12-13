@@ -5,10 +5,14 @@
 class Coordinate
 {
 public:
+	Coordinate() : line(0), column(0) {}
+	Coordinate(const Coordinate &other) : line(other.line), column(other.column) {}
+	Coordinate(int line, int column) : line(line), column(column) {}
+
+public:
 	int line, column;
 
 public:
-	Coordinate(int line = 0, int column = 0) : line(line), column(column) {}
 	bool operator==(const Coordinate &other) const
 	{
 		return line == other.line && column == other.column;
