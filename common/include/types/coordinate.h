@@ -20,6 +20,6 @@ public:
 	bool IsValid() const;
 };
 
-inline const Coordinate INVALID_COORDINATE = Coordinate(-1, -1);
+inline const Coordinate INVALID_COORDINATE(-1, -1);
 
 #endif // COORDINATE_H
