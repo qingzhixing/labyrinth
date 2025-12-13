@@ -13,7 +13,6 @@
 
 GameCoreErrorCode GameMapExtend::MovePlayer(Direction direction)
 {
-	// TODO: Untested
 
 	// 检查玩家是否可以移动到目标方向
 	Coordinate target_coordinate =
@@ -31,12 +30,13 @@ GameCoreErrorCode GameMapExtend::MovePlayer(Direction direction)
 		return GameCoreErrorCode::MOVE_FAILED;
 	}
 
-	// 移动玩家
-
-	player_coordinate = target_coordinate;
+	// 清空当前玩家位置
 	auto &current_cell =
 		map_data[player_coordinate.line][player_coordinate.column];
 	current_cell = MapCellType::SPACE;
+
+	// 移动玩家
+	player_coordinate = target_coordinate;
 
 	// 改变地图
 	if (target_cell == MapCellType::SPACE)
@@ -52,7 +52,6 @@ GameCoreErrorCode GameMapExtend::MovePlayer(Direction direction)
 
 Coordinate GameMapExtend::GetFirstLeftUpSpace() const
 {
-	// TODO: Untested
 	// 从左上角开始遍历地图
 	for (int line = 0; line < size.lines; line++)
 	{
@@ -69,7 +68,6 @@ Coordinate GameMapExtend::GetFirstLeftUpSpace() const
 
 bool GameMapExtend::PlacePlayerIfNeeded()
 {
-	// TODO: Untested
 	// 检查玩家是否需要被放置
 	if (!player_coordinate.IsValid())
 	{
