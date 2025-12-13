@@ -1,12 +1,22 @@
 #include <types/core_error_code.h>
-#include <iostream>
 #include <string>
-#include <vector>
 
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
+GameCoreErrorCode::GameCoreErrorCode(ErrorCodeValue value) : value(value) {}
+
+int GameCoreErrorCode::toInt() const
+{
+	return static_cast<int>(value);
+}
+
+GameCoreErrorCode::ErrorCodeValue GameCoreErrorCode::GetValue() const
+{
+	return value;
+}
+
+GameCoreErrorCode::operator GameCoreErrorCode::ErrorCodeValue() const
+{
+	return value;
+}
 
 std::string GameCoreErrorCode::toString() const
 {
@@ -26,6 +36,10 @@ std::string GameCoreErrorCode::toString() const
 		return "Map inconsistent line [地图行不一致]";
 	case MAP_NO_DESTINATION:
 		return "Map no destination '@' found [地图无终点]";
+	case MAP_MULTIPLE_DESTINATION:
+		return "Map multiple destination '@' found [地图有多个终点]";
+	case MAP_MULTIPLE_PLAYER:
+		return "Map multiple player '0' found [地图有多个玩家]";
 	case INVALID_MOVE_DIRECTION:
 		return "Invalid move direction [移动方向无效]";
 	case MISSING_PARAMETERS:

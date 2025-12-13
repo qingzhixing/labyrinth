@@ -31,22 +31,16 @@ public:
 		GAME_CORE_ERROR_CODE_COUNT,
 	};
 
-	constexpr GameCoreErrorCode(ErrorCodeValue value) : value(value) {}
+	GameCoreErrorCode(ErrorCodeValue value);
 
-	int toInt() const
-	{
-		return static_cast<int>(value);
-	}
-	ErrorCodeValue GetValue() const { return value; }
+	int toInt() const;
+	ErrorCodeValue GetValue() const;
 
 	// 内置字符串转换功能
 	std::string toString() const;
 	std::string toMessage() const;
 
-	operator GameCoreErrorCode::ErrorCodeValue() const
-	{
-		return value;
-	}
+	operator GameCoreErrorCode::ErrorCodeValue() const;
 
 private:
 	ErrorCodeValue value;
