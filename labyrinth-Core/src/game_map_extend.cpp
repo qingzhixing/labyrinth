@@ -9,58 +9,7 @@
 #include <map_validator.h>
 #include <coordinate_recorder.h>
 #include <map_line_processor.h>
-
-/**
- * @brief 地图构建器 - 负责构建最终的地图对象
- */
-class MapBuilder
-{
-public:
-	static std::pair<GameMapExtend, GameCoreErrorCode> BuildFinalMap(
-		const std::vector<MapLine> &map_data,
-		const CoordinateRecorder &recorder,
-		int total_lines,
-		int total_columns)
-	{
-
-		GameMapExtend game_map;
-		game_map.map_data = map_data;
-		game_map.size.lines = total_lines;
-		game_map.size.columns = total_columns;
-		game_map.player_coordinate = recorder.GetPlayerCoordinate();
-		game_map.destination = recorder.GetDestination();
-
-		// 最终验证
-		if (!MapValidator::ValidateMapNotEmpty(total_lines))
-		{
-			return std::make_pair(
-				std::move(game_map),
-				GameCoreErrorCode::INVALID_MAP_FORMAT);
-		}
-
-		if (!MapValidator::ValidateHasDestination(game_map.destination))
-		{
-			return std::make_pair(
-				std::move(game_map),
-				GameCoreErrorCode::MAP_NO_DESTINATION);
-		}
-
-		// 检查地图连通性
-		if (!game_map.CheckMapConnectivity())
-		{
-			DebugLog(LogLevel::ERROR, "Invalid map format: map is not fully connected");
-			return std::make_pair(
-				std::move(game_map),
-				GameCoreErrorCode::INVALID_MAP_FORMAT);
-		}
-
-		game_map.PlacePlayerIfNeeded();
-
-		return std::make_pair(
-			std::move(game_map),
-			GameCoreErrorCode::SUCCESS);
-	}
-};
+#include <map_builder.h>
 
 /**
  * @brief 读取地图数据 - 从文件流中读取地图数据并构建 GameMapExtend 对象
@@ -213,11 +162,13 @@ bool GameMapExtend::CheckMapConnectivity() const
 		bfs_queue.pop();
 
 		// 检查四个方向
-		for (Direction dir : {Direction::UP, Direction::DOWN, Direction::LEFT, Direction::RIGHT})
+		for (Direction dir : {Direction::UP, Direction::DOWN,
+							  Direction::LEFT, Direction::RIGHT})
 		{
 			Coordinate next = current + DirectionToCoordinate(dir);
 			// Invalid Coordinate
-			if (next.line < 0 || next.line >= size.lines || next.column < 0 || next.column >= size.columns)
+			if (next.line < 0 || next.line >= size.lines ||
+				next.column < 0 || next.column >= size.columns)
 			{
 				continue;
 			}
