@@ -4,6 +4,9 @@
 
 #include <argument_result.h>
 
+// 前向声明测试友元类
+class ArgumentParserTest;
+
 /**
  * @brief Argument parser class for parsing command line arguments.
  */
@@ -67,10 +70,9 @@ private:
 	 * @brief Handle the move option.
 	 *
 	 * @param result The parsed result to update.
-	 * @param long_index The long option index.
 	 * @param optarg The option argument.
 	 */
-	void HandleMoveOption(ParsedResult &result, int long_index, const char *optarg);
+	void HandleMoveOption(ParsedResult &result, const char *optarg);
 
 	/**
 	 * @brief Handle the help option.
@@ -87,7 +89,10 @@ private:
 	 * @param error_code The error code to set.
 	 * @return bool True if processing should stop, false otherwise.
 	 */
-	bool HandleInvalidOption(int optopt, GameCoreErrorCode &error_code);
+	GameCoreErrorCode HandleInvalidOption(int optopt);
+
+	// 声明测试类为友元类，以便测试私有函数
+	friend class ArgumentParserTest;
 };
 
 #endif // ARGPARSE_H

@@ -18,20 +18,28 @@ void ArgumentParser::ResetGetoptState()
 	optind = 1;
 }
 
-void ArgumentParser::HandleMapOption(ParsedResult &result, const char *optarg)
+void ArgumentParser::HandleMapOption(
+	ParsedResult &result,
+	const char *optarg)
 {
 	DebugLog(LogLevel::DEBUG, "map file: %s", optarg);
 	result.map_file = optarg;
 }
 
-bool ArgumentParser::HandleVersionOption(int argc, char *argv[], GameCoreErrorCode &error_code)
+bool ArgumentParser::HandleVersionOption(
+	int argc,
+	char *argv[],
+	GameCoreErrorCode &error_code)
 {
-	DebugLog(LogLevel::DEBUG, "version flag");
+	DebugLog(LogLevel::DEBUG, "version optind: %d", optind);
 
 	// 判断是否有其他参数
-	if (optind < argc)
+	if (optind + 1 < argc)
 	{
-		DebugLog(LogLevel::ERROR, "excessive parameters when --version: %s", argv[optind]);
+		DebugLog(
+			LogLevel::ERROR,
+			"excessive parameters when --version: %s",
+			argv[optind]);
 		error_code = GameCoreErrorCode::EXCESSIVE_PARAMETERS;
 		return true;
 	}
@@ -43,12 +51,11 @@ bool ArgumentParser::HandleVersionOption(int argc, char *argv[], GameCoreErrorCo
 	}
 }
 
-void ArgumentParser::HandleMoveOption(ParsedResult &result, int long_index, const char *optarg)
+void ArgumentParser::HandleMoveOption(
+	ParsedResult &result,
+	const char *optarg)
 {
-	if (long_index == 1) // --move
-	{
-		result.move_direction = optarg;
-	}
+	result.move_direction = optarg;
 }
 
 bool ArgumentParser::HandleHelpOption(GameCoreErrorCode &error_code)
@@ -58,20 +65,19 @@ bool ArgumentParser::HandleHelpOption(GameCoreErrorCode &error_code)
 	return true;
 }
 
-bool ArgumentParser::HandleInvalidOption(int optopt, GameCoreErrorCode &error_code)
+GameCoreErrorCode
+ArgumentParser::HandleInvalidOption(
+	int optopt)
 {
 	if (optopt == 'm' || optopt == 'p')
 	{
-		error_code = GameCoreErrorCode::MISSING_PARAMETERS;
+		return GameCoreErrorCode::MISSING_PARAMETERS;
 	}
-	else
-	{
-		error_code = GameCoreErrorCode::INVALID_PARAMETERS;
-	}
-	return true;
+	return GameCoreErrorCode::INVALID_PARAMETERS;
 }
 
-ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
+ParsedResultWithErrorCode
+ArgumentParser::ParseArguments(int argc, char *argv[])
 {
 	ResetGetoptState();
 
@@ -83,12 +89,18 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 		{nullptr, 0, nullptr, 0}};
 
 	ParsedResult result{};
-	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	GameCoreErrorCode error_code =
+		GameCoreErrorCode::DEFAULT_ERROR_CODE;
 
 	// 解析命令行参数
 	int opt;
 	int long_index = 0;
-	while ((opt = getopt_long(argc, argv, "m:vh", long_options, &long_index)) != -1)
+	while ((opt = getopt_long(
+				argc,
+				argv,
+				"m:vh",
+				long_options,
+				&long_index)) != -1)
 	{
 		switch (opt)
 		{
@@ -101,8 +113,8 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 				return std::make_pair(result, error_code);
 			}
 			break;
-		case 0:
-			HandleMoveOption(result, long_index, optarg);
+		case 0: // --move
+			HandleMoveOption(result, optarg);
 			break;
 		case 'h': // --help
 			if (HandleHelpOption(error_code))
@@ -111,10 +123,8 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 			}
 			break;
 		case '?': // other invalid options
-			if (HandleInvalidOption(optopt, error_code))
-			{
-				return std::make_pair(result, error_code);
-			}
+			error_code = HandleInvalidOption(optopt);
+			return std::make_pair(result, error_code);
 			break;
 		default:
 			error_code = GameCoreErrorCode::INVALID_PARAMETERS;
@@ -132,7 +142,11 @@ void ArgumentParser::PrintVersion()
 	std::cout << GAME_NAME_ASCII_ART << std::endl;
 	std::cout << GAME_NAME << " " << GAME_VERSION << std::endl;
 	std::cout << GAME_DESCRIPTION << std::endl;
-	std::cout << "Author: " << AUTHOR << " (" << AUTHOR_EMAIL << ")" << std::endl;
+	std::cout
+		<< "Author: "
+		<< AUTHOR
+		<< " (" << AUTHOR_EMAIL << ")"
+		<< std::endl;
 }
 
 void ArgumentParser::PrintUsage()
@@ -162,5 +176,7 @@ void ArgumentParser::PrintUsage()
 		<< std::endl;
 
 	std::cout << "Tips:" << std::endl;
-	std::cout << "  1. '--move' '-m' must be used together" << std::endl;
+	std::cout
+		<< "  1. '--move' '-m' must be used together"
+		<< std::endl;
 }
