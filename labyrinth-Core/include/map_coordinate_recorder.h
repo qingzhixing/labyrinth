@@ -7,6 +7,8 @@
 #include <types/core_error_code.h>
 #include <debug_log.h>
 
+class MapCoordinateRecorderTest;
+
 /**
  * @brief 坐标记录器 - 负责记录玩家和目的地的坐标
  */
@@ -34,6 +36,8 @@ public:
 
 	bool HasPlayer() const { return player_coordinate.IsValid(); }
 	bool HasDestination() const { return destination.IsValid(); }
+
+	friend class MapCoordinateRecorderTest;
 };
 
 #endif // COORDINATE_RECORDER_H
