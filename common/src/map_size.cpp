@@ -1,4 +1,4 @@
-#include "types/map_size.h"
+#include <types/map_size.h>
 
 MapSize::MapSize() : lines(0), columns(0) {}
 
