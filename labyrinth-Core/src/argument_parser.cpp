@@ -4,7 +4,6 @@
 #include <getopt.h>
 #include <string>
 #include <types/core_error_code.h>
-#include <debug_log.h>
 #include <vector>
 #include <memory>
 #include <cstring>
@@ -18,18 +17,20 @@ void ArgumentParser::ResetGetoptState()
 	optind = 1;
 }
 
-void ArgumentParser::HandleMapOption(
-	ParsedResult &result,
+ParsedResult ArgumentParser::HandleMapOption(
+	const ParsedResult &result,
 	const char *optarg)
 {
 	DebugLog(LogLevel::DEBUG, "map file: %s", optarg);
-	result.map_file = optarg;
+
+	ParsedResult updated_result = result;
+	updated_result.map_file = optarg;
+	return updated_result;
 }
 
-bool ArgumentParser::HandleVersionOption(
+ParsedResultWithErrorCode ArgumentParser::HandleVersionOption(
 	int argc,
-	char *argv[],
-	GameCoreErrorCode &error_code)
+	char *argv[])
 {
 	DebugLog(LogLevel::DEBUG, "version optind: %d", optind);
 
@@ -40,44 +41,43 @@ bool ArgumentParser::HandleVersionOption(
 			LogLevel::ERROR,
 			"excessive parameters when --version: %s",
 			argv[optind]);
-		error_code = GameCoreErrorCode::EXCESSIVE_PARAMETERS;
-		return true;
+		return std::make_pair(ParsedResult{}, GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 	}
 	else
 	{
 		PrintVersion();
-		error_code = GameCoreErrorCode::SUCCESS;
-		return true;
+		return std::make_pair(ParsedResult{}, GameCoreErrorCode::VERSION_REQUESTED);
 	}
 }
 
-void ArgumentParser::HandleMoveOption(
-	ParsedResult &result,
+ParsedResult ArgumentParser::HandleMoveOption(
+	const ParsedResult &result,
 	const char *optarg)
 {
-	result.move_direction = optarg;
+	ParsedResult updated_result = result;
+	updated_result.move_direction = optarg;
+	return updated_result;
 }
 
-bool ArgumentParser::HandleHelpOption(GameCoreErrorCode &error_code)
+ParsedResultWithErrorCode ArgumentParser::HandleHelpOption()
 {
 	PrintUsage();
-	error_code = GameCoreErrorCode::HELP_REQUESTED;
-	return true;
+	return std::make_pair(ParsedResult{}, GameCoreErrorCode::HELP_REQUESTED);
 }
 
-GameCoreErrorCode
-ArgumentParser::HandleInvalidOption(
-	int optopt)
+ParsedResultWithErrorCode ArgumentParser::HandleInvalidOption(int optopt)
 {
+	GameCoreErrorCode error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+
 	if (optopt == 'm' || optopt == 'p')
 	{
-		return GameCoreErrorCode::MISSING_PARAMETERS;
+		error_code = GameCoreErrorCode::MISSING_PARAMETERS;
 	}
-	return GameCoreErrorCode::INVALID_PARAMETERS;
+
+	return std::make_pair(ParsedResult{}, error_code);
 }
 
-ParsedResultWithErrorCode
-ArgumentParser::ParseArguments(int argc, char *argv[])
+ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 {
 	ResetGetoptState();
 
@@ -89,8 +89,6 @@ ArgumentParser::ParseArguments(int argc, char *argv[])
 		{nullptr, 0, nullptr, 0}};
 
 	ParsedResult result{};
-	GameCoreErrorCode error_code =
-		GameCoreErrorCode::DEFAULT_ERROR_CODE;
 
 	// 解析命令行参数
 	int opt;
@@ -105,36 +103,24 @@ ArgumentParser::ParseArguments(int argc, char *argv[])
 		switch (opt)
 		{
 		case 'm':
-			HandleMapOption(result, optarg);
+			result = HandleMapOption(result, optarg);
 			break;
 		case 'v': // --version
-			if (HandleVersionOption(argc, argv, error_code))
-			{
-				return std::make_pair(result, error_code);
-			}
-			break;
+			return HandleVersionOption(argc, argv);
 		case 0: // --move
-			HandleMoveOption(result, optarg);
+			result = HandleMoveOption(result, optarg);
 			break;
 		case 'h': // --help
-			if (HandleHelpOption(error_code))
-			{
-				return std::make_pair(result, error_code);
-			}
-			break;
+			return HandleHelpOption();
 		case '?': // other invalid options
-			error_code = HandleInvalidOption(optopt);
-			return std::make_pair(result, error_code);
-			break;
+			return HandleInvalidOption(optopt);
 		default:
-			error_code = GameCoreErrorCode::INVALID_PARAMETERS;
-			return std::make_pair(result, error_code);
+			return std::make_pair(ParsedResult{}, GameCoreErrorCode::INVALID_PARAMETERS);
 		}
 	}
 
 	// 检查参数是否合法
-	error_code = GameCoreErrorCode::SUCCESS;
-	return std::make_pair(result, error_code);
+	return std::make_pair(result, GameCoreErrorCode::SUCCESS);
 }
 
 void ArgumentParser::PrintVersion()

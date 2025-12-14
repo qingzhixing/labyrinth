@@ -49,50 +49,49 @@ private:
 	void ResetGetoptState();
 
 	/**
-	 * @brief Handle the map file option.
+	 * @brief Handle the map file option and return the updated result.
 	 *
-	 * @param result The parsed result to update.
+	 * @param result The current parsed result.
 	 * @param optarg The option argument.
+	 * @return ParsedResult The updated parsed result.
 	 */
-	void HandleMapOption(ParsedResult &result, const char *optarg);
+	ParsedResult HandleMapOption(const ParsedResult &result, const char *optarg);
 
 	/**
 	 * @brief Handle the version option.
 	 *
 	 * @param argc The number of arguments.
 	 * @param argv The argument vector.
-	 * @param error_code The error code to set.
-	 * @return bool True if processing should stop, false otherwise.
+	 * @return ParsedResultWithErrorCode The result with appropriate error code.
 	 */
-	bool HandleVersionOption(int argc, char *argv[], GameCoreErrorCode &error_code);
+	ParsedResultWithErrorCode HandleVersionOption(int argc, char *argv[]);
 
 	/**
-	 * @brief Handle the move option.
+	 * @brief Handle the move option and return the updated result.
 	 *
-	 * @param result The parsed result to update.
+	 * @param result The current parsed result.
 	 * @param optarg The option argument.
+	 * @return ParsedResult The updated parsed result.
 	 */
-	void HandleMoveOption(ParsedResult &result, const char *optarg);
+	ParsedResult HandleMoveOption(const ParsedResult &result, const char *optarg);
 
 	/**
 	 * @brief Handle the help option.
 	 *
-	 * @param error_code The error code to set.
-	 * @return bool True if processing should stop, false otherwise.
+	 * @return ParsedResultWithErrorCode The result with help requested error code.
 	 */
-	bool HandleHelpOption(GameCoreErrorCode &error_code);
+	ParsedResultWithErrorCode HandleHelpOption();
 
 	/**
 	 * @brief Handle invalid options.
 	 *
 	 * @param optopt The option character that caused the error.
-	 * @param error_code The error code to set.
-	 * @return bool True if processing should stop, false otherwise.
+	 * @return ParsedResultWithErrorCode The result with appropriate error code.
 	 */
-	GameCoreErrorCode HandleInvalidOption(int optopt);
+	ParsedResultWithErrorCode HandleInvalidOption(int optopt);
 
 	// 声明测试类为友元类，以便测试私有函数
 	friend class ArgumentParserTest;
 };
 
-#endif // ARGPARSE_H
+#endif // ARGUMENT_PARSER_H
