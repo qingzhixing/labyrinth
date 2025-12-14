@@ -12,12 +12,14 @@
 struct ParsedResult
 {
 	std::string map_file{};
-	std::string move_direction{};
+	std::string direction{};
 };
 
-typedef std::pair<ParsedResult, GameCoreErrorCode> ParsedResultWithErrorCode;
-
-inline int NO_PLAYER_ID = -1;
+struct ParsedResultWithErrorCode
+{
+	ParsedResult parsed_result{};
+	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+};
 
 struct ValidatedGameContext
 {
@@ -25,6 +27,10 @@ struct ValidatedGameContext
 	Direction direction = Direction::INVALID; // 移动方向的枚举
 };
 
-typedef std::pair<ValidatedGameContext, GameCoreErrorCode> ValidatedGameContextWithErrorCode;
+struct ValidatedGameContextWithErrorCode
+{
+	ValidatedGameContext validated_game_context{};
+	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+};
 
 #endif // ARG_RESULT_H

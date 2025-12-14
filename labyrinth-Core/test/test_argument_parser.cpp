@@ -21,7 +21,7 @@ public:
 		return parser.HandleMapOption(result, optarg);
 	}
 
-	static ParsedResultWithErrorCode TestHandleVersionOption(ArgumentParser &parser, int argc, char *argv[])
+	static GameCoreErrorCode TestHandleVersionOption(ArgumentParser &parser, int argc, char *argv[])
 	{
 		return parser.HandleVersionOption(argc, argv);
 	}
@@ -31,12 +31,12 @@ public:
 		return parser.HandleMoveOption(result, optarg);
 	}
 
-	static ParsedResultWithErrorCode TestHandleHelpOption(ArgumentParser &parser)
+	static GameCoreErrorCode TestHandleHelpOption(ArgumentParser &parser)
 	{
 		return parser.HandleHelpOption();
 	}
 
-	static ParsedResultWithErrorCode TestHandleInvalidOption(ArgumentParser &parser, int optopt)
+	static GameCoreErrorCode TestHandleInvalidOption(ArgumentParser &parser, int optopt)
 	{
 		return parser.HandleInvalidOption(optopt);
 	}
@@ -80,7 +80,7 @@ UnitTest(ArgumentParser_HandleMoveOption)
 	for (auto direction : {"up", "down", "left", "right", "invalid"})
 	{
 		ParsedResult result = ArgumentParserTest::TestHandleMoveOption(parser, initial_result, direction);
-		assert(result.move_direction == direction);
+		assert(result.direction == direction);
 	}
 }
 
@@ -89,7 +89,7 @@ UnitTest(ArgumentParser_HandleHelpOption)
 {
 	ArgumentParser parser;
 
-	auto [result, error_code] = ArgumentParserTest::TestHandleHelpOption(parser);
+	auto error_code = ArgumentParserTest::TestHandleHelpOption(parser);
 	assert(error_code == GameCoreErrorCode::HELP_REQUESTED);
 }
 
@@ -99,17 +99,17 @@ UnitTest(ArgumentParser_HandleInvalidOption)
 	ArgumentParser parser;
 
 	// 测试缺失参数的情况
-	auto [result1, error1] = ArgumentParserTest::TestHandleInvalidOption(parser, 'm');
+	auto error1 = ArgumentParserTest::TestHandleInvalidOption(parser, 'm');
 	assert(error1 == GameCoreErrorCode::MISSING_PARAMETERS);
 
-	auto [result2, error2] = ArgumentParserTest::TestHandleInvalidOption(parser, 'p');
+	auto error2 = ArgumentParserTest::TestHandleInvalidOption(parser, 'p');
 	assert(error2 == GameCoreErrorCode::MISSING_PARAMETERS);
 
 	// 测试无效参数的情况
-	auto [result3, error3] = ArgumentParserTest::TestHandleInvalidOption(parser, 'x');
+	auto error3 = ArgumentParserTest::TestHandleInvalidOption(parser, 'x');
 	assert(error3 == GameCoreErrorCode::INVALID_PARAMETERS);
 
-	auto [result4, error4] = ArgumentParserTest::TestHandleInvalidOption(parser, 'z');
+	auto error4 = ArgumentParserTest::TestHandleInvalidOption(parser, 'z');
 	assert(error4 == GameCoreErrorCode::INVALID_PARAMETERS);
 }
 
@@ -135,7 +135,7 @@ UnitTest(ArgumentParser_HandleVersionOption_NoExtraParams)
 	char **argv = MakeArgv(args);
 	int argc = args.size();
 
-	auto [result, error_code] = ArgumentParserTest::TestHandleVersionOption(parser, argc, argv);
+	auto error_code = ArgumentParserTest::TestHandleVersionOption(parser, argc, argv);
 	assert(error_code == GameCoreErrorCode::VERSION_REQUESTED);
 }
 
@@ -149,7 +149,7 @@ UnitTest(ArgumentParser_HandleVersionOption_WithExtraParams)
 	char **argv = MakeArgv(args);
 	int argc = args.size();
 
-	auto [result, error_code] = ArgumentParserTest::TestHandleVersionOption(parser, argc, argv);
+	auto error_code = ArgumentParserTest::TestHandleVersionOption(parser, argc, argv);
 	assert(error_code == GameCoreErrorCode::EXCESSIVE_PARAMETERS);
 }
 
@@ -165,7 +165,7 @@ UnitTest(ArgumentParser_ParseArguments_Normal)
 	auto [result, error_code] = parser.ParseArguments(argc, argv);
 	assert(error_code == GameCoreErrorCode::SUCCESS);
 	assert(result.map_file == "test.map");
-	assert(result.move_direction == "up");
+	assert(result.direction == "up");
 }
 
 // 测试完整的ParseArguments函数 - 帮助请求

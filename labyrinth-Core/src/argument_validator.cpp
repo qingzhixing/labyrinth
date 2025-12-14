@@ -11,14 +11,15 @@ using std::make_pair;
 using std::pair;
 using std::string;
 
-GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result)
+GameCoreErrorCode
+CheckMissingParameters(const ParsedResult &parsed_result)
 {
 	bool missing_parameters = false;
 	if (parsed_result.map_file.empty())
 	{
 		missing_parameters = true;
 	}
-	if (parsed_result.move_direction.empty())
+	if (parsed_result.direction.empty())
 	{
 		missing_parameters = true;
 	}
@@ -29,61 +30,84 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result)
 	return GameCoreErrorCode::SUCCESS;
 }
 
-pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move_direction)
+pair<Direction, GameCoreErrorCode>
+ValidateMoveDirection(const std::string &direction_str)
 {
 	Direction direction = Direction::INVALID;
-	if (move_direction == "up")
+	if (direction_str == "up")
 	{
 		direction = Direction::UP;
 	}
-	else if (move_direction == "down")
+	else if (direction_str == "down")
 	{
 		direction = Direction::DOWN;
 	}
-	else if (move_direction == "left")
+	else if (direction_str == "left")
 	{
 		direction = Direction::LEFT;
 	}
-	else if (move_direction == "right")
+	else if (direction_str == "right")
 	{
 		direction = Direction::RIGHT;
 	}
 	else
 	{
-		DebugLog(LogLevel::ERROR, "Invalid move direction: %s", move_direction.c_str());
-		return std::make_pair(Direction::INVALID, GameCoreErrorCode::INVALID_MOVE_DIRECTION);
+		DebugLog(
+			LogLevel::ERROR,
+			"Invalid move direction: %s",
+			direction_str.c_str());
+		return std::make_pair(
+			Direction::INVALID,
+			GameCoreErrorCode::INVALID_MOVE_DIRECTION);
 	}
-	return std::make_pair(direction, GameCoreErrorCode::SUCCESS);
+	return std::make_pair(
+		direction,
+		GameCoreErrorCode::SUCCESS);
 }
 
-ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parsed_result)
+ValidatedGameContextWithErrorCode
+ValidateParsedResult(const ParsedResult &parsed_result)
 {
-	// 检查参数是否合法
-
-	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	GameCoreErrorCode error_code =
+		GameCoreErrorCode::DEFAULT_ERROR_CODE;
 	ValidatedGameContext validated_context{};
 
 	// 检查缺失参数
 	error_code = CheckMissingParameters(parsed_result);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
-		return make_pair(validated_context, error_code);
+		return {
+			.validated_game_context = validated_context,
+			.error_code = error_code};
 	}
 
 	// --move
-	std::tie(validated_context.direction, error_code) = ValidateMoveDirection(parsed_result.move_direction);
+	std::tie(
+		validated_context.direction,
+		error_code) =
+		ValidateMoveDirection(parsed_result.direction);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
-		return make_pair(validated_context, error_code);
+		return {
+			.validated_game_context = validated_context,
+			.error_code = error_code};
 	}
 
 	// --map
-	std::tie(validated_context.game_map, error_code) = MapParser::ParseMapFile(parsed_result.map_file);
+	std::tie(
+		validated_context.game_map,
+		error_code) =
+		MapParser::ParseMapFile(
+			parsed_result.map_file);
 	if (error_code != GameCoreErrorCode::SUCCESS)
 	{
-		return make_pair(validated_context, error_code);
+		return {
+			.validated_game_context = validated_context,
+			.error_code = error_code};
 	}
 
 	error_code = GameCoreErrorCode::SUCCESS;
-	return make_pair(validated_context, error_code);
+	return {
+		.validated_game_context = validated_context,
+		.error_code = error_code};
 }

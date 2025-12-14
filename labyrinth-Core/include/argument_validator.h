@@ -25,9 +25,9 @@ GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result);
 /**
  * @brief Validate the move direction.
  *
- * @param move_direction The move direction string.
+ * @param direction The move direction string.
  * @return [Direction, GameCoreErrorCode] The validated direction with error code.
  */
-std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &move_direction);
+std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &direction);
 
 #endif // ARG_VALIDATE_H

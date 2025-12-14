@@ -28,10 +28,11 @@ ParsedResult ArgumentParser::HandleMapOption(
 	return updated_result;
 }
 
-ParsedResultWithErrorCode ArgumentParser::HandleVersionOption(
+GameCoreErrorCode ArgumentParser::HandleVersionOption(
 	int argc,
 	char *argv[])
 {
+
 	DebugLog(LogLevel::DEBUG, "version optind: %d", optind);
 
 	// 判断是否有其他参数
@@ -41,12 +42,12 @@ ParsedResultWithErrorCode ArgumentParser::HandleVersionOption(
 			LogLevel::ERROR,
 			"excessive parameters when --version: %s",
 			argv[optind]);
-		return std::make_pair(ParsedResult{}, GameCoreErrorCode::EXCESSIVE_PARAMETERS);
+		return GameCoreErrorCode::EXCESSIVE_PARAMETERS;
 	}
 	else
 	{
 		PrintVersion();
-		return std::make_pair(ParsedResult{}, GameCoreErrorCode::VERSION_REQUESTED);
+		return GameCoreErrorCode::VERSION_REQUESTED;
 	}
 }
 
@@ -55,17 +56,17 @@ ParsedResult ArgumentParser::HandleMoveOption(
 	const char *optarg)
 {
 	ParsedResult updated_result = result;
-	updated_result.move_direction = optarg;
+	updated_result.direction = optarg;
 	return updated_result;
 }
 
-ParsedResultWithErrorCode ArgumentParser::HandleHelpOption()
+GameCoreErrorCode ArgumentParser::HandleHelpOption()
 {
 	PrintUsage();
-	return std::make_pair(ParsedResult{}, GameCoreErrorCode::HELP_REQUESTED);
+	return GameCoreErrorCode::HELP_REQUESTED;
 }
 
-ParsedResultWithErrorCode ArgumentParser::HandleInvalidOption(int optopt)
+GameCoreErrorCode ArgumentParser::HandleInvalidOption(int optopt)
 {
 	GameCoreErrorCode error_code = GameCoreErrorCode::INVALID_PARAMETERS;
 
@@ -74,7 +75,7 @@ ParsedResultWithErrorCode ArgumentParser::HandleInvalidOption(int optopt)
 		error_code = GameCoreErrorCode::MISSING_PARAMETERS;
 	}
 
-	return std::make_pair(ParsedResult{}, error_code);
+	return error_code;
 }
 
 ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
@@ -106,21 +107,31 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 			result = HandleMapOption(result, optarg);
 			break;
 		case 'v': // --version
-			return HandleVersionOption(argc, argv);
+			return {
+				.parsed_result = result,
+				.error_code = HandleVersionOption(argc, argv)};
 		case 0: // --move
 			result = HandleMoveOption(result, optarg);
 			break;
 		case 'h': // --help
-			return HandleHelpOption();
+			return {
+				.parsed_result = result,
+				.error_code = HandleHelpOption()};
 		case '?': // other invalid options
-			return HandleInvalidOption(optopt);
+			return {
+				.parsed_result = result,
+				.error_code = HandleInvalidOption(optopt)};
 		default:
-			return std::make_pair(ParsedResult{}, GameCoreErrorCode::INVALID_PARAMETERS);
+			return {
+				.parsed_result = result,
+				.error_code = GameCoreErrorCode::INVALID_PARAMETERS};
 		}
 	}
 
 	// 检查参数是否合法
-	return std::make_pair(result, GameCoreErrorCode::SUCCESS);
+	return {
+		.parsed_result = result,
+		.error_code = GameCoreErrorCode::SUCCESS};
 }
 
 void ArgumentParser::PrintVersion()
