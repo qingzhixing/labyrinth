@@ -11,7 +11,17 @@
 #include <map_line_processor.h>
 #include <map_builder.h>
 
-GameCoreErrorCode GameMapExtend::MovePlayer(Direction direction)
+GameMapExtend &GameMapExtend::operator=(const GameMapExtend &other)
+{
+	if (this != &other)
+	{
+		GameMap::operator=(other);
+	}
+	return *this;
+}
+
+GameCoreErrorCode
+GameMapExtend::MovePlayer(Direction direction)
 {
 
 	// 检查玩家是否可以移动到目标方向
