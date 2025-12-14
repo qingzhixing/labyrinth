@@ -98,7 +98,6 @@ public:
 	 */
 	static bool ValidateMapConnectivity(GameMapExtend &game_map)
 	{
-		// TODO: Untested
 		bool checked[game_map.size.lines][game_map.size.columns] = {};
 
 		std::queue<Coordinate> bfs_queue;
