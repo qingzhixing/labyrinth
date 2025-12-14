@@ -5,6 +5,8 @@
 #include <types/map_cell.h>
 #include <types/coordinate.h>
 #include <types/map_size.h>
+#include <types/game_map.h>
+#include <game_map_extend.h>
 #include <debug_log.h>
 #include <queue>
 
@@ -98,7 +100,9 @@ public:
 	{
 		// TODO: Untested
 		bool checked[game_map.size.lines][game_map.size.columns] = {};
+
 		std::queue<Coordinate> bfs_queue;
+
 		// 从左上角开始BFS
 		bfs_queue.push(game_map.GetFirstLeftUpSpace());
 		checked[bfs_queue.front().line][bfs_queue.front().column] = true;
@@ -108,8 +112,10 @@ public:
 			bfs_queue.pop();
 
 			// 检查四个方向
-			for (Direction dir : {Direction::UP, Direction::DOWN,
-								  Direction::LEFT, Direction::RIGHT})
+			for (
+				Direction dir : {
+					Direction::UP, Direction::DOWN,
+					Direction::LEFT, Direction::RIGHT})
 			{
 				Coordinate next = current + DirectionToCoordinate(dir);
 				// Invalid Coordinate
