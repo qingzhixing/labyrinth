@@ -21,6 +21,7 @@ GameCoreErrorCode MapCoordinateRecorder::RecordPlayerIfNeeded(
 		return GameCoreErrorCode::SUCCESS;
 	}
 
+	// 已经有player_coordinate了
 	if (player_coordinate.IsValid())
 	{
 		DebugLog(
