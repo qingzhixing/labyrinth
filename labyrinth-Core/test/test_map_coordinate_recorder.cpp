@@ -64,3 +64,34 @@ UnitTest(MapCoordinateRecorder_RecordPlayerIfNeeded_MultiplePlayers)
 	assert(result == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
 	assert(recorder.HasPlayer());
 }
+
+UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_Valid)
+{
+	MapCoordinateRecorder recorder;
+	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+		MapCellType::DESTINATION, 1, 1);
+	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(recorder.GetDestination() == Coordinate(1, 1));
+}
+
+UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_NotADestinationCell)
+{
+	MapCoordinateRecorder recorder;
+	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+		MapCellType::SPACE, 1, 1);
+	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(!recorder.HasDestination());
+}
+
+UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_MultipleDestinations)
+{
+	MapCoordinateRecorder recorder;
+	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+		MapCellType::DESTINATION, 1, 1);
+	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(recorder.GetDestination() == Coordinate(1, 1));
+	result = recorder.RecordDestinationIfNeeded(
+		MapCellType::DESTINATION, 2, 2);
+	assert(result == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
+	assert(recorder.HasDestination());
+}
