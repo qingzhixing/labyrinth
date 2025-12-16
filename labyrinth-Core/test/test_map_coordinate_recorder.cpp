@@ -95,3 +95,20 @@ UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_MultipleDestinations)
 	assert(result == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
 	assert(recorder.HasDestination());
 }
+
+UnitTest(MapCoordinateRecorder_RecordCoordinates)
+{
+	MapCoordinateRecorder recorder;
+	GameCoreErrorCode result = recorder.RecordCoordinates(
+		MapCellType::PLAYER, 1, 1);
+	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(recorder.GetPlayerCoordinate() == Coordinate(1, 1));
+	assert(recorder.HasPlayer());
+	assert(!recorder.HasDestination());
+	result = recorder.RecordCoordinates(
+		MapCellType::DESTINATION, 2, 2);
+	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(recorder.GetDestination() == Coordinate(2, 2));
+	assert(recorder.HasPlayer());
+	assert(recorder.HasDestination());
+}
