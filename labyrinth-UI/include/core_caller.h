@@ -5,7 +5,6 @@
 #include <string>
 #include <types/error_code.h>
 #include <vector>
-#include <game_info.h>
 
 class CoreCaller
 {
@@ -15,6 +14,18 @@ public:
 		const std::vector<std::string> &arguments);
 
 	static ErrorCode ValidateCoreExecutable(const std::string &core_executable_path);
+
+	static char **ConvertArgumentsToCharPtrArray(const std::vector<std::string> &arguments);
+
+	static void FreeArgumentsArray(char **argv, size_t argument_count);
+
+private:
+	static void ExecuteChildProcess(const std::string &core_executable_path,
+									char **argv, size_t argument_count);
+
+	static ErrorCode WaitForChildProcess(pid_t pid, char **argv, size_t argument_count);
+
+	static ErrorCode ProcessChildExitStatus(int status);
 };
 
 #endif // CORE_CALLER_H

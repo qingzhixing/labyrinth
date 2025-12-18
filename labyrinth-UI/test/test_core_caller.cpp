@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <game_info.h>
 
 using std::format;
 using std::string;
