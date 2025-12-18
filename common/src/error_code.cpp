@@ -1,24 +1,24 @@
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <string>
 
-GameCoreErrorCode::GameCoreErrorCode(ErrorCodeValue value) : value(value) {}
+ErrorCode::ErrorCode(ErrorCodeValue value) : value(value) {}
 
-int GameCoreErrorCode::toInt() const
+int ErrorCode::toInt() const
 {
 	return static_cast<int>(value);
 }
 
-GameCoreErrorCode::ErrorCodeValue GameCoreErrorCode::GetValue() const
+ErrorCode::ErrorCodeValue ErrorCode::GetValue() const
 {
 	return value;
 }
 
-GameCoreErrorCode::operator GameCoreErrorCode::ErrorCodeValue() const
+ErrorCode::operator ErrorCode::ErrorCodeValue() const
 {
 	return value;
 }
 
-std::string GameCoreErrorCode::toString() const
+std::string ErrorCode::toString() const
 {
 	switch (value)
 	{
@@ -61,9 +61,9 @@ std::string GameCoreErrorCode::toString() const
 	}
 }
 
-std::string GameCoreErrorCode::toMessage() const
+std::string ErrorCode::toMessage() const
 {
-	return "GameCoreErrorCode: " +
+	return "ErrorCode: " +
 		   std::to_string(toInt()) +
 		   ", Message: " +
 		   toString();

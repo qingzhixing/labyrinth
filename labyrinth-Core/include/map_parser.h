@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <utility>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 
 class MapParser
 {
@@ -17,9 +17,9 @@ public:
 	/**
 	 * @brief 读取地图数据 - 从文件流中读取地图数据并构建 GameMapExtend 对象
 	 * @param map_stream 输入文件流，用于读取地图数据
-	 * @return pair<GameMapExtend, GameCoreErrorCode> 包含构建的地图对象和错误码的对
+	 * @return pair<GameMapExtend, ErrorCode> 包含构建的地图对象和错误码的对
 	 */
-	static std::pair<GameMapExtend, GameCoreErrorCode>
+	static std::pair<GameMapExtend, ErrorCode>
 	ReadMapData(std::ifstream &map_stream)
 	{
 		std::vector<MapLine> map_data;
@@ -38,7 +38,7 @@ public:
 			{
 				return std::make_pair(
 					GameMapExtend(),
-					GameCoreErrorCode::MAP_TOO_LARGE);
+					ErrorCode::MAP_TOO_LARGE);
 			}
 
 			// 验证行长度一致性
@@ -49,7 +49,7 @@ public:
 			{
 				return std::make_pair(
 					GameMapExtend(),
-					GameCoreErrorCode::MAP_INCONSISTENT_LINE);
+					ErrorCode::MAP_INCONSISTENT_LINE);
 			}
 
 			// 处理单行数据
@@ -57,7 +57,7 @@ public:
 				current_line_str,
 				line_index,
 				recorder);
-			if (line_result.second != GameCoreErrorCode::SUCCESS)
+			if (line_result.second != ErrorCode::SUCCESS)
 			{
 				return std::make_pair(
 					GameMapExtend(),
@@ -81,7 +81,7 @@ public:
 			expected_columns);
 	}
 
-	static std::pair<GameMapExtend, GameCoreErrorCode>
+	static std::pair<GameMapExtend, ErrorCode>
 	ParseMapFile(const std::string &map_file_path)
 	{
 		GameMapExtend game_map;
@@ -95,7 +95,7 @@ public:
 				map_file_path.c_str());
 			return std::make_pair(
 				std::move(game_map),
-				GameCoreErrorCode::MAP_FILE_NOT_FOUND);
+				ErrorCode::MAP_FILE_NOT_FOUND);
 		}
 
 		// Check The Map File Is Not A Directory
@@ -106,7 +106,7 @@ public:
 				"Map file is a directory: %s", map_file_path.c_str());
 			return std::make_pair(
 				std::move(game_map),
-				GameCoreErrorCode::MAP_FILE_IS_DIRECTORY);
+				ErrorCode::MAP_FILE_IS_DIRECTORY);
 		}
 
 		auto game_map_stream = std::ifstream(map_file_path);
@@ -116,24 +116,24 @@ public:
 					 "Failed to open map file: %s", map_file_path.c_str());
 			return std::make_pair(
 				std::move(game_map),
-				GameCoreErrorCode::MAP_FILE_NOT_FOUND);
+				ErrorCode::MAP_FILE_NOT_FOUND);
 		}
 
-		GameCoreErrorCode read_map_error_code =
-			GameCoreErrorCode::DEFAULT_ERROR_CODE;
+		ErrorCode read_map_error_code =
+			ErrorCode::DEFAULT_ERROR_CODE;
 
 		// 读取地图数据
 		std::tie(game_map, read_map_error_code) =
 			ReadMapData(game_map_stream);
 
-		if (read_map_error_code != GameCoreErrorCode::SUCCESS)
+		if (read_map_error_code != ErrorCode::SUCCESS)
 		{
 			DebugLog(LogLevel::ERROR,
 					 read_map_error_code.toMessage());
 			return std::make_pair(std::move(game_map), read_map_error_code);
 		}
 
-		return std::make_pair(std::move(game_map), GameCoreErrorCode::SUCCESS);
+		return std::make_pair(std::move(game_map), ErrorCode::SUCCESS);
 	}
 };
 

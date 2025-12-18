@@ -3,7 +3,7 @@
 #define GAME_MAP_H
 #include <vector>
 #include <string>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <types/map_size.h>
 #include <types/map_cell.h>
 #include <types/coordinate.h>

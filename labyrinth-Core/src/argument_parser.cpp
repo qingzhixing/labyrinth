@@ -3,7 +3,7 @@
 #include <debug_log.h>
 #include <getopt.h>
 #include <string>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <vector>
 #include <memory>
 #include <cstring>
@@ -29,7 +29,7 @@ ParsedResult ArgumentParser::HandleMapOption(
 	return updated_result;
 }
 
-GameCoreErrorCode ArgumentParser::HandleVersionOption(
+ErrorCode ArgumentParser::HandleVersionOption(
 	int argc,
 	char *argv[])
 {
@@ -43,12 +43,12 @@ GameCoreErrorCode ArgumentParser::HandleVersionOption(
 			LogLevel::ERROR,
 			"excessive parameters when --version: %s",
 			argv[optind]);
-		return GameCoreErrorCode::EXCESSIVE_PARAMETERS;
+		return ErrorCode::EXCESSIVE_PARAMETERS;
 	}
 	else
 	{
 		PrintVersion();
-		return GameCoreErrorCode::VERSION_REQUESTED;
+		return ErrorCode::VERSION_REQUESTED;
 	}
 }
 
@@ -61,19 +61,19 @@ ParsedResult ArgumentParser::HandleMoveOption(
 	return updated_result;
 }
 
-GameCoreErrorCode ArgumentParser::HandleHelpOption()
+ErrorCode ArgumentParser::HandleHelpOption()
 {
 	PrintUsage();
-	return GameCoreErrorCode::HELP_REQUESTED;
+	return ErrorCode::HELP_REQUESTED;
 }
 
-GameCoreErrorCode ArgumentParser::HandleInvalidOption(int optopt)
+ErrorCode ArgumentParser::HandleInvalidOption(int optopt)
 {
-	GameCoreErrorCode error_code = GameCoreErrorCode::INVALID_PARAMETERS;
+	ErrorCode error_code = ErrorCode::INVALID_PARAMETERS;
 
 	if (optopt == 'm' || optopt == 'p')
 	{
-		error_code = GameCoreErrorCode::MISSING_PARAMETERS;
+		error_code = ErrorCode::MISSING_PARAMETERS;
 	}
 
 	return error_code;
@@ -125,14 +125,14 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 		default:
 			return {
 				.parsed_result = result,
-				.error_code = GameCoreErrorCode::INVALID_PARAMETERS};
+				.error_code = ErrorCode::INVALID_PARAMETERS};
 		}
 	}
 
 	// 检查参数是否合法
 	return {
 		.parsed_result = result,
-		.error_code = GameCoreErrorCode::SUCCESS};
+		.error_code = ErrorCode::SUCCESS};
 }
 
 void ArgumentParser::PrintVersion()

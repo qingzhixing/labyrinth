@@ -37,77 +37,77 @@ UnitTest(MapCoordinateRecorder_IsDestinationCell)
 UnitTest(MapCoordinateRecorder_RecordPlayerIfNeeded_Valid)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordPlayerIfNeeded(
+	ErrorCode result = recorder.RecordPlayerIfNeeded(
 		MapCellType::PLAYER, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetPlayerCoordinate() == Coordinate(1, 1));
 }
 
 UnitTest(MapCoordinateRecorder_RecordPlayerIfNeeded_NotAPlayerCell)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordPlayerIfNeeded(
+	ErrorCode result = recorder.RecordPlayerIfNeeded(
 		MapCellType::SPACE, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(!recorder.HasPlayer());
 }
 
 UnitTest(MapCoordinateRecorder_RecordPlayerIfNeeded_MultiplePlayers)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordPlayerIfNeeded(
+	ErrorCode result = recorder.RecordPlayerIfNeeded(
 		MapCellType::PLAYER, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetPlayerCoordinate() == Coordinate(1, 1));
 	result = recorder.RecordPlayerIfNeeded(
 		MapCellType::PLAYER, 2, 2);
-	assert(result == GameCoreErrorCode::MAP_MULTIPLE_PLAYER);
+	assert(result == ErrorCode::MAP_MULTIPLE_PLAYER);
 	assert(recorder.HasPlayer());
 }
 
 UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_Valid)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+	ErrorCode result = recorder.RecordDestinationIfNeeded(
 		MapCellType::DESTINATION, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetDestination() == Coordinate(1, 1));
 }
 
 UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_NotADestinationCell)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+	ErrorCode result = recorder.RecordDestinationIfNeeded(
 		MapCellType::SPACE, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(!recorder.HasDestination());
 }
 
 UnitTest(MapCoordinateRecorder_RecordDestinationIfNeeded_MultipleDestinations)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordDestinationIfNeeded(
+	ErrorCode result = recorder.RecordDestinationIfNeeded(
 		MapCellType::DESTINATION, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetDestination() == Coordinate(1, 1));
 	result = recorder.RecordDestinationIfNeeded(
 		MapCellType::DESTINATION, 2, 2);
-	assert(result == GameCoreErrorCode::MAP_MULTIPLE_DESTINATION);
+	assert(result == ErrorCode::MAP_MULTIPLE_DESTINATION);
 	assert(recorder.HasDestination());
 }
 
 UnitTest(MapCoordinateRecorder_RecordCoordinates)
 {
 	MapCoordinateRecorder recorder;
-	GameCoreErrorCode result = recorder.RecordCoordinates(
+	ErrorCode result = recorder.RecordCoordinates(
 		MapCellType::PLAYER, 1, 1);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetPlayerCoordinate() == Coordinate(1, 1));
 	assert(recorder.HasPlayer());
 	assert(!recorder.HasDestination());
 	result = recorder.RecordCoordinates(
 		MapCellType::DESTINATION, 2, 2);
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(recorder.GetDestination() == Coordinate(2, 2));
 	assert(recorder.HasPlayer());
 	assert(recorder.HasDestination());

@@ -1,7 +1,7 @@
 #include <argument_parser.h>
 #include <core_info.h>
 #include <argument_validator.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <debug_log.h>
 #include <iostream>
 
@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
 		parser.ParseArguments(argc, argv);
 
 	// 如果是帮助或版本请求，直接退出
-	if (parse_error_code == GameCoreErrorCode::HELP_REQUESTED ||
-		parse_error_code == GameCoreErrorCode::VERSION_REQUESTED)
+	if (parse_error_code == ErrorCode::HELP_REQUESTED ||
+		parse_error_code == ErrorCode::VERSION_REQUESTED)
 	{
-		return GameCoreErrorCode::SUCCESS;
+		return ErrorCode::SUCCESS;
 	}
 
 	// Check for parsing errors
-	if (parse_error_code != GameCoreErrorCode::SUCCESS)
+	if (parse_error_code != ErrorCode::SUCCESS)
 	{
 		DebugLog(LogLevel::ERROR, parse_error_code.toMessage());
 		return parse_error_code.toInt();
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
 	// Validate the parsed result
 	auto [validated_context, validate_error_code] = ValidateParsedResult(parsed_result);
-	if (validate_error_code != GameCoreErrorCode::SUCCESS)
+	if (validate_error_code != ErrorCode::SUCCESS)
 	{
 		DebugLog(LogLevel::ERROR, validate_error_code.toMessage());
 		return validate_error_code.toInt();
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	auto [game_map, move_direction] = validated_context;
 	// Move the player
 	auto move_result = game_map.MovePlayer(move_direction);
-	if (move_result != GameCoreErrorCode::SUCCESS)
+	if (move_result != ErrorCode::SUCCESS)
 	{
 		DebugLog(LogLevel::ERROR, move_result.toMessage());
 		return move_result.toInt();

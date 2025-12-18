@@ -1,13 +1,13 @@
 #include <core_caller.h>
 #include <filesystem>
 
-GameCoreErrorCode
+ErrorCode
 CoreCaller::CallCoreExecutable(
 	const std::string &core_executable_path,
 	const std::vector<std::string> &arguments)
 {
 	// TODO: Unimplemented
-	return GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	return ErrorCode::DEFAULT_ERROR_CODE;
 }
 
 bool CoreCaller::ValidateCoreExecutable(const std::string &core_executable_path)

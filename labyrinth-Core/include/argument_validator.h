@@ -3,7 +3,7 @@
 #define ARGUMENT_VALIDATOR_H
 
 #include <argument_result.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <types/direction.h>
 
 /**
@@ -18,16 +18,16 @@ ValidatedGameContextWithErrorCode ValidateParsedResult(const ParsedResult &parse
  * @brief Check for missing parameters in the parsed result.
  *
  * @param parsed_result The parsed result.
- * @return GameCoreErrorCode The error code if parameters are missing, otherwise SUCCESS.
+ * @return ErrorCode The error code if parameters are missing, otherwise SUCCESS.
  */
-GameCoreErrorCode CheckMissingParameters(const ParsedResult &parsed_result);
+ErrorCode CheckMissingParameters(const ParsedResult &parsed_result);
 
 /**
  * @brief Validate the move direction.
  *
  * @param direction The move direction string.
- * @return [Direction, GameCoreErrorCode] The validated direction with error code.
+ * @return [Direction, ErrorCode] The validated direction with error code.
  */
-std::pair<Direction, GameCoreErrorCode> ValidateMoveDirection(const std::string &direction);
+std::pair<Direction, ErrorCode> ValidateMoveDirection(const std::string &direction);
 
 #endif // ARG_VALIDATE_H

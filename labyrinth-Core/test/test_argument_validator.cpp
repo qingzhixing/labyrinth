@@ -5,11 +5,11 @@
 UnitTest(CheckMissingParameters_Invalid)
 {
 	ParsedResult parsed_result{};
-	GameCoreErrorCode error_code =
+	ErrorCode error_code =
 		CheckMissingParameters(parsed_result);
 	assert(
 		error_code ==
-		GameCoreErrorCode::MISSING_PARAMETERS);
+		ErrorCode::MISSING_PARAMETERS);
 }
 
 UnitTest(CheckMissingParameters_Valid)
@@ -18,9 +18,9 @@ UnitTest(CheckMissingParameters_Valid)
 		.map_file = "map.txt",
 		.direction = "up",
 	};
-	GameCoreErrorCode error_code =
+	ErrorCode error_code =
 		CheckMissingParameters(parsed_result);
-	assert(error_code == GameCoreErrorCode::SUCCESS);
+	assert(error_code == ErrorCode::SUCCESS);
 }
 
 UnitTest(ValidateMoveDirection_Invalid)
@@ -30,7 +30,7 @@ UnitTest(ValidateMoveDirection_Invalid)
 		ValidateMoveDirection(direction_str);
 	assert(
 		error_code ==
-		GameCoreErrorCode::INVALID_MOVE_DIRECTION);
+		ErrorCode::INVALID_MOVE_DIRECTION);
 }
 
 UnitTest(ValidateMoveDirection_Valid)
@@ -46,7 +46,7 @@ UnitTest(ValidateMoveDirection_Valid)
 	{
 		auto [validated_direction, error_code] =
 			ValidateMoveDirection(direction_str);
-		assert(error_code == GameCoreErrorCode::SUCCESS);
+		assert(error_code == ErrorCode::SUCCESS);
 		assert(validated_direction == direction);
 	}
 }
@@ -58,7 +58,7 @@ UnitTest(ValidateParsedResult_Invalid_MissingParameters)
 		ValidateParsedResult(parsed_result);
 	assert(
 		result_with_error_code.error_code ==
-		GameCoreErrorCode::MISSING_PARAMETERS);
+		ErrorCode::MISSING_PARAMETERS);
 }
 
 UnitTest(ValidateParsedResult_Invalid_InvalidMoveDirection)
@@ -80,7 +80,7 @@ UnitTest(ValidateParsedResult_Invalid_InvalidMoveDirection)
 
 	assert(
 		result_with_error_code.error_code ==
-		GameCoreErrorCode::INVALID_MOVE_DIRECTION);
+		ErrorCode::INVALID_MOVE_DIRECTION);
 }
 
 UnitTest(ValidateParsedResult_Invalid_MapFileNotFound)
@@ -98,7 +98,7 @@ UnitTest(ValidateParsedResult_Invalid_MapFileNotFound)
 
 	assert(
 		result_with_error_code.error_code ==
-		GameCoreErrorCode::MAP_FILE_NOT_FOUND);
+		ErrorCode::MAP_FILE_NOT_FOUND);
 }
 
 UnitTest(ValidateParsedResult_Valid)
@@ -126,7 +126,7 @@ UnitTest(ValidateParsedResult_Valid)
 
 	assert(
 		result_with_error_code.error_code ==
-		GameCoreErrorCode::SUCCESS);
+		ErrorCode::SUCCESS);
 
 	auto &game_context =
 		result_with_error_code.validated_game_context;

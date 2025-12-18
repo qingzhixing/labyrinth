@@ -12,7 +12,7 @@
 class MapLineProcessor
 {
 public:
-	static std::pair<MapLine, GameCoreErrorCode>
+	static std::pair<MapLine, ErrorCode>
 	ProcessLine(
 		const std::string &line_str,
 		int line_index,

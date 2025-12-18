@@ -11,7 +11,7 @@ using std::make_pair;
 using std::pair;
 using std::string;
 
-GameCoreErrorCode
+ErrorCode
 CheckMissingParameters(const ParsedResult &parsed_result)
 {
 	bool missing_parameters = false;
@@ -25,12 +25,12 @@ CheckMissingParameters(const ParsedResult &parsed_result)
 	}
 	if (missing_parameters)
 	{
-		return GameCoreErrorCode::MISSING_PARAMETERS;
+		return ErrorCode::MISSING_PARAMETERS;
 	}
-	return GameCoreErrorCode::SUCCESS;
+	return ErrorCode::SUCCESS;
 }
 
-pair<Direction, GameCoreErrorCode>
+pair<Direction, ErrorCode>
 ValidateMoveDirection(const std::string &direction_str)
 {
 	Direction direction = Direction::INVALID;
@@ -58,23 +58,23 @@ ValidateMoveDirection(const std::string &direction_str)
 			direction_str.c_str());
 		return std::make_pair(
 			Direction::INVALID,
-			GameCoreErrorCode::INVALID_MOVE_DIRECTION);
+			ErrorCode::INVALID_MOVE_DIRECTION);
 	}
 	return std::make_pair(
 		direction,
-		GameCoreErrorCode::SUCCESS);
+		ErrorCode::SUCCESS);
 }
 
 ValidatedGameContextWithErrorCode
 ValidateParsedResult(const ParsedResult &parsed_result)
 {
-	GameCoreErrorCode error_code =
-		GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	ErrorCode error_code =
+		ErrorCode::DEFAULT_ERROR_CODE;
 	ValidatedGameContext validated_context{};
 
 	// 检查缺失参数
 	error_code = CheckMissingParameters(parsed_result);
-	if (error_code != GameCoreErrorCode::SUCCESS)
+	if (error_code != ErrorCode::SUCCESS)
 	{
 		return {
 			.validated_game_context = validated_context,
@@ -86,7 +86,7 @@ ValidateParsedResult(const ParsedResult &parsed_result)
 		validated_context.direction,
 		error_code) =
 		ValidateMoveDirection(parsed_result.direction);
-	if (error_code != GameCoreErrorCode::SUCCESS)
+	if (error_code != ErrorCode::SUCCESS)
 	{
 		return {
 			.validated_game_context = validated_context,
@@ -99,14 +99,14 @@ ValidateParsedResult(const ParsedResult &parsed_result)
 		error_code) =
 		MapParser::ParseMapFile(
 			parsed_result.map_file);
-	if (error_code != GameCoreErrorCode::SUCCESS)
+	if (error_code != ErrorCode::SUCCESS)
 	{
 		return {
 			.validated_game_context = validated_context,
 			.error_code = error_code};
 	}
 
-	error_code = GameCoreErrorCode::SUCCESS;
+	error_code = ErrorCode::SUCCESS;
 	return {
 		.validated_game_context = validated_context,
 		.error_code = error_code};

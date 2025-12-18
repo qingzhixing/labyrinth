@@ -38,12 +38,17 @@ UnitTest(CoreCallerValidateCoreExecutable_FileIsDirectory)
 {
 	auto directory_path =
 		"Directory_" + std::to_string(rand());
+
 	std::filesystem::create_directory(directory_path);
+
 	DebugLog(
 		LogLevel::INFO,
 		format("Validating core executable: {}", directory_path));
+
 	auto result = CoreCaller::ValidateCoreExecutable(directory_path);
+
 	std::filesystem::remove(directory_path);
+
 	assert(!result);
 }
 
@@ -51,12 +56,18 @@ UnitTest(CoreCallerValidateCoreExecutable_FileIsNotExecutable)
 {
 	auto non_executable_file_path =
 		"Non_Executable_File_" + std::to_string(rand());
+
 	std::ofstream non_executable_file(non_executable_file_path);
+
 	non_executable_file.close();
+
 	DebugLog(
 		LogLevel::INFO,
 		format("Validating core executable: {}", non_executable_file_path));
+
 	auto result = CoreCaller::ValidateCoreExecutable(non_executable_file_path);
+
 	std::filesystem::remove(non_executable_file_path);
+
 	assert(!result);
 }

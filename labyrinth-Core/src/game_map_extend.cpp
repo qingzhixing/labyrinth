@@ -20,7 +20,7 @@ GameMapExtend &GameMapExtend::operator=(const GameMapExtend &other)
 	return *this;
 }
 
-GameCoreErrorCode
+ErrorCode
 GameMapExtend::MovePlayer(Direction direction)
 {
 
@@ -30,14 +30,14 @@ GameMapExtend::MovePlayer(Direction direction)
 
 	if (!target_coordinate.IsValid())
 	{
-		return GameCoreErrorCode::MOVE_FAILED;
+		return ErrorCode::MOVE_FAILED;
 	}
 
 	auto &target_cell =
 		map_data[target_coordinate.line][target_coordinate.column];
 	if (target_cell == MapCellType::WALL)
 	{
-		return GameCoreErrorCode::MOVE_FAILED;
+		return ErrorCode::MOVE_FAILED;
 	}
 
 	// 清空当前玩家位置
@@ -57,7 +57,7 @@ GameMapExtend::MovePlayer(Direction direction)
 	{
 		target_cell = MapCellType::PLAYER_AT_DESTINATION;
 	}
-	return GameCoreErrorCode::SUCCESS;
+	return ErrorCode::SUCCESS;
 }
 
 Coordinate GameMapExtend::GetFirstLeftUpSpace() const

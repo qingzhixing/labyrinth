@@ -1,6 +1,6 @@
 #include <map_line_processor.h>
 
-std::pair<MapLine, GameCoreErrorCode>
+std::pair<MapLine, ErrorCode>
 MapLineProcessor::ProcessLine(
 	const std::string &line_str,
 	int line_index,
@@ -19,7 +19,7 @@ MapLineProcessor::ProcessLine(
 		{
 			return make_pair(
 				MapLine(),
-				GameCoreErrorCode::INVALID_MAP_FORMAT);
+				ErrorCode::INVALID_MAP_FORMAT);
 		}
 
 		map_line.push_back(cell_type);
@@ -27,7 +27,7 @@ MapLineProcessor::ProcessLine(
 		// 记录坐标
 		auto record_error = recorder.RecordCoordinates(
 			cell_type, line_index - 1, static_cast<int>(column));
-		if (record_error != GameCoreErrorCode::SUCCESS)
+		if (record_error != ErrorCode::SUCCESS)
 		{
 			return make_pair(MapLine(), record_error);
 		}
@@ -35,5 +35,5 @@ MapLineProcessor::ProcessLine(
 
 	return make_pair(
 		move(map_line),
-		GameCoreErrorCode::SUCCESS);
+		ErrorCode::SUCCESS);
 }

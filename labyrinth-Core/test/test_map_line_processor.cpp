@@ -7,7 +7,7 @@ UnitTest(TestMapLineProcessor)
 	auto result = MapLineProcessor::ProcessLine(
 		".@..0", 1, recorder);
 
-	assert(result.second == GameCoreErrorCode::SUCCESS);
+	assert(result.second == ErrorCode::SUCCESS);
 	assert(result.first.size() == 5);
 
 	assert(result.first[0] == MapCellType::SPACE);

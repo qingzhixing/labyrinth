@@ -1,5 +1,5 @@
 #include <testkit.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 
 SystemTest(
 	Labyrinth_Core_Help,
@@ -7,7 +7,7 @@ SystemTest(
 {
 	assert(
 		result->exit_status ==
-		GameCoreErrorCode::HELP_REQUESTED);
+		ErrorCode::HELP_REQUESTED);
 }
 
 SystemTest(
@@ -16,7 +16,7 @@ SystemTest(
 {
 	assert(
 		result->exit_status ==
-		GameCoreErrorCode::HELP_REQUESTED);
+		ErrorCode::HELP_REQUESTED);
 }
 
 SystemTest(
@@ -25,7 +25,7 @@ SystemTest(
 {
 	assert(
 		result->exit_status ==
-		GameCoreErrorCode::VERSION_REQUESTED);
+		ErrorCode::VERSION_REQUESTED);
 }
 
 SystemTest(
@@ -34,5 +34,5 @@ SystemTest(
 {
 	assert(
 		result->exit_status ==
-		GameCoreErrorCode::VERSION_REQUESTED);
+		ErrorCode::VERSION_REQUESTED);
 }

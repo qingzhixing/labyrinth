@@ -3,7 +3,7 @@
 #include <debug_log.h>
 #include <game_map_extend.h>
 
-std::pair<GameMapExtend, GameCoreErrorCode> MapBuilder::BuildFinalMap(
+std::pair<GameMapExtend, ErrorCode> MapBuilder::BuildFinalMap(
 	const std::vector<MapLine> &map_data,
 	const MapCoordinateRecorder &recorder,
 	int total_lines,
@@ -21,14 +21,14 @@ std::pair<GameMapExtend, GameCoreErrorCode> MapBuilder::BuildFinalMap(
 	{
 		return std::make_pair(
 			std::move(game_map),
-			GameCoreErrorCode::INVALID_MAP_FORMAT);
+			ErrorCode::INVALID_MAP_FORMAT);
 	}
 
 	if (!MapValidator::ValidateHasDestination(game_map.destination))
 	{
 		return std::make_pair(
 			std::move(game_map),
-			GameCoreErrorCode::MAP_NO_DESTINATION);
+			ErrorCode::MAP_NO_DESTINATION);
 	}
 
 	// 检查地图连通性
@@ -39,12 +39,12 @@ std::pair<GameMapExtend, GameCoreErrorCode> MapBuilder::BuildFinalMap(
 			"Invalid map format: map is not fully connected");
 		return std::make_pair(
 			std::move(game_map),
-			GameCoreErrorCode::INVALID_MAP_FORMAT);
+			ErrorCode::INVALID_MAP_FORMAT);
 	}
 
 	game_map.PlacePlayerIfNeeded();
 
 	return std::make_pair(
 		std::move(game_map),
-		GameCoreErrorCode::SUCCESS);
+		ErrorCode::SUCCESS);
 }

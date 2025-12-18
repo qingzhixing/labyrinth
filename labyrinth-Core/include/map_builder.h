@@ -6,7 +6,7 @@
 #include <map_coordinate_recorder.h>
 #include <map_validator.h>
 #include <debug_log.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <game_map_extend.h>
 
 /**
@@ -15,7 +15,7 @@
 class MapBuilder
 {
 public:
-	static std::pair<GameMapExtend, GameCoreErrorCode> BuildFinalMap(
+	static std::pair<GameMapExtend, ErrorCode> BuildFinalMap(
 		const std::vector<MapLine> &map_data,
 		const MapCoordinateRecorder &recorder,
 		int total_lines,

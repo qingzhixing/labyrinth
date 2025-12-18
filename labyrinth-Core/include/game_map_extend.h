@@ -13,7 +13,7 @@ public:
 
 	GameMapExtend &operator=(const GameMapExtend &other);
 
-	GameCoreErrorCode MovePlayer(Direction direction);
+	ErrorCode MovePlayer(Direction direction);
 
 	/**
 	 * @brief 查找地图上第一个左上空格子的坐标

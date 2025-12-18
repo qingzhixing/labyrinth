@@ -4,7 +4,7 @@
 
 #include <string>
 
-class GameCoreErrorCode
+class ErrorCode
 {
 public:
 	enum ErrorCodeValue : int
@@ -31,7 +31,7 @@ public:
 		GAME_CORE_ERROR_CODE_COUNT,
 	};
 
-	GameCoreErrorCode(ErrorCodeValue value);
+	ErrorCode(ErrorCodeValue value);
 
 	int toInt() const;
 	ErrorCodeValue GetValue() const;
@@ -40,7 +40,7 @@ public:
 	std::string toString() const;
 	std::string toMessage() const;
 
-	operator GameCoreErrorCode::ErrorCodeValue() const;
+	operator ErrorCode::ErrorCodeValue() const;
 
 private:
 	ErrorCodeValue value;

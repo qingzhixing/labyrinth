@@ -4,7 +4,7 @@
 
 #include <types/coordinate.h>
 #include <types/map_cell.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <debug_log.h>
 
 class MapCoordinateRecorderTest;
@@ -22,13 +22,13 @@ private:
 	static bool IsDestinationCell(MapCellType cell_type);
 
 public:
-	GameCoreErrorCode
+	ErrorCode
 	RecordPlayerIfNeeded(MapCellType cell_type, int line, int column);
 
-	GameCoreErrorCode
+	ErrorCode
 	RecordDestinationIfNeeded(MapCellType cell_type, int line, int column);
 
-	GameCoreErrorCode
+	ErrorCode
 	RecordCoordinates(MapCellType cell_type, int line, int column);
 
 	Coordinate GetPlayerCoordinate() const { return player_coordinate; }

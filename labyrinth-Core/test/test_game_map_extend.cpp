@@ -60,7 +60,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToWall)
 	DebugLog(LogLevel::INFO, "Move Player to (0, 1) result: " + result.toMessage());
 	PrintMap(map);
 
-	assert(result == GameCoreErrorCode::MOVE_FAILED);
+	assert(result == ErrorCode::MOVE_FAILED);
 }
 
 UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace)
@@ -79,7 +79,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace)
 	DebugLog(LogLevel::INFO, "Move Player to (-1, 0) result: " + result.toMessage());
 	PrintMap(map);
 
-	assert(result == GameCoreErrorCode::MOVE_FAILED);
+	assert(result == ErrorCode::MOVE_FAILED);
 }
 
 UnitTest(GameMapExtend_MovePlayer_MoveToSpace)
@@ -100,7 +100,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToSpace)
 	DebugLog(LogLevel::INFO, "Move Player to (1, 1) result: " + result.toMessage());
 	PrintMap(map);
 
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(map.player_coordinate == Coordinate(1, 1));
 	assert(map.map_data[1][1] == MapCellType::PLAYER);
 	assert(map.map_data[1][0] == MapCellType::SPACE);
@@ -123,7 +123,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToDestination)
 	DebugLog(LogLevel::INFO, "Move Player to (1, 1) result: " + result.toMessage());
 	PrintMap(map);
 
-	assert(result == GameCoreErrorCode::SUCCESS);
+	assert(result == ErrorCode::SUCCESS);
 	assert(map.player_coordinate == Coordinate(1, 1));
 	assert(map.map_data[1][1] == MapCellType::PLAYER_AT_DESTINATION);
 	assert(map.map_data[1][0] == MapCellType::SPACE);

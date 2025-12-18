@@ -3,7 +3,7 @@
 #define ARG_RESULT_H
 #include <string>
 #include <core_info.h>
-#include <types/core_error_code.h>
+#include <types/error_code.h>
 #include <types/direction.h>
 #include <fstream>
 #include <string>
@@ -18,7 +18,7 @@ struct ParsedResult
 struct ParsedResultWithErrorCode
 {
 	ParsedResult parsed_result{};
-	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	ErrorCode error_code = ErrorCode::DEFAULT_ERROR_CODE;
 };
 
 struct ValidatedGameContext
@@ -30,7 +30,7 @@ struct ValidatedGameContext
 struct ValidatedGameContextWithErrorCode
 {
 	ValidatedGameContext validated_game_context{};
-	GameCoreErrorCode error_code = GameCoreErrorCode::DEFAULT_ERROR_CODE;
+	ErrorCode error_code = ErrorCode::DEFAULT_ERROR_CODE;
 };
 
 #endif // ARG_RESULT_H

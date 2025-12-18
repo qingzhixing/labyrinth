@@ -62,9 +62,9 @@ private:
 	 *
 	 * @param argc The number of arguments.
 	 * @param argv The argument vector.
-	 * @return GameCoreErrorCode The error code for version requested.
+	 * @return ErrorCode The error code for version requested.
 	 */
-	GameCoreErrorCode HandleVersionOption(int argc, char *argv[]);
+	ErrorCode HandleVersionOption(int argc, char *argv[]);
 
 	/**
 	 * @brief Handle the move option and return the updated result.
@@ -78,9 +78,9 @@ private:
 	/**
 	 * @brief Handle the help option.
 	 *
-	 * @return GameCoreErrorCode The error code for help requested.
+	 * @return ErrorCode The error code for help requested.
 	 */
-	GameCoreErrorCode HandleHelpOption();
+	ErrorCode HandleHelpOption();
 
 	/**
 	 * @brief Handle invalid options.
@@ -88,7 +88,7 @@ private:
 	 * @param optopt The option character that caused the error.
 	 * @return GameCoreErrorCode The error code for invalid option.
 	 */
-	GameCoreErrorCode HandleInvalidOption(int optopt);
+	ErrorCode HandleInvalidOption(int optopt);
 
 	// 声明测试类为友元类，以便测试私有函数
 	friend class ArgumentParserTest;
