@@ -19,7 +19,7 @@ UnitTest(CoreCallerValidateCoreExecutable_Valid)
 		LogLevel::INFO,
 		format("Current directory: {}", std::filesystem::current_path().string()));
 
-	assert(CoreCaller::ValidateCoreExecutable(GAME_CORE_EXECUTABLE_NAME));
+	assert(CoreCaller::ValidateCoreExecutable(GAME_CORE_EXECUTABLE_NAME) == ErrorCode::SUCCESS);
 }
 
 UnitTest(CoreCallerValidateCoreExecutable_MissingFile)
@@ -31,7 +31,7 @@ UnitTest(CoreCallerValidateCoreExecutable_MissingFile)
 		LogLevel::INFO,
 		format("Validating core executable: {}", missing_file_path));
 
-	assert(!CoreCaller::ValidateCoreExecutable(missing_file_path));
+	assert(CoreCaller::ValidateCoreExecutable(missing_file_path) == ErrorCode::CORE_NOT_FOUND);
 }
 
 UnitTest(CoreCallerValidateCoreExecutable_FileIsDirectory)
@@ -49,7 +49,7 @@ UnitTest(CoreCallerValidateCoreExecutable_FileIsDirectory)
 
 	std::filesystem::remove(directory_path);
 
-	assert(!result);
+	assert(result == ErrorCode::CORE_NOT_FOUND);
 }
 
 UnitTest(CoreCallerValidateCoreExecutable_FileIsNotExecutable)
@@ -69,5 +69,5 @@ UnitTest(CoreCallerValidateCoreExecutable_FileIsNotExecutable)
 
 	std::filesystem::remove(non_executable_file_path);
 
-	assert(!result);
+	assert(result == ErrorCode::CORE_NOT_EXECUTABLE);
 }

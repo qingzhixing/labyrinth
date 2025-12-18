@@ -14,7 +14,7 @@ public:
 		const std::string &core_executable_path,
 		const std::vector<std::string> &arguments);
 
-	static bool ValidateCoreExecutable(const std::string &core_executable_path);
+	static ErrorCode ValidateCoreExecutable(const std::string &core_executable_path);
 };
 
 #endif // CORE_CALLER_H

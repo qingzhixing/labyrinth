@@ -15,8 +15,17 @@ void PrintGameInfo()
 	cout << std::format("Author: {} <{}>", AUTHOR, AUTHOR_EMAIL) << endl;
 }
 
+void DisplayGameMap() {}
+void ReadUserInput() {}
+void CallCoreExecutable() {}
+void CheckGameEnd() {}
+
 int main(int argc, char *argv[])
 {
 	PrintGameInfo();
+	DisplayGameMap();
+	ReadUserInput();
+	CallCoreExecutable();
+	CheckGameEnd();
 	return 0;
 }
