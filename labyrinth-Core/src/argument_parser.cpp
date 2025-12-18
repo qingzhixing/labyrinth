@@ -174,6 +174,6 @@ void ArgumentParser::PrintUsage()
 
 	std::cout << "Tips:" << std::endl;
 	std::cout
-		<< "  1. '--move' '-m' must be used together"
+		<< "  '--move' '-m' must be used together"
 		<< std::endl;
 }
