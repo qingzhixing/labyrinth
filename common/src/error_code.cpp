@@ -3,6 +3,11 @@
 
 ErrorCode::ErrorCode(ErrorCodeValue value) : value(value) {}
 
+ErrorCode::ErrorCode(int value)
+{
+	this->value = static_cast<ErrorCodeValue>(value);
+}
+
 int ErrorCode::toInt() const
 {
 	return static_cast<int>(value);
@@ -60,6 +65,8 @@ std::string ErrorCode::toString() const
 		return "Core executable time out [Core 运行超时]";
 	case CORE_NOT_EXECUTABLE:
 		return "Core executable not executable [Core 文件不可执行]";
+	case CORE_EXECUTION_FAILED:
+		return "Core executable execution failed [Core 文件执行失败]";
 	case DEFAULT_ERROR_CODE:
 		return "Default error code, This Should Not Happen [默认错误码,通常情况下不应该会返回！！！]";
 	default:

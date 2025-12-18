@@ -28,6 +28,7 @@ public:
 		CORE_NOT_FOUND,
 		CORE_TIME_OUT,
 		CORE_NOT_EXECUTABLE,
+		CORE_EXECUTION_FAILED,
 
 		DEFAULT_ERROR_CODE,
 
@@ -35,6 +36,8 @@ public:
 	};
 
 	ErrorCode(ErrorCodeValue value);
+
+	explicit ErrorCode(int value);
 
 	int toInt() const;
 	ErrorCodeValue GetValue() const;

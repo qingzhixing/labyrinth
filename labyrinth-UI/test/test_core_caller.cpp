@@ -71,3 +71,18 @@ UnitTest(CoreCallerValidateCoreExecutable_FileIsNotExecutable)
 
 	assert(result == ErrorCode::CORE_NOT_EXECUTABLE);
 }
+
+UnitTest(CallCoreExecutable_Help)
+{
+	DebugLog(
+		LogLevel::INFO,
+		format("Calling core executable: {}", GAME_CORE_EXECUTABLE_NAME));
+
+	auto result = CoreCaller::CallCoreExecutable(GAME_CORE_EXECUTABLE_NAME, {"--help"});
+
+	DebugLog(
+		LogLevel::INFO,
+		format("Core executable help result: {}", result.toString()));
+
+	assert(result == ErrorCode::SUCCESS);
+}
