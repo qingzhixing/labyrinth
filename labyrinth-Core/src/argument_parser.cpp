@@ -138,7 +138,7 @@ void ArgumentParser::PrintVersion()
 {
 	std::cout << GAME_NAME_ASCII_ART << std::endl;
 	std::cout << GAME_NAME << " " << GAME_VERSION << std::endl;
-	std::cout << GAME_DESCRIPTION << std::endl;
+	std::cout << CORE_DESCRIPTION << std::endl;
 	std::cout
 		<< "Author: "
 		<< AUTHOR

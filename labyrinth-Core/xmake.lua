@@ -1,6 +1,6 @@
 target("labyrinth-Core")
 	set_kind("binary")
-	set_languages("c++17")
+	set_languages("c++23")
 	add_deps("testkit", "common", "debug_utils")
 
 	-- Add include directories

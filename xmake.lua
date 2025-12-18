@@ -23,7 +23,7 @@ if is_mode("release") then
 end
 
 -- 设置C++标准版本（推荐使用C++17）
-set_languages("c++17")
+set_languages("c++23")
 
 -- Libs
 includes("debug_utils")
