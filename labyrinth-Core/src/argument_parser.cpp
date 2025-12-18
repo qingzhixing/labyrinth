@@ -8,6 +8,7 @@
 #include <memory>
 #include <cstring>
 #include <iostream>
+#include <format>
 
 using std::string;
 
@@ -137,13 +138,9 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 void ArgumentParser::PrintVersion()
 {
 	std::cout << GAME_NAME_ASCII_ART << std::endl;
-	std::cout << GAME_NAME << " " << GAME_VERSION << std::endl;
+	std::cout << std::format("{} ({})", GAME_NAME, GAME_VERSION) << std::endl;
 	std::cout << CORE_DESCRIPTION << std::endl;
-	std::cout
-		<< "Author: "
-		<< AUTHOR
-		<< " (" << AUTHOR_EMAIL << ")"
-		<< std::endl;
+	std::cout << std::format("Author: {} <{}>", AUTHOR, AUTHOR_EMAIL) << std::endl;
 }
 
 void ArgumentParser::PrintUsage()

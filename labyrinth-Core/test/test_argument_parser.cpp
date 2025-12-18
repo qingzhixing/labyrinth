@@ -233,8 +233,8 @@ UnitTest(ArgumentParser_PrintVersion)
 	std::string output = buffer.str();
 
 	// 检查输出是否包含预期的内容
-	assert(output.find("Labyrinth Game") != std::string::npos);
-	assert(output.find("v0.1.0") != std::string::npos);
+	assert(output.find(GAME_NAME) != std::string::npos);
+	assert(output.find(GAME_VERSION) != std::string::npos);
 }
 
 // 测试静态函数PrintUsage
