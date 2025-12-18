@@ -10,6 +10,8 @@ inline const std::string GAME_VERSION = "v0.1.0";
 inline const std::string AUTHOR = "@qingzhixing";
 inline const std::string AUTHOR_EMAIL = "qzsqqmail@qq.com";
 
+inline const std::string GAME_CORE_EXECUTABLE_NAME = "labyrinth-Core";
+
 inline const std::string GAME_NAME_ASCII_ART = R"(
 .-.     .--.  .----..-.  .-..----. .-..-. .-. .---. .-. .-.
 | |    / {} \ | {}  }\ \/ / | {}  }| ||  `| |{_   _}| {_} |

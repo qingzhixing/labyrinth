@@ -27,11 +27,17 @@ def main():
     else:
         print("启用普通输出模式 (Undefined DBG_LOG_ENABLE)")
 
-    # 运行测试
+    # 运行测试,运行目录: ./build
     print("运行测试...")
-    subprocess.run(["./build/common-test"], env=env)
-    subprocess.run(["./build/labyrinth-Core"], env=env)
-    subprocess.run(["./build/labyrinth-UI"], env=env)
+    # 运行 common-test
+    print("运行 common-test...")
+    subprocess.run(["./common-test"], env=env, cwd="./build")
+    # 运行 labyrinth-Core
+    print("运行 labyrinth-Core...")
+    subprocess.run(["./labyrinth-Core"], env=env, cwd="./build")
+    # 运行 labyrinth-UI
+    print("运行 labyrinth-UI...")
+    subprocess.run(["./labyrinth-UI"], env=env, cwd="./build")
 
 
 if __name__ == "__main__":
