@@ -31,12 +31,34 @@ ErrorCode DisplayGameMap()
 	return result;
 }
 
-void ReadUserInput() {}
+std::pair<bool, Direction> ReadUserInput()
+{
+	DebugLog(LogLevel::INFO, "Read user input");
+	cout << "Please input your move (w/a/s/d; q to quit): ";
+	char input;
+	cin >> input;
+	switch (input)
+	{
+	case 'w':
+		return std::make_pair(true, Direction::UP);
+	case 'a':
+		return std::make_pair(true, Direction::LEFT);
+	case 's':
+		return std::make_pair(true, Direction::DOWN);
+	case 'd':
+		return std::make_pair(true, Direction::RIGHT);
+	case 'q':
+		return std::make_pair(true, Direction::INVALID);
+	default:
+		DebugLog(LogLevel::ERROR, "Invalid input");
+		return std::make_pair(false, Direction::INVALID);
+	}
+}
 
-ErrorCode CallCoreExecutable()
+ErrorCode CallCoreExecutable(Direction direction)
 {
 	DebugLog(LogLevel::INFO, "Call core executable");
-	return game_controller.MovePlayer(Direction::DOWN);
+	return game_controller.MovePlayer(direction);
 }
 
 bool CheckGameEnd()
@@ -50,33 +72,71 @@ bool CheckGameEnd()
 	return is_game_end;
 }
 
+void ClearScreen()
+{
+	// 清除屏幕
+	cout << "\033[2J\033[1;1H";
+}
+
 int main(int argc, char *argv[])
 {
-	PrintGameInfo();
-
 	// 如果在测试环境则不进入游戏主逻辑
 	if (IsTestEnvironment())
 	{
 		return 0;
 	}
 
-	while (!CheckGameEnd())
+	bool quit_game = false;
+
+	if (CheckGameEnd())
 	{
+		cout << "地图已到达终点!" << endl;
+		return 0;
+	}
+
+	while (!quit_game)
+	{
+		ClearScreen();
+
+		PrintGameInfo();
+
 		auto display_result = DisplayGameMap();
 		if (display_result != ErrorCode::SUCCESS)
 		{
 			cout << display_result.toMessage() << endl;
-			break;
+			return 0;
 		}
 
-		ReadUserInput();
+		auto [is_valid, direction] = ReadUserInput();
 
-		auto move_result = CallCoreExecutable();
-		if (move_result != ErrorCode::SUCCESS)
+		// Check for quit
+		if (direction == Direction::INVALID && is_valid)
+		{
+			quit_game = true;
+			continue;
+		}
+
+		auto move_result = CallCoreExecutable(direction);
+
+		if (move_result != ErrorCode::SUCCESS &&
+			move_result != ErrorCode::MOVE_FAILED)
 		{
 			cout << move_result.toMessage() << endl;
+			return 0;
+		}
+
+		// Check for win
+		if (CheckGameEnd())
+		{
+			cout << "You win!" << endl;
 			break;
 		}
 	}
+	// Check for quit
+	if (quit_game)
+	{
+		cout << "Quit game." << endl;
+	}
+
 	return 0;
 }
