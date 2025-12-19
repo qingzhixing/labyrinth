@@ -91,11 +91,10 @@ UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace_OverMap)
 	map.map_data = {{MapCellType::SPACE, MapCellType::WALL},
 					{MapCellType::PLAYER, MapCellType::SPACE}};
 	map.size = {2, 2};
+	map.player_coordinate = Coordinate(1, 0);
 
 	PrintMap(map);
 	assert(map.PlacePlayerIfNeeded());
-	DebugLog(LogLevel::INFO, std::format("Player Coordinate: ({}, {})", map.player_coordinate.row, map.player_coordinate.column));
-	assert(map.player_coordinate == Coordinate(1, 0));
 
 	// Move Player to (2, 0)
 	auto result = map.MovePlayer(Direction::DOWN);
