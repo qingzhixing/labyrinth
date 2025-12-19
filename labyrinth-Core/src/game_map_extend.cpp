@@ -91,7 +91,10 @@ ErrorCode GameMapExtend::WriteBackMap(const std::string &map_file_path) const
 {
 	// 遍历地图,写入数据
 	// 打开文件流
-	std::fstream map_file(map_file_path, std::ios::out);
+	std::fstream map_file(
+		map_file_path,
+		std::ios::out | std::ios::trunc);
+
 	if (!map_file.is_open())
 	{
 		return ErrorCode::MAP_FILE_OPEN_FAILED;

@@ -2,6 +2,8 @@
 #include <testkit.h>
 #include <iostream>
 #include <debug_log.h>
+#include <fstream>
+#include <filesystem>
 
 void PrintMap(const GameMapExtend &map)
 {
@@ -127,4 +129,47 @@ UnitTest(GameMapExtend_MovePlayer_MoveToDestination)
 	assert(map.player_coordinate == Coordinate(1, 1));
 	assert(map.map_data[1][1] == MapCellType::PLAYER_AT_DESTINATION);
 	assert(map.map_data[1][0] == MapCellType::SPACE);
+}
+
+UnitTest(GameMapExtend_WriteBackMap)
+{
+	GameMapExtend map;
+	map.map_data = {{MapCellType::SPACE, MapCellType::WALL},
+					{MapCellType::PLAYER, MapCellType::DESTINATION}};
+	map.size = {2, 2};
+
+	PrintMap(map);
+	// Write Back Map
+	auto map_path = "test_map_" + std::to_string(rand()) + ".txt";
+	auto result = map.WriteBackMap(map_path);
+
+	// Read the map back
+	auto map_file = std::ifstream(map_path);
+	if (!map_file.is_open())
+	{
+		DebugLog(LogLevel::ERROR, "Read Map file failed: " + map_path);
+		assert(false);
+	}
+	std::vector<std::string> lines;
+	std::string line;
+	while (std::getline(map_file, line))
+	{
+		lines.push_back(line);
+	}
+
+	// Close the file stream
+	map_file.close();
+
+	std::filesystem::remove(map_path);
+
+	// Check the map data
+	assert(lines.size() == map.size.lines);
+	for (int i = 0; i < map.size.lines; i++)
+	{
+		for (int j = 0; j < map.size.columns; j++)
+		{
+			assert(lines[i][j] == GetMapCellChar(map.map_data[i][j]));
+		}
+	}
+	assert(result == ErrorCode::SUCCESS);
 }
