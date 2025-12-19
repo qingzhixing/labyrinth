@@ -124,18 +124,19 @@ UnitTest(ValidateParsedResult_Valid)
 	// 删除测试文件
 	std::remove(valid_map_path.c_str());
 
-	assert(
-		result_with_error_code.error_code ==
-		ErrorCode::SUCCESS);
+	auto [validated_game_context, error_code] = result_with_error_code;
 
-	auto &game_context =
-		result_with_error_code.validated_game_context;
+	assert(error_code == ErrorCode::SUCCESS);
+
 	auto &game_map =
-		game_context.game_map;
+		validated_game_context.game_map;
 	auto &direction =
-		game_context.direction;
+		validated_game_context.direction;
+	auto &map_file_path =
+		validated_game_context.map_file_path;
 
 	assert(direction == Direction::UP);
+	assert(map_file_path == valid_map_path);
 	assert(game_map.player_coordinate == Coordinate(1, 0));
 	assert(game_map.map_data[1][0] == MapCellType::PLAYER);
 }
