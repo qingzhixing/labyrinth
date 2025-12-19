@@ -37,8 +37,8 @@ std::string ErrorCode::toString() const
 		return "Map is a directory [地图文件是一个目录]";
 	case MAP_TOO_LARGE:
 		return "Map too large [地图过大]";
-	case MAP_INCONSISTENT_LINE:
-		return "Map inconsistent line [地图行不一致]";
+	case MAP_INCONSISTENT_ROW:
+		return "Map inconsistent row [地图行不一致]";
 	case MAP_NO_DESTINATION:
 		return "Map no destination '@' found [地图无终点]";
 	case MAP_MULTIPLE_DESTINATION:

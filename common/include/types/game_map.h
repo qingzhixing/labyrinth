@@ -9,8 +9,8 @@
 #include <types/coordinate.h>
 #include <game_info.h>
 
-typedef std::vector<MapCellType> MapLine;
-typedef std::vector<MapLine> MapData;
+typedef std::vector<MapCellType> MapRow;
+typedef std::vector<MapRow> MapData;
 
 class GameMap
 {

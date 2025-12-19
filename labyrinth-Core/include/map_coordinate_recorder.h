@@ -23,13 +23,13 @@ private:
 
 public:
 	ErrorCode
-	RecordPlayerIfNeeded(MapCellType cell_type, int line, int column);
+	RecordPlayerIfNeeded(MapCellType cell_type, int row, int column);
 
 	ErrorCode
-	RecordDestinationIfNeeded(MapCellType cell_type, int line, int column);
+	RecordDestinationIfNeeded(MapCellType cell_type, int row, int column);
 
 	ErrorCode
-	RecordCoordinates(MapCellType cell_type, int line, int column);
+	RecordCoordinates(MapCellType cell_type, int row, int column);
 
 	Coordinate GetPlayerCoordinate() const { return player_coordinate; }
 	Coordinate GetDestination() const { return destination; }

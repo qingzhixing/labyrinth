@@ -7,10 +7,10 @@ class Coordinate
 public:
 	Coordinate();
 	Coordinate(const Coordinate &other);
-	Coordinate(int line, int column);
+	Coordinate(int row, int column);
 
 public:
-	int line, column;
+	int row, column;
 
 public:
 	bool operator==(const Coordinate &other) const;

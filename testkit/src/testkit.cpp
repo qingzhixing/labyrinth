@@ -11,7 +11,7 @@ static struct tk_testcase tests[TK_MAX_TESTS];
 
 /**
  * Add a test case to the test suite. Handles both system tests (calling
- * main with command-line arguments) and unit tests. This is the only
+ * main with command-row arguments) and unit tests. This is the only
  * externally visible function in TestKit.
  */
 void tk_add_test(struct tk_testcase t)

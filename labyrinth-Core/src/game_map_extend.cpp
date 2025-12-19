@@ -8,7 +8,7 @@
 
 #include <map_validator.h>
 #include <map_coordinate_recorder.h>
-#include <map_line_processor.h>
+#include <map_row_processor.h>
 #include <map_builder.h>
 
 GameMapExtend &GameMapExtend::operator=(const GameMapExtend &other)
@@ -34,13 +34,13 @@ GameMapExtend::MovePlayer(Direction direction)
 		return ErrorCode::MOVE_FAILED;
 	}
 	if (target_coordinate.column >= size.columns ||
-		target_coordinate.line >= size.lines)
+		target_coordinate.row >= size.lines)
 	{
 		return ErrorCode::MOVE_FAILED;
 	}
 
 	auto &target_cell =
-		map_data[target_coordinate.line][target_coordinate.column];
+		map_data[target_coordinate.row][target_coordinate.column];
 	if (target_cell == MapCellType::WALL)
 	{
 		return ErrorCode::MOVE_FAILED;
@@ -48,7 +48,7 @@ GameMapExtend::MovePlayer(Direction direction)
 
 	// 清空当前玩家位置
 	auto &current_cell =
-		map_data[player_coordinate.line][player_coordinate.column];
+		map_data[player_coordinate.row][player_coordinate.column];
 	current_cell = MapCellType::SPACE;
 
 	// 移动玩家
@@ -70,13 +70,13 @@ GameMapExtend::MovePlayer(Direction direction)
 Coordinate GameMapExtend::GetFirstLeftUpSpace() const
 {
 	// 从左上角开始遍历地图
-	for (int line = 0; line < size.lines; line++)
+	for (int row = 0; row < size.lines; row++)
 	{
 		for (int column = 0; column < size.columns; column++)
 		{
-			if (map_data[line][column] == MapCellType::SPACE)
+			if (map_data[row][column] == MapCellType::SPACE)
 			{
-				return Coordinate(line, column);
+				return Coordinate(row, column);
 			}
 		}
 	}
@@ -107,9 +107,9 @@ ErrorCode GameMapExtend::WriteBackMap(const std::string &map_file_path) const
 	}
 
 	// 写入地图数据
-	for (const auto &line : map_data)
+	for (const auto &row : map_data)
 	{
-		for (const auto &cell : line)
+		for (const auto &cell : row)
 		{
 			map_file << GetMapCellChar(cell);
 		}

@@ -16,7 +16,7 @@ class MapBuilder
 {
 public:
 	static std::pair<GameMapExtend, ErrorCode> BuildFinalMap(
-		const std::vector<MapLine> &map_data,
+		const std::vector<MapRow> &map_data,
 		const MapCoordinateRecorder &recorder,
 		int total_lines,
 		int total_columns);

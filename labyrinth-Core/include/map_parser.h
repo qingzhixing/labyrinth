@@ -3,7 +3,7 @@
 #define MAP_PARSER_H
 
 #include <map_validator.h>
-#include <map_line_processor.h>
+#include <map_row_processor.h>
 #include <map_builder.h>
 #include <filesystem>
 #include <fstream>
@@ -22,7 +22,7 @@ public:
 	static std::pair<GameMapExtend, ErrorCode>
 	ReadMapData(std::ifstream &map_stream)
 	{
-		std::vector<MapLine> map_data;
+		std::vector<MapRow> map_data;
 		MapCoordinateRecorder recorder;
 		int line_index = 0;
 		int expected_columns = 0;
@@ -49,11 +49,11 @@ public:
 			{
 				return std::make_pair(
 					GameMapExtend(),
-					ErrorCode::MAP_INCONSISTENT_LINE);
+					ErrorCode::MAP_INCONSISTENT_ROW);
 			}
 
 			// 处理单行数据
-			auto line_result = MapLineProcessor::ProcessLine(
+			auto line_result = MapRowProcessor::ProcessRow(
 				current_line_str,
 				line_index,
 				recorder);

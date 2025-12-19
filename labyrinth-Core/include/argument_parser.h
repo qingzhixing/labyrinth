@@ -8,7 +8,7 @@
 class ArgumentParserTest;
 
 /**
- * @brief Argument parser class for parsing command line arguments.
+ * @brief Argument parser class for parsing command row arguments.
  */
 class ArgumentParser
 {
@@ -19,10 +19,10 @@ public:
 	ArgumentParser() = default;
 
 	/**
-	 * @brief Parse the command line arguments.
+	 * @brief Parse the command row arguments.
 	 *
-	 * @param argc The number of command line arguments.
-	 * @param argv The command line arguments.
+	 * @param argc The number of command row arguments.
+	 * @param argv The command row arguments.
 	 *
 	 * @return ParsedResultWithErrorCode The parsed arguments with error code.
 	 *

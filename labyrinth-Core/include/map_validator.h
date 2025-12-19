@@ -46,7 +46,7 @@ public:
 		{
 			DebugLog(
 				LogLevel::ERROR,
-				"Invalid map format: inconsistent line lengths at line %d",
+				"Invalid map format: inconsistent row lengths at row %d",
 				line_index);
 			return false;
 		}
@@ -59,7 +59,7 @@ public:
 		{
 			DebugLog(
 				LogLevel::ERROR,
-				"Invalid map format: unknown cell type '%c' at line %d",
+				"Invalid map format: unknown cell type '%c' at row %d",
 				ch, line_index);
 			return false;
 		}
@@ -104,7 +104,7 @@ public:
 
 		// 从左上角开始BFS
 		bfs_queue.push(game_map.GetFirstLeftUpSpace());
-		checked[bfs_queue.front().line][bfs_queue.front().column] = true;
+		checked[bfs_queue.front().row][bfs_queue.front().column] = true;
 		while (!bfs_queue.empty())
 		{
 			auto current = bfs_queue.front();
@@ -118,28 +118,28 @@ public:
 			{
 				Coordinate next = current + DirectionToCoordinate(dir);
 				// Invalid Coordinate
-				if (next.line < 0 || next.line >= game_map.size.lines ||
+				if (next.row < 0 || next.row >= game_map.size.lines ||
 					next.column < 0 || next.column >= game_map.size.columns)
 				{
 					continue;
 				}
 				// Unmatched
-				if (game_map.map_data[next.line][next.column] != MapCellType::WALL &&
-					!checked[next.line][next.column])
+				if (game_map.map_data[next.row][next.column] != MapCellType::WALL &&
+					!checked[next.row][next.column])
 				{
 					bfs_queue.push(next);
-					checked[next.line][next.column] = true;
+					checked[next.row][next.column] = true;
 				}
 			}
 		}
 
 		// 遍历查看每个SPACE是否连通
-		for (int line = 0; line < game_map.size.lines; line++)
+		for (int row = 0; row < game_map.size.lines; row++)
 		{
 			for (int column = 0; column < game_map.size.columns; column++)
 			{
-				if (game_map.map_data[line][column] == MapCellType::SPACE &&
-					!checked[line][column])
+				if (game_map.map_data[row][column] == MapCellType::SPACE &&
+					!checked[row][column])
 				{
 					return false;
 				}

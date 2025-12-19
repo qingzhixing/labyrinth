@@ -1,10 +1,10 @@
-#include <map_line_processor.h>
+#include <map_row_processor.h>
 #include <testkit.h>
 
 UnitTest(TestMapLineProcessor)
 {
 	MapCoordinateRecorder recorder;
-	auto result = MapLineProcessor::ProcessLine(
+	auto result = MapRowProcessor::ProcessRow(
 		".@..0", 1, recorder);
 
 	assert(result.second == ErrorCode::SUCCESS);

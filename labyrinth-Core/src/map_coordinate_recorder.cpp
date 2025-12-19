@@ -14,7 +14,7 @@ bool MapCoordinateRecorder::IsDestinationCell(MapCellType cell_type)
 }
 
 ErrorCode MapCoordinateRecorder::RecordPlayerIfNeeded(
-	MapCellType cell_type, int line, int column)
+	MapCellType cell_type, int row, int column)
 {
 	if (!IsPlayerCell(cell_type))
 	{
@@ -29,16 +29,16 @@ ErrorCode MapCoordinateRecorder::RecordPlayerIfNeeded(
 			"Invalid map format: multiple players '0'/'W' found");
 		return ErrorCode::MAP_MULTIPLE_PLAYER;
 	}
-	player_coordinate = Coordinate(line, column);
+	player_coordinate = Coordinate(row, column);
 	DebugLog(
 		LogLevel::DEBUG,
-		"Player coordinate: %d, %d", line, column);
+		"Player coordinate: %d, %d", row, column);
 
 	return ErrorCode::SUCCESS;
 }
 
 ErrorCode MapCoordinateRecorder::RecordDestinationIfNeeded(
-	MapCellType cell_type, int line, int column)
+	MapCellType cell_type, int row, int column)
 {
 	if (!IsDestinationCell(cell_type))
 	{
@@ -51,25 +51,25 @@ ErrorCode MapCoordinateRecorder::RecordDestinationIfNeeded(
 			"Invalid map format: multiple destinations '@'/'W' found");
 		return ErrorCode::MAP_MULTIPLE_DESTINATION;
 	}
-	destination = Coordinate(line, column);
+	destination = Coordinate(row, column);
 	DebugLog(
 		LogLevel::DEBUG,
 		"Destination coordinate: %d, %d",
-		line, column);
+		row, column);
 	return ErrorCode::SUCCESS;
 }
 
 ErrorCode MapCoordinateRecorder::RecordCoordinates(
-	MapCellType cell_type, int line, int column)
+	MapCellType cell_type, int row, int column)
 {
-	auto player_error = RecordPlayerIfNeeded(cell_type, line, column);
+	auto player_error = RecordPlayerIfNeeded(cell_type, row, column);
 	if (player_error != ErrorCode::SUCCESS)
 	{
 		return player_error;
 	}
 
 	auto destination_error =
-		RecordDestinationIfNeeded(cell_type, line, column);
+		RecordDestinationIfNeeded(cell_type, row, column);
 	if (destination_error != ErrorCode::SUCCESS)
 	{
 		return destination_error;

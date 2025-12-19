@@ -43,7 +43,7 @@ bool IsDebugLogNotEnabled()
 	return getenv(DBG_LOG_ENABLE) == nullptr;
 }
 
-void DebugLog_(LogLevel level, const std::string &file, int line, const std::string &format, ...)
+void DebugLog_(LogLevel level, const std::string &file, int row, const std::string &format, ...)
 {
 	if (IsDebugLogNotEnabled())
 	{
@@ -55,7 +55,7 @@ void DebugLog_(LogLevel level, const std::string &file, int line, const std::str
 	vsnprintf(message, sizeof(message), format.c_str(), args);
 	va_end(args);
 
-	cout << "[" << file << ":" << line << "] "
+	cout << "[" << file << ":" << row << "] "
 		 << level.toString()
 		 << ": "
 		 << message << endl;

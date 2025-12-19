@@ -14,9 +14,9 @@ void PrintMap(const GameMapExtend &map)
 	}
 	// Print Map Size
 	std::cout << "Map Size: " << map.size.lines << " x " << map.size.columns << std::endl;
-	for (const auto &line : map.map_data)
+	for (const auto &row : map.map_data)
 	{
-		for (const auto &cell : line)
+		for (const auto &cell : row)
 		{
 			std::cout << GetMapCellChar(cell) << " ";
 		}
@@ -94,7 +94,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace_OverMap)
 
 	PrintMap(map);
 	assert(map.PlacePlayerIfNeeded());
-	DebugLog(LogLevel::INFO, std::format("Player Coordinate: ({}, {})", map.player_coordinate.line, map.player_coordinate.column));
+	DebugLog(LogLevel::INFO, std::format("Player Coordinate: ({}, {})", map.player_coordinate.row, map.player_coordinate.column));
 	assert(map.player_coordinate == Coordinate(1, 0));
 
 	// Move Player to (2, 0)
@@ -172,10 +172,10 @@ UnitTest(GameMapExtend_WriteBackMap)
 		assert(false);
 	}
 	std::vector<std::string> lines;
-	std::string line;
-	while (std::getline(map_file, line))
+	std::string row;
+	while (std::getline(map_file, row))
 	{
-		lines.push_back(line);
+		lines.push_back(row);
 	}
 
 	// Close the file stream

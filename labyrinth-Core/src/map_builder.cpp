@@ -4,7 +4,7 @@
 #include <game_map_extend.h>
 
 std::pair<GameMapExtend, ErrorCode> MapBuilder::BuildFinalMap(
-	const std::vector<MapLine> &map_data,
+	const std::vector<MapRow> &map_data,
 	const MapCoordinateRecorder &recorder,
 	int total_lines,
 	int total_columns)
