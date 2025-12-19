@@ -17,7 +17,7 @@ public:
 	bool operator!=(const Coordinate &other) const;
 	Coordinate operator+(const Coordinate &other) const;
 	Coordinate operator-(const Coordinate &other) const;
-	bool IsValid() const;
+	bool IsPositive() const;
 };
 
 inline const Coordinate INVALID_COORDINATE(-1, -1);

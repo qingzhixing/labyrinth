@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <types/map_cell.h>
+#include <utility>
+#include <debug_log.h>
 
 GameController::GameController(std::string core_executable_path, std::string map_file_path)
 {
@@ -20,26 +22,44 @@ ErrorCode GameController::MovePlayer(Direction direction) const
 		 DirectionToString(direction)});
 }
 
-bool GameController::IsGameEnd() const
+std::pair<bool, ErrorCode> GameController::IsGameEnd() const
 {
 	std::fstream map_file(map_file_path);
+
+	if (!map_file.is_open())
+	{
+		DebugLog(LogLevel::ERROR, "Failed to open map file %s", map_file_path.c_str());
+		return std::make_pair(false, ErrorCode::MAP_FILE_OPEN_FAILED);
+	}
+
 	char ch;
 	while (map_file.get(ch))
 	{
 		if (ch == GetMapCellChar(MapCellType::PLAYER_AT_DESTINATION))
 		{
-			return true;
+			DebugLog(LogLevel::INFO, "Player is at destination");
+			return std::make_pair(true, ErrorCode::SUCCESS);
 		}
 	}
-	return false;
+
+	DebugLog(LogLevel::INFO, "Player is not at destination");
+	return std::make_pair(false, ErrorCode::SUCCESS);
 }
 
-void GameController::PrintMap() const
+ErrorCode GameController::PrintMap() const
 {
-	std::fstream map_file(map_file_path);
+	std::ifstream map_file(map_file_path);
+	// 检查文件是否成功打开
+	if (!map_file.is_open())
+	{
+		DebugLog(LogLevel::ERROR, "Failed to open map file %s", map_file_path.c_str());
+		return ErrorCode::MAP_FILE_OPEN_FAILED;
+	}
+
 	char ch;
 	while (map_file.get(ch))
 	{
 		std::cout << ch;
 	}
+	return ErrorCode::SUCCESS;
 }

@@ -28,7 +28,13 @@ GameMapExtend::MovePlayer(Direction direction)
 	Coordinate target_coordinate =
 		player_coordinate + DirectionToCoordinate(direction);
 
-	if (!target_coordinate.IsValid())
+	// 判断非法坐标
+	if (!target_coordinate.IsPositive())
+	{
+		return ErrorCode::MOVE_FAILED;
+	}
+	if (target_coordinate.column >= size.columns ||
+		target_coordinate.line >= size.lines)
 	{
 		return ErrorCode::MOVE_FAILED;
 	}
@@ -80,11 +86,11 @@ Coordinate GameMapExtend::GetFirstLeftUpSpace() const
 bool GameMapExtend::PlacePlayerIfNeeded()
 {
 	// 检查玩家是否需要被放置
-	if (!player_coordinate.IsValid())
+	if (!player_coordinate.IsPositive())
 	{
 		player_coordinate = GetFirstLeftUpSpace();
 	}
-	return player_coordinate.IsValid();
+	return player_coordinate.IsPositive();
 }
 
 ErrorCode GameMapExtend::WriteBackMap(const std::string &map_file_path) const

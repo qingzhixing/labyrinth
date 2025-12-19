@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <debug_log.h>
+
 ErrorCode CoreCaller::CallCoreExecutable(
 	const std::string &core_executable_path,
 	const std::vector<std::string> &arguments)
@@ -111,7 +113,8 @@ void CoreCaller::ExecuteChildProcess(const std::string &core_executable_path,
 	}
 
 	// 执行核心程序
-	execvp(("./" + core_executable_path).c_str(), argv);
+	// 将子进程环境变量设置为空
+	execve(("./" + core_executable_path).c_str(), argv, nullptr);
 
 	// 如果execvp返回，说明执行失败
 	DebugLog(LogLevel::ERROR, "execvp failed: %s", strerror(errno));
@@ -135,24 +138,7 @@ ErrorCode CoreCaller::WaitForChildProcess(pid_t pid, char **argv, size_t argumen
 
 ErrorCode CoreCaller::ProcessChildExitStatus(int status)
 {
-	// 处理超时（SIGALRM信号）
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGALRM)
-	{
-		return ErrorCode::CORE_TIME_OUT;
-	}
-
-	// 处理正常退出
-	if (WIFEXITED(status))
-	{
-		return ErrorCode(WEXITSTATUS(status));
-	}
-
-	// 处理信号终止
-	if (WIFSIGNALED(status))
-	{
-		return ErrorCode::CORE_EXECUTION_FAILED;
-	}
-
-	// 其他情况
-	return ErrorCode::CORE_EXECUTION_FAILED;
+	int exit_status = WEXITSTATUS(status);
+	DebugLog(LogLevel::INFO, "--- Child process exit status: %d", exit_status);
+	return ErrorCode(exit_status);
 }

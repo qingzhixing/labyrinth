@@ -19,8 +19,8 @@ UnitTest(Coordinate_OperatorSubtract)
 
 UnitTest(Coordinate_IsValid)
 {
-	assert(Coordinate(1, 2).IsValid());
-	assert(!Coordinate(-1, 2).IsValid());
-	assert(!Coordinate(1, -2).IsValid());
-	assert(!Coordinate(-1, -2).IsValid());
+	assert(Coordinate(1, 2).IsPositive());
+	assert(!Coordinate(-1, 2).IsPositive());
+	assert(!Coordinate(1, -2).IsPositive());
+	assert(!Coordinate(-1, -2).IsPositive());
 }

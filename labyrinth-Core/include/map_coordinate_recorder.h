@@ -34,8 +34,8 @@ public:
 	Coordinate GetPlayerCoordinate() const { return player_coordinate; }
 	Coordinate GetDestination() const { return destination; }
 
-	bool HasPlayer() const { return player_coordinate.IsValid(); }
-	bool HasDestination() const { return destination.IsValid(); }
+	bool HasPlayer() const { return player_coordinate.IsPositive(); }
+	bool HasDestination() const { return destination.IsPositive(); }
 
 	friend class MapCoordinateRecorderTest;
 };

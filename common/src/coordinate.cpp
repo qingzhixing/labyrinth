@@ -26,7 +26,7 @@ Coordinate Coordinate::operator-(const Coordinate &other) const
 	return Coordinate(line - other.line, column - other.column);
 }
 
-bool Coordinate::IsValid() const
+bool Coordinate::IsPositive() const
 {
 	return line >= 0 && column >= 0;
 }

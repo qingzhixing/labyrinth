@@ -10,7 +10,8 @@ public:
 	enum ErrorCodeValue : int
 	{
 		SUCCESS = 0,
-		MAP_FILE_NOT_FOUND,
+		// 程序自定义错误码：64-113（避免与系统信号冲突）
+		MAP_FILE_NOT_FOUND = 64,
 		MAP_TOO_LARGE,
 		INVALID_MAP_FORMAT,
 		MAP_FILE_IS_DIRECTORY,

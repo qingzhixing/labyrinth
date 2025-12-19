@@ -13,8 +13,8 @@ public:
 
 public:
 	ErrorCode MovePlayer(Direction direction) const;
-	bool IsGameEnd() const;
-	void PrintMap() const;
+	std::pair<bool, ErrorCode> IsGameEnd() const;
+	ErrorCode PrintMap() const;
 
 private:
 	std::string core_executable_path;

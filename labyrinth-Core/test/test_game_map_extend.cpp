@@ -4,6 +4,7 @@
 #include <debug_log.h>
 #include <fstream>
 #include <filesystem>
+#include <format>
 
 void PrintMap(const GameMapExtend &map)
 {
@@ -65,7 +66,7 @@ UnitTest(GameMapExtend_MovePlayer_MoveToWall)
 	assert(result == ErrorCode::MOVE_FAILED);
 }
 
-UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace)
+UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace_Negative)
 {
 	GameMapExtend map;
 	map.map_data = {{MapCellType::SPACE, MapCellType::WALL},
@@ -79,6 +80,26 @@ UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace)
 	// Move Player to (-1, 0)
 	auto result = map.MovePlayer(Direction::UP);
 	DebugLog(LogLevel::INFO, "Move Player to (-1, 0) result: " + result.toMessage());
+	PrintMap(map);
+
+	assert(result == ErrorCode::MOVE_FAILED);
+}
+
+UnitTest(GameMapExtend_MovePlayer_MoveToSpace_MoveToNullSpace_OverMap)
+{
+	GameMapExtend map;
+	map.map_data = {{MapCellType::SPACE, MapCellType::WALL},
+					{MapCellType::PLAYER, MapCellType::SPACE}};
+	map.size = {2, 2};
+
+	PrintMap(map);
+	assert(map.PlacePlayerIfNeeded());
+	DebugLog(LogLevel::INFO, std::format("Player Coordinate: ({}, {})", map.player_coordinate.line, map.player_coordinate.column));
+	assert(map.player_coordinate == Coordinate(1, 0));
+
+	// Move Player to (2, 0)
+	auto result = map.MovePlayer(Direction::DOWN);
+	DebugLog(LogLevel::INFO, "Move Player to (2, 0) result: " + result.toMessage());
 	PrintMap(map);
 
 	assert(result == ErrorCode::MOVE_FAILED);

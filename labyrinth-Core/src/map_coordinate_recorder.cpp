@@ -22,7 +22,7 @@ ErrorCode MapCoordinateRecorder::RecordPlayerIfNeeded(
 	}
 
 	// 已经有player_coordinate了
-	if (player_coordinate.IsValid())
+	if (player_coordinate.IsPositive())
 	{
 		DebugLog(
 			LogLevel::ERROR,
@@ -44,7 +44,7 @@ ErrorCode MapCoordinateRecorder::RecordDestinationIfNeeded(
 	{
 		return ErrorCode::SUCCESS;
 	}
-	if (destination.IsValid())
+	if (destination.IsPositive())
 	{
 		DebugLog(
 			LogLevel::ERROR,
