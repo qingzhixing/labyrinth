@@ -264,7 +264,7 @@ static void run_all_testcases(void)
         struct tk_testcase *t = &tests[i];
 
         // 在运行测试前显示测试名称
-        printf("\n\n 🌟 Running test: %s\n", t->name);
+        printf("🌟 Running test: %s\n", t->name);
 
         char *buf = (char *)mmap(NULL,
                                  TK_OUTPUT_LIMIT,
