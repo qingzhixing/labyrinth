@@ -57,6 +57,7 @@ GameMapExtend::MovePlayer(Direction direction)
 	{
 		target_cell = MapCellType::PLAYER_AT_DESTINATION;
 	}
+
 	return ErrorCode::SUCCESS;
 }
 
@@ -84,4 +85,29 @@ bool GameMapExtend::PlacePlayerIfNeeded()
 		player_coordinate = GetFirstLeftUpSpace();
 	}
 	return player_coordinate.IsValid();
+}
+
+ErrorCode GameMapExtend::WriteBackMap(const std::string &map_file_path) const
+{
+	// 遍历地图,写入数据
+	// 打开文件流
+	std::fstream map_file(map_file_path, std::ios::out);
+	if (!map_file.is_open())
+	{
+		return ErrorCode::MAP_FILE_OPEN_FAILED;
+	}
+
+	// 写入地图数据
+	for (const auto &line : map_data)
+	{
+		for (const auto &cell : line)
+		{
+			map_file << GetMapCellChar(cell);
+		}
+		map_file << '\n';
+	}
+
+	// 关闭文件流
+	map_file.close();
+	return ErrorCode::SUCCESS;
 }

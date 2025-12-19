@@ -29,6 +29,8 @@ public:
 	 * @return false 玩家未被放置(玩家坐标在地图上已经指出)
 	 */
 	bool PlacePlayerIfNeeded();
+
+	ErrorCode WriteBackMap(const std::string &map_file_path) const;
 };
 
 #endif // GAME_MAP_EXTEND_H

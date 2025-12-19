@@ -9,13 +9,12 @@
 class GameController
 {
 public:
-	GameController();
-	~GameController();
+	GameController(std::string core_executable_path, std::string map_file_path);
 
 public:
 	ErrorCode MovePlayer(Direction direction) const;
 	bool IsGameEnd() const;
-	ErrorCode PrintMap() const;
+	void PrintMap() const;
 
 private:
 	std::string core_executable_path;

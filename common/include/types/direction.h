@@ -3,6 +3,7 @@
 #define DIRECTION_H
 
 #include <types/coordinate.h>
+#include <string>
 
 enum class Direction
 {
@@ -14,5 +15,7 @@ enum class Direction
 };
 
 Coordinate DirectionToCoordinate(Direction direction);
+
+std::string DirectionToString(Direction direction);
 
 #endif // DIRECTION_H

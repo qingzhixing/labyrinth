@@ -106,6 +106,8 @@ ValidateParsedResult(const ParsedResult &parsed_result)
 			.error_code = error_code};
 	}
 
+	validated_context.map_file_path = parsed_result.map_file;
+
 	error_code = ErrorCode::SUCCESS;
 	return {
 		.validated_game_context = validated_context,

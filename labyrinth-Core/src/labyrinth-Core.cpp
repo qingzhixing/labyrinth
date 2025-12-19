@@ -36,13 +36,21 @@ int main(int argc, char *argv[])
 		return validate_error_code.toInt();
 	}
 
-	auto [game_map, move_direction] = validated_context;
+	auto [game_map, map_file_path, move_direction] = validated_context;
 	// Move the player
 	auto move_result = game_map.MovePlayer(move_direction);
 	if (move_result != ErrorCode::SUCCESS)
 	{
 		DebugLog(LogLevel::ERROR, move_result.toMessage());
 		return move_result.toInt();
+	}
+
+	// 写回地图
+	auto write_back_result = game_map.WriteBackMap(map_file_path);
+	if (write_back_result != ErrorCode::SUCCESS)
+	{
+		DebugLog(LogLevel::ERROR, write_back_result.toMessage());
+		return write_back_result.toInt();
 	}
 
 	return 0;

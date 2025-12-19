@@ -23,8 +23,9 @@ struct ParsedResultWithErrorCode
 
 struct ValidatedGameContext
 {
-	GameMapExtend game_map;					  // map_file的文件描述符
-	Direction direction = Direction::INVALID; // 移动方向的枚举
+	GameMapExtend game_map;
+	std::string map_file_path{};
+	Direction direction = Direction::INVALID;
 };
 
 struct ValidatedGameContextWithErrorCode

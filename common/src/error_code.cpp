@@ -45,6 +45,8 @@ std::string ErrorCode::toString() const
 		return "Map multiple destination '@' found [地图有多个终点]";
 	case MAP_MULTIPLE_PLAYER:
 		return "Map multiple player '0' found [地图有多个玩家]";
+	case MAP_FILE_OPEN_FAILED:
+		return "Map file open failed [地图文件打开失败]";
 	case INVALID_MOVE_DIRECTION:
 		return "Invalid move direction [移动方向无效]";
 	case MISSING_PARAMETERS:
