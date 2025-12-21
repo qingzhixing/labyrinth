@@ -4,9 +4,18 @@
 #include <fstream>
 #include <types/map_cell.h>
 #include <utility>
+#include <vector>
 #include <debug_log.h>
 
-GameController::GameController(std::string core_executable_path, std::string map_file_path)
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::make_pair;
+using std::pair;
+using std::string;
+using std::vector;
+
+GameController::GameController(string core_executable_path, string map_file_path)
 {
 	this->core_executable_path = core_executable_path;
 	this->map_file_path = map_file_path;
@@ -22,14 +31,14 @@ ErrorCode GameController::MovePlayer(Direction direction) const
 		 DirectionToString(direction)});
 }
 
-std::pair<bool, ErrorCode> GameController::IsGameEnd() const
+pair<bool, ErrorCode> GameController::IsGameEnd() const
 {
-	std::fstream map_file(map_file_path);
+	ifstream map_file(map_file_path);
 
 	if (!map_file.is_open())
 	{
 		DebugLog(LogLevel::ERROR, "Failed to open map file %s", map_file_path.c_str());
-		return std::make_pair(false, ErrorCode::MAP_FILE_OPEN_FAILED);
+		return make_pair(false, ErrorCode::MAP_FILE_OPEN_FAILED);
 	}
 
 	char ch;
@@ -38,17 +47,17 @@ std::pair<bool, ErrorCode> GameController::IsGameEnd() const
 		if (ch == GetMapCellChar(MapCellType::PLAYER_AT_DESTINATION))
 		{
 			DebugLog(LogLevel::INFO, "Player is at destination");
-			return std::make_pair(true, ErrorCode::SUCCESS);
+			return make_pair(true, ErrorCode::SUCCESS);
 		}
 	}
 
 	DebugLog(LogLevel::INFO, "Player is not at destination");
-	return std::make_pair(false, ErrorCode::SUCCESS);
+	return make_pair(false, ErrorCode::SUCCESS);
 }
 
 ErrorCode GameController::PrintMap() const
 {
-	std::ifstream map_file(map_file_path);
+	ifstream map_file(map_file_path);
 	// 检查文件是否成功打开
 	if (!map_file.is_open())
 	{
@@ -56,15 +65,45 @@ ErrorCode GameController::PrintMap() const
 		return ErrorCode::MAP_FILE_OPEN_FAILED;
 	}
 
-	char ch;
-	while (map_file.get(ch))
+	// 读取地图文件
+	vector<string> map_lines;
+	int row = 0, column = 0;
+	string single_line;
+	while (std::getline(map_file, single_line))
 	{
-		std::cout << ch;
+		map_lines.push_back(single_line);
+		column = single_line.size();
+		row++;
 	}
+
+	// 打印地图并添加边框('+' '-' '|')
+	// 打印顶部边框
+	cout << "+";
+	for (int i = 0; i < column; i++)
+	{
+		cout << "-";
+	}
+	cout << "+" << endl;
+
+	for (int i = 0; i < row; i++)
+	{
+		cout << "|";
+		cout << map_lines[i];
+		cout << "|" << endl;
+	}
+
+	// 打印底部边框
+	cout << "+";
+	for (int i = 0; i < column; i++)
+	{
+		cout << "-";
+	}
+	cout << "+" << endl;
+
 	return ErrorCode::SUCCESS;
 }
 
-void GameController::SetMapFilePath(const std::string &map_file_path)
+void GameController::SetMapFilePath(const string &map_file_path)
 {
 	this->map_file_path = map_file_path;
 }
@@ -74,7 +113,7 @@ ErrorCode GameController::GetMapValidatedErrorCode() const
 	return ValidateMap(core_executable_path, map_file_path);
 }
 
-ErrorCode GameController::ValidateMap(const std::string &core_executable_path, const std::string &map_file_path)
+ErrorCode GameController::ValidateMap(const string &core_executable_path, const string &map_file_path)
 {
 	return CoreCaller::CallCoreExecutable(
 		core_executable_path,

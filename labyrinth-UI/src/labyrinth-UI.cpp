@@ -27,7 +27,7 @@ static GameController game_controller(
 ErrorCode DisplayGameMap()
 {
 	DebugLog(LogLevel::INFO, "Display game map");
-	cout << "Game Map:" << endl;
+	cout << endl;
 	auto result = game_controller.PrintMap();
 	cout << endl;
 	return result;
