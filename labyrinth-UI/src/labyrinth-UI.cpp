@@ -138,6 +138,12 @@ bool GameLogic()
 			continue;
 		}
 
+		// 输入非法, 继续读取
+		if (!is_valid)
+		{
+			continue;
+		}
+
 		auto move_result = CallCoreExecutable(direction);
 
 		if (move_result != ErrorCode::SUCCESS &&

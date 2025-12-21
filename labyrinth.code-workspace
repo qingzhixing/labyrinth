@@ -4,5 +4,14 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"C_Cpp.default.includePath": [
+			"${workspaceFolder}/**",
+			"${workspaceFolder}/common/include",
+			"${workspaceFolder}/labyrinth-Core/include",
+			"${workspaceFolder}/labyrinth-UI/include",
+			"${workspaceFolder}/debug_utils/include",
+			"${workspaceFolder}/testkit/include"
+		]
+	}
 }
