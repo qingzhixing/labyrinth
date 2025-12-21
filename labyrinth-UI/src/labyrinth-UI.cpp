@@ -16,12 +16,13 @@ using std::endl;
 void PrintGameInfo()
 {
 	cout << GAME_NAME_ASCII_ART << endl;
-	cout << std::format("Welcome to {} ({})", GAME_NAME, GAME_VERSION) << endl;
+	cout << std::format("Welcome to {} ({}).", GAME_NAME, GAME_VERSION) << endl;
 	cout << std::format("Author: {} <{}>", AUTHOR, AUTHOR_EMAIL) << endl;
-	cout << "'0' -> Player" << endl;
-	cout << "'@' -> Target" << endl;
-	cout << "'#' -> Wall" << endl;
-	cout << "'.' -> Space" << endl;
+	cout << "'0' -> Player." << endl;
+	cout << "'@' -> Destination." << endl;
+	cout << "'#' -> Wall." << endl;
+	cout << "'.' -> Space." << endl;
+	cout << "'W' -> Player at destination." << endl;
 }
 
 static GameController game_controller(
@@ -104,6 +105,7 @@ bool GameLogic()
 	if (IsGameEnd())
 	{
 		cout << "地图已到达终点!" << endl;
+		DisplayGameMap();
 		return NeedNextGame();
 	}
 
@@ -118,6 +120,13 @@ bool GameLogic()
 		{
 			cout << display_result.toMessage() << endl;
 			return 0;
+		}
+
+		// Check for win
+		if (IsGameEnd())
+		{
+			cout << "You win!" << endl;
+			break;
 		}
 
 		auto [is_valid, direction] = ReadUserInput();
@@ -137,19 +146,14 @@ bool GameLogic()
 			cout << move_result.toMessage() << endl;
 			return 0;
 		}
-
-		// Check for win
-		if (IsGameEnd())
-		{
-			cout << "You win!" << endl;
-			break;
-		}
 	}
+
 	// Check for quit
 	if (quit_game)
 	{
 		cout << "Quit game." << endl;
 	}
+
 	return NeedNextGame();
 }
 
