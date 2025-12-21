@@ -63,3 +63,8 @@ ErrorCode GameController::PrintMap() const
 	}
 	return ErrorCode::SUCCESS;
 }
+
+void GameController::SetMapFilePath(const std::string &map_file_path)
+{
+	this->map_file_path = map_file_path;
+}

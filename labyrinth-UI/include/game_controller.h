@@ -15,6 +15,7 @@ public:
 	ErrorCode MovePlayer(Direction direction) const;
 	std::pair<bool, ErrorCode> IsGameEnd() const;
 	ErrorCode PrintMap() const;
+	void SetMapFilePath(const std::string &map_file_path);
 
 private:
 	std::string core_executable_path;
