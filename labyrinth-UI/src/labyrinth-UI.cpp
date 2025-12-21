@@ -176,5 +176,7 @@ int main(int argc, char *argv[])
 		// Do Nothing
 	}
 
+	cout << "Thanks for playing!" << endl;
+
 	return 0;
 }
