@@ -18,6 +18,10 @@ void PrintGameInfo()
 	cout << GAME_NAME_ASCII_ART << endl;
 	cout << std::format("Welcome to {} ({})", GAME_NAME, GAME_VERSION) << endl;
 	cout << std::format("Author: {} <{}>", AUTHOR, AUTHOR_EMAIL) << endl;
+	cout << "'0' -> Player" << endl;
+	cout << "'@' -> Target" << endl;
+	cout << "'#' -> Wall" << endl;
+	cout << "'.' -> Space" << endl;
 }
 
 static GameController game_controller(
