@@ -83,6 +83,14 @@ private:
 	ErrorCode HandleHelpOption();
 
 	/**
+	 * @brief Handle the validate option and return the updated result.
+	 *
+	 * @param result The current parsed result.
+	 * @return ParsedResult The updated parsed result.
+	 */
+	ParsedResult HandleValidateOption(const ParsedResult &result);
+
+	/**
 	 * @brief Handle invalid options.
 	 *
 	 * @param optopt The option character that caused the error.

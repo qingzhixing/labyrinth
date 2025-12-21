@@ -13,6 +13,7 @@ struct ParsedResult
 {
 	std::string map_file{};
 	std::string direction{};
+	bool validate = false;
 };
 
 struct ParsedResultWithErrorCode
@@ -26,6 +27,7 @@ struct ValidatedGameContext
 	GameMapExtend game_map;
 	std::string map_file_path{};
 	Direction direction = Direction::INVALID;
+	bool validate = {};
 };
 
 struct ValidatedGameContextWithErrorCode

@@ -107,6 +107,7 @@ ValidateParsedResult(const ParsedResult &parsed_result)
 	}
 
 	validated_context.map_file_path = parsed_result.map_file;
+	validated_context.validate = parsed_result.validate;
 
 	error_code = ErrorCode::SUCCESS;
 	return {

@@ -36,6 +36,11 @@ public:
 		return parser.HandleHelpOption();
 	}
 
+	static ParsedResult TestHandleValidateOption(ArgumentParser &parser, const ParsedResult &result)
+	{
+		return parser.HandleValidateOption(result);
+	}
+
 	static ErrorCode TestHandleInvalidOption(ArgumentParser &parser, int optopt)
 	{
 		return parser.HandleInvalidOption(optopt);
@@ -49,6 +54,14 @@ UnitTest(ArgumentParser_ResetGetoptState)
 	ArgumentParserTest::TestResetGetoptState(parser);
 	// 这个函数主要重置全局状态，难以直接验证
 	// 但调用它确保没有崩溃或异常
+}
+
+UnitTest(ArgumentParser_HandleValidateOption)
+{
+	ArgumentParser parser;
+	ParsedResult initial_result;
+	ParsedResult result = ArgumentParserTest::TestHandleValidateOption(parser, initial_result);
+	assert(result.validate == true);
 }
 
 // 测试HandleMapOption函数
@@ -158,7 +171,7 @@ UnitTest(ArgumentParser_ParseArguments_Normal)
 {
 	ArgumentParser parser;
 
-	std::vector<std::string> args = {"program", "-m", "test.map", "--move", "up"};
+	std::vector<std::string> args = {"program", "-m", "test.map", "--move", "up", "--validate"};
 	char **argv = MakeArgv(args);
 	int argc = args.size();
 
@@ -166,6 +179,7 @@ UnitTest(ArgumentParser_ParseArguments_Normal)
 	assert(error_code == ErrorCode::SUCCESS);
 	assert(result.map_file == "test.map");
 	assert(result.direction == "up");
+	assert(result.validate == true);
 }
 
 // 测试完整的ParseArguments函数 - 帮助请求

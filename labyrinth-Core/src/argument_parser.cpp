@@ -61,6 +61,14 @@ ParsedResult ArgumentParser::HandleMoveOption(
 	return updated_result;
 }
 
+ParsedResult ArgumentParser::HandleValidateOption(
+	const ParsedResult &result)
+{
+	ParsedResult updated_result = result;
+	updated_result.validate = true;
+	return updated_result;
+}
+
 ErrorCode ArgumentParser::HandleHelpOption()
 {
 	PrintUsage();
@@ -85,9 +93,10 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 
 	struct option long_options[] = {
 		{"map", required_argument, nullptr, 'm'},
-		{"move", required_argument, nullptr, 0},
+		{"move", required_argument, nullptr, 1},
 		{"version", no_argument, nullptr, 'v'},
 		{"help", no_argument, nullptr, 'h'},
+		{"validate", no_argument, nullptr, 2},
 		{nullptr, 0, nullptr, 0}};
 
 	ParsedResult result{};
@@ -111,8 +120,11 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 			return {
 				.parsed_result = result,
 				.error_code = HandleVersionOption(argc, argv)};
-		case 0: // --move
+		case 1: // --move
 			result = HandleMoveOption(result, optarg);
+			break;
+		case 2: // --validate
+			result = HandleValidateOption(result);
 			break;
 		case 'h': // --help
 			return {
@@ -128,8 +140,6 @@ ParsedResultWithErrorCode ArgumentParser::ParseArguments(int argc, char *argv[])
 				.error_code = ErrorCode::INVALID_PARAMETERS};
 		}
 	}
-
-	// 检查参数是否合法
 	return {
 		.parsed_result = result,
 		.error_code = ErrorCode::SUCCESS};
