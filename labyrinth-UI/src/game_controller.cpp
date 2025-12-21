@@ -68,3 +68,12 @@ void GameController::SetMapFilePath(const std::string &map_file_path)
 {
 	this->map_file_path = map_file_path;
 }
+
+ErrorCode GameController::ValidateMap() const
+{
+	return CoreCaller::CallCoreExecutable(
+		core_executable_path,
+		{"--map", map_file_path,
+		 "--direction", "up",
+		 "--validate"});
+}

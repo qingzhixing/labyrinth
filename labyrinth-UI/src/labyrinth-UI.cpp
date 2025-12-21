@@ -61,7 +61,7 @@ ErrorCode CallCoreExecutable(Direction direction)
 	return game_controller.MovePlayer(direction);
 }
 
-bool CheckGameEnd()
+bool IsGameEnd()
 {
 	DebugLog(LogLevel::INFO, "Check game end");
 	auto [is_game_end, error_code] = game_controller.IsGameEnd();
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
 	bool quit_game = false;
 
-	if (CheckGameEnd())
+	if (IsGameEnd())
 	{
 		cout << "地图已到达终点!" << endl;
 		return 0;
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 		}
 
 		// Check for win
-		if (CheckGameEnd())
+		if (IsGameEnd())
 		{
 			cout << "You win!" << endl;
 			break;

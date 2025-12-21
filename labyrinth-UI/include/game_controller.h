@@ -16,6 +16,7 @@ public:
 	std::pair<bool, ErrorCode> IsGameEnd() const;
 	ErrorCode PrintMap() const;
 	void SetMapFilePath(const std::string &map_file_path);
+	ErrorCode ValidateMap() const;
 
 private:
 	std::string core_executable_path;
