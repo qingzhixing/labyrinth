@@ -6,6 +6,8 @@
 #include <game_controller.h>
 #include <debug_log.h>
 #include <environment.h>
+#include <map_chooser.h>
+#include <ui_utilities.h>
 
 using std::cin;
 using std::cout;
@@ -72,26 +74,33 @@ bool IsGameEnd()
 	return is_game_end;
 }
 
-void ClearScreen()
+bool NeedNextGame()
 {
-	// 清除屏幕
-	cout << "\033[2J\033[1;1H";
+	DebugLog(LogLevel::INFO, "Check need next game");
+	cout << "是否需要继续下一局游戏? (y/n)" << endl;
+	char input;
+	cin >> input;
+	input = std::tolower(input);
+	return input == 'y';
 }
 
-int main(int argc, char *argv[])
+bool GameLogic()
 {
-	// 如果在测试环境则不进入游戏主逻辑
-	if (IsTestEnvironment())
+	// 选择地图
+	auto [map_file_path, success] = ChooseMap();
+	if (!success)
 	{
-		return 0;
+		cout << "地图选择中断!" << endl;
+		return NeedNextGame();
 	}
+	game_controller.SetMapFilePath(map_file_path);
 
 	bool quit_game = false;
 
 	if (IsGameEnd())
 	{
 		cout << "地图已到达终点!" << endl;
-		return 0;
+		return NeedNextGame();
 	}
 
 	while (!quit_game)
@@ -136,6 +145,21 @@ int main(int argc, char *argv[])
 	if (quit_game)
 	{
 		cout << "Quit game." << endl;
+	}
+	return NeedNextGame();
+}
+
+int main(int argc, char *argv[])
+{
+	// 如果在测试环境则不进入游戏主逻辑
+	if (IsTestEnvironment())
+	{
+		return 0;
+	}
+
+	while (GameLogic())
+	{
+		// Do Nothing
 	}
 
 	return 0;
